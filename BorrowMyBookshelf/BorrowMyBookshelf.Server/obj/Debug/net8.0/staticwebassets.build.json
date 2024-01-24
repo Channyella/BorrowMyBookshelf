@@ -1,0 +1,23 @@
+{
+  "Version": 1,
+  "Hash": "u0Xb4RJmCyIOV4HQND2BYFtXE+AYG0kcAwHDfa7IG8A=",
+  "Source": "BorrowMyBookshelf.Server",
+  "BasePath": "_content/BorrowMyBookshelf.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Users\\admin\\Documents\\BorrowMyBookshelf\\BorrowMyBookshelf\\borrowmybookshelf.client\\borrowmybookshelf.client.esproj",
+      "Version": 2,
+      "Source": "borrowmybookshelf.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

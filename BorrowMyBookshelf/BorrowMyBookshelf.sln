@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorrowMyBookshelf.Server", "BorrowMyBookshelf.Server\BorrowMyBookshelf.Server.csproj", "{274C3BAB-F956-4E2D-9718-519E7041D2E8}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "borrowmybookshelf.client", "borrowmybookshelf.client\borrowmybookshelf.client.esproj", "{AA836D9A-CA6F-4D1F-B4A2-D444E6E7E674}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{274C3BAB-F956-4E2D-9718-519E7041D2E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{274C3BAB-F956-4E2D-9718-519E7041D2E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{274C3BAB-F956-4E2D-9718-519E7041D2E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{274C3BAB-F956-4E2D-9718-519E7041D2E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA836D9A-CA6F-4D1F-B4A2-D444E6E7E674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA836D9A-CA6F-4D1F-B4A2-D444E6E7E674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA836D9A-CA6F-4D1F-B4A2-D444E6E7E674}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AA836D9A-CA6F-4D1F-B4A2-D444E6E7E674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA836D9A-CA6F-4D1F-B4A2-D444E6E7E674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA836D9A-CA6F-4D1F-B4A2-D444E6E7E674}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3448BEA5-7B8F-4090-9BCE-6E7F6459C27A}
+	EndGlobalSection
+EndGlobal

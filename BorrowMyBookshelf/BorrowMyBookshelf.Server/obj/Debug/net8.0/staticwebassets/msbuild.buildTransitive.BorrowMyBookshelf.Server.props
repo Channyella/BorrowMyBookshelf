@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\BorrowMyBookshelf.Server.props" />
+</Project>
