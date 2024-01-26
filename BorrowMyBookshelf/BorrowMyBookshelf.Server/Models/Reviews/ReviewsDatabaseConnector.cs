@@ -29,7 +29,7 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
             }
             else if (bookFormat == "eBook")
             {
-                return Reviews.BookFormatEnum.eBook
+                return Reviews.BookFormatEnum.eBook;
             }
             else
             {

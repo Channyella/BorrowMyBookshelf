@@ -20,7 +20,7 @@ namespace BorrowMyBookshelf.Server.Models
             try
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand($"SELECT * FROM {TableName}", connection);
+                MySqlCommand command = new MySqlCommand($"SELECT * FROM {TableName};", connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
