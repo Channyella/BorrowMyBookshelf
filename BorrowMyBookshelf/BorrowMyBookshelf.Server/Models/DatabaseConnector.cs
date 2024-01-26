@@ -82,6 +82,18 @@ namespace BorrowMyBookshelf.Server.Models
                 return reader.GetString(columnIndex);
             }
         }
+        protected int? SafeGetInt32(string column, MySqlDataReader reader)
+        {
+            int columnIndex = reader.GetOrdinal(column);
+            if (reader.IsDBNull(columnIndex))
+            {
+                return null;
+            }
+            else
+            {
+                return reader.GetInt32(columnIndex);
+            }
+        }
         abstract protected T MakeRow(MySqlDataReader reader);
     }
 }

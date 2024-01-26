@@ -2,7 +2,7 @@
 
 namespace BorrowMyBookshelf.Server.Models.Tags
 {
-    public class TagsDatabaseController : DatabaseConnector<Tags>
+    public class TagsDatabaseConnector : DatabaseConnector<Tags>
     {
         protected override string TableName => "tags";
         protected override string Id => "tag_id";

@@ -6,10 +6,10 @@
         public int UserBookId { get; set; }
         public DateTime RequestDate { get; set; }
         public StatusEnum Status { get; set; }
-        public DateTime DueDate { get; set; }
-        public DateTime ReturnDate { get; set; }
+        public DateTime? DueDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
         public int BorrowerUserId { get; set; }
-        public BookRequests(int bookRequestId, int userBookId, DateTime requestDate, StatusEnum status, DateTime dueDate, DateTime returnDate, int borrowerUserId)
+        public BookRequests(int bookRequestId, int userBookId, DateTime requestDate, StatusEnum status, DateTime? dueDate, DateTime? returnDate, int borrowerUserId)
         {
             BookRequestId = bookRequestId;
             UserBookId = userBookId;

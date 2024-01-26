@@ -2,7 +2,7 @@
 
 namespace BorrowMyBookshelf.Server.Models.BookRequests
 {
-    public class BookRequestsDataController : DatabaseConnector<BookRequests>
+    public class BookRequestsDatabaseConnector : DatabaseConnector<BookRequests>
     {
         protected override string TableName => "book_requests";
         protected override string Id => "book_request_id";
@@ -13,8 +13,8 @@ namespace BorrowMyBookshelf.Server.Models.BookRequests
                 reader.GetInt32("user_book_id"),
                 reader.GetDateTime("request_date"),
                 ParseStatusEnum(reader.GetString("state")),
-                reader.GetDateTime("due_date"),
-                reader.GetDateTime("return_date"),
+                SafeGetDateTime("due_date", reader),
+                SafeGetDateTime("return_date", reader),
                 reader.GetInt32("borrower_user_id")
                 );
         }

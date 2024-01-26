@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace BorrowMyBookshelf.Server.Models.FavAuthors
 {
-    public class FavAuthorsDatabaseController : DatabaseConnector<FavAuthors>
+    public class FavAuthorsDatabaseConnector : DatabaseConnector<FavAuthors>
     {
         protected override string TableName => "fav_authors";
         protected override string Id => "fav_author_id";

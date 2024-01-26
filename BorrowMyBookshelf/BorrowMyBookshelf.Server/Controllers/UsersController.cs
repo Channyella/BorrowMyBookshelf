@@ -7,7 +7,7 @@ namespace BorrowMyBookshelf.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly UsersDatabaseConnector dbConnector = new UsersDatabaseConnector();
         // GET: api/<UserController>
