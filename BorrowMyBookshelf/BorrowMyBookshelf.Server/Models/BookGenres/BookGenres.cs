@@ -4,8 +4,8 @@
     {
         public int BookGenreId { get; set; }
         public int BookId { get; set; }
-        public string GenreId { get; set; }
-        public BookGenres(int bookGenreId, int bookId, string genreId)
+        public int GenreId { get; set; }
+        public BookGenres(int bookGenreId, int bookId, int genreId)
         {
             BookGenreId = bookGenreId;
             BookId = bookId;

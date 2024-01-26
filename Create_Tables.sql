@@ -8,10 +8,12 @@ last_name VARCHAR(50) NOT NULL,
 email VARCHAR(50) NOT NULL,
 password_hash VARCHAR(60) NOT NULL,
 notes VARCHAR(500),
-image BLOB,
+image_file_name CHAR(100) CHARACTER SET UTF8MB4,
 create_date DATETIME NOT NULL, 
 updated_date DATETIME
 );
+
+DESCRIBE users;
 
 CREATE TABLE friends(
 friend_id INT auto_increment PRIMARY KEY,
@@ -102,8 +104,11 @@ user_book_id INT auto_increment primary key,
 book_id INT NOT NULL,
 borrowable BOOL NOT NULL,
 book_format ENUM('hardcover', 'paperback', 'eBook', 'audio_book') NOT NULL,
-foreign key(book_id) REFERENCES books(book_id)
+user_id INT NOT NULL,
+foreign key(book_id) REFERENCES books(book_id),
+foreign key(user_id) REFERENCES users(user_id)
 );
+
 
 CREATE TABLE bookshelf_books(
 bookshelf_book_id INT auto_increment primary key,

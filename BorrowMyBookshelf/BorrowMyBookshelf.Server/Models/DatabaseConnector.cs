@@ -6,7 +6,8 @@ namespace BorrowMyBookshelf.Server.Models
     abstract public class DatabaseConnector<T>
     {
         abstract protected string TableName { get; }
-        protected MySqlConnection GetConnection()
+        abstract protected string Id { get; }
+        private MySqlConnection GetConnection()
         {
             string connectionString = @"server=localhost;userid=root;password=1789;database=BorrowMyBookshelf";
             MySqlConnection con = new MySqlConnection(connectionString);
@@ -35,6 +36,28 @@ namespace BorrowMyBookshelf.Server.Models
             return ResultList;
         }
 
+        public T? GetById(int id)
+        {
+            T? result = default;
+            MySqlConnection connection = GetConnection();
+            try
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand($"SELECT * FROM {TableName} WHERE {Id} = {id};", connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result = MakeRow(reader);
+                }
+                reader.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            connection.Close();
+            return result;
+        }
 
         public DataTable RunSqlCommand(string sqlQuery)
         {

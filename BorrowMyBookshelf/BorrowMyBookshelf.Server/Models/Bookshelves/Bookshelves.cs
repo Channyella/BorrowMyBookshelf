@@ -3,7 +3,7 @@ using System.Data;
 
 namespace BorrowMyBookshelf.Server.Models.Bookshelves
 {
-    public class Bookshelves : DatabaseConnector
+    public class Bookshelves 
     {
         public int BookshelfId { get; set; }
         public string? BookshelfName { get; set; }
