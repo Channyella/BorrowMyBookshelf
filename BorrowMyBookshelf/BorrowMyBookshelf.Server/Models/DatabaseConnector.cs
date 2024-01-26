@@ -58,29 +58,29 @@ namespace BorrowMyBookshelf.Server.Models
             connection.Close();
             return result;
         }
-
-        public DataTable RunSqlCommand(string sqlQuery)
+        protected DateTime? SafeGetDateTime(string column, MySqlDataReader reader)
         {
-            MySqlConnection con = GetConnection();
-
-            con.Open();
-            MySqlCommand command = new MySqlCommand(sqlQuery, con);
-            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            con.Close();
-            return dt;
+            int columnIndex = reader.GetOrdinal(column);
+            if (reader.IsDBNull(columnIndex))
+            {
+                return null;
+            }
+            else
+            {
+                return reader.GetDateTime(columnIndex);
+            }
         }
-
-        public string RunSqlCommandString(string sqlQuery)
+        protected string? SafeGetString(string column, MySqlDataReader reader)
         {
-            MySqlConnection con = GetConnection();
-            int count;
-            con.Open();
-            MySqlCommand command = new MySqlCommand(sqlQuery, con);
-            count = Convert.ToInt32(command.ExecuteScalar());
-            con.Close();
-            return count.ToString();
+            int columnIndex = reader.GetOrdinal(column);
+            if (reader.IsDBNull(columnIndex))
+            {
+                return null;
+            }
+            else
+            {
+                return reader.GetString(columnIndex);
+            }
         }
         abstract protected T MakeRow(MySqlDataReader reader);
     }

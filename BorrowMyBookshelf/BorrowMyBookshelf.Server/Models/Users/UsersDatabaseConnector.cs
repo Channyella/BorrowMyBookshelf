@@ -22,26 +22,5 @@ namespace BorrowMyBookshelf.Server.Models.Users
                 );
         }
 
-        protected DateTime? SafeGetDateTime(string column, MySqlDataReader reader)
-        {
-            int columnIndex = reader.GetOrdinal(column);
-            if (reader.IsDBNull(columnIndex)) {
-                return null;
-            } else
-            {
-                return reader.GetDateTime(columnIndex);
-            }
-        }
-        protected string? SafeGetString(string column, MySqlDataReader reader)
-        {
-            int columnIndex = reader.GetOrdinal(column);
-            if(reader.IsDBNull(columnIndex))
-            {
-                return null;
-            } else
-            {
-                return reader.GetString(columnIndex);
-            }
-        }
     }
 }
