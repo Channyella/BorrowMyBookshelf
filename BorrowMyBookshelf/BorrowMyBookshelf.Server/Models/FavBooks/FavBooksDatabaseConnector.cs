@@ -6,6 +6,7 @@ namespace BorrowMyBookshelf.Server.Models.FavBooks
     {
         protected override string TableName => "fav_books";
         protected override string Id => "fav_book_id";
+        protected override List<string> NullableColumns => [];
         protected override FavBooks MakeRow(MySqlDataReader reader)
         {
             return new FavBooks(
@@ -13,6 +14,13 @@ namespace BorrowMyBookshelf.Server.Models.FavBooks
                 reader.GetInt32("user_id"),
                 reader.GetInt32("book_id")
                 );
+        }
+        public void CreateFavBook(CreateFavBooks createFavBooks)
+        {
+            List<(string, object)> columnsWithValues = new();
+            columnsWithValues.Add(("user_id", createFavBooks.UserId));
+            columnsWithValues.Add(("book_id", createFavBooks.BookId));
+            Insert(columnsWithValues);
         }
     }
 }

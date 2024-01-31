@@ -1,4 +1,5 @@
-﻿using BorrowMyBookshelf.Server.Models.Genres;
+﻿using BorrowMyBookshelf.Server.Models.Authors;
+using BorrowMyBookshelf.Server.Models.Genres;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -26,8 +27,9 @@ namespace BorrowMyBookshelf.Server.Controllers
 
         // POST api/<GenresController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromForm] CreateGenres createGenres)
         {
+            dbConnector.CreateGenres(createGenres);
         }
 
         // PUT api/<GenresController>/5
@@ -40,6 +42,7 @@ namespace BorrowMyBookshelf.Server.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            dbConnector.DeleteById(id);
         }
     }
 }

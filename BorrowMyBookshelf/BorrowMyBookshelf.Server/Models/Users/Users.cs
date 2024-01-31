@@ -14,8 +14,8 @@ namespace BorrowMyBookshelf.Server.Models.Users
         public string? Notes { get; set; }
         public string? ImageFileName { get; set; }
         public DateTime CreateDate { get; set; }
-        public DateTime? UpdateDate { get; set; }
-        public Users(int userId, string firstName, string lastName, string email, string passwordHash, string? notes, string? imageFileName, DateTime createDate, DateTime? updateDate)
+        public DateTime? UpdatedDate { get; set; }
+        public Users(int userId, string firstName, string lastName, string email, string passwordHash, string? notes, string? imageFileName, DateTime createDate, DateTime? updatedDate)
         {
             UserId = userId;
             FirstName = firstName;
@@ -25,7 +25,7 @@ namespace BorrowMyBookshelf.Server.Models.Users
             Notes = notes;
             ImageFileName = imageFileName;
             CreateDate = createDate;
-            UpdateDate = updateDate;
+            UpdatedDate = updatedDate;
         }
     }
 }

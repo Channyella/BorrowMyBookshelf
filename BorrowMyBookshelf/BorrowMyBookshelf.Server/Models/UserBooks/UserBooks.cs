@@ -17,10 +17,10 @@
         }
         public enum BookFormatEnum
         {
-            Hardcover,
-            Paperback,
-            eBook,
-            AudioBook,
+            Hardcover = 1,
+            Paperback = 2,
+            eBook = 3,
+            AudioBook = 4,
         }
     }
 }

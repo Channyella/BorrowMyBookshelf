@@ -6,6 +6,7 @@ namespace BorrowMyBookshelf.Server.Models.Users
     {
         protected override string TableName => "users";
         protected override string Id => "user_id";
+        protected override List<string> NullableColumns => [];
 
         protected override Users MakeRow(MySqlDataReader reader)
         {
@@ -21,6 +22,20 @@ namespace BorrowMyBookshelf.Server.Models.Users
                 SafeGetDateTime("updated_date", reader)
                 );
         }
-
+        public void CreateUsers(CreateUsers createUsers)
+        {
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("first_name", createUsers.FirstName),
+                    ("last_name", createUsers.LastName),
+                    ("email", createUsers.Email),
+                    ("password_hash", createUsers.PasswordHash),
+                    ("notes", createUsers.Notes),
+                    ("image_file_name", createUsers.ImageFileName),
+                    ("create_date", createUsers.CreateDate),
+                    ("updated_date", createUsers.UpdatedDate)
+                ];
+            Insert(columnsWithValues);
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
     {
         protected override string TableName => "reviews";
         protected override string Id => "review_id";
+        protected override List<string> NullableColumns => [];
         protected override Reviews MakeRow(MySqlDataReader reader)
         {
             string? bookFormat = SafeGetString("book_format", reader);
@@ -36,6 +37,22 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
             {
                 return Reviews.BookFormatEnum.AudioBook;
             }
+        }
+        public void CreateReviews(CreateReviews createReviews)
+        {
+            List<(string, object?)> columnsWithRows =
+                [
+                    ("user_id", createReviews.UserId),
+                    ("book_id", createReviews.BookId),
+                    ("book_format", createReviews.BookFormat),
+                    ("summary", createReviews.Summary),
+                    ("rating", createReviews.Rating),
+                    ("start_date", createReviews.StartDate),
+                    ("finished_date", createReviews.FinishedDate),
+                    ("create_date", createReviews.CreateDate),
+                    ("updated_date", createReviews.UpdatedDate)
+                ];
+            Insert(columnsWithRows);
         }
     }
 }

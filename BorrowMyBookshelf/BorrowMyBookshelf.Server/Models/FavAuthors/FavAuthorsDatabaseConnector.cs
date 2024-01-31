@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using BorrowMyBookshelf.Server.Models.Authors;
+using MySql.Data.MySqlClient;
 using System.Runtime.CompilerServices;
 
 namespace BorrowMyBookshelf.Server.Models.FavAuthors
@@ -7,6 +8,7 @@ namespace BorrowMyBookshelf.Server.Models.FavAuthors
     {
         protected override string TableName => "fav_authors";
         protected override string Id => "fav_author_id";
+        protected override List<string> NullableColumns => [];
         protected override FavAuthors MakeRow(MySqlDataReader reader)
         {
             return new FavAuthors(
@@ -14,6 +16,15 @@ namespace BorrowMyBookshelf.Server.Models.FavAuthors
                 reader.GetInt32("user_id"),
                 reader.GetInt32("author_id")
                 );
+        }
+
+        public void CreateFavAuthor(CreateFavAuthors createFavAuthors)
+        {
+            List<(string, object)> columnWithValues = new();
+            columnWithValues.Add(("user_id", createFavAuthors.UserId));
+            columnWithValues.Add(("author_id", createFavAuthors.AuthorId));
+            Insert(columnWithValues);
+            
         }
     }
 }

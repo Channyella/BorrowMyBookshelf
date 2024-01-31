@@ -7,6 +7,7 @@ namespace BorrowMyBookshelf.Server.Models.BookTags
     {
         protected override string TableName => "book_tags";
         protected override string Id => "book_tag_id";
+        protected override List<string> NullableColumns => [];
         protected override BookTags MakeRow(MySqlDataReader reader)
         {
             return new BookTags(
@@ -14,6 +15,15 @@ namespace BorrowMyBookshelf.Server.Models.BookTags
                 reader.GetInt32("user_book_id"),
                 reader.GetInt32("tag_id")
                 );
+        }
+        public void CreateBookTags(CreateBookTags createBookTags)
+        {
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("user_book_id", createBookTags.UserBookId),
+                    ("tag_id", createBookTags.TagId)
+                ];
+            Insert(columnsWithValues);
         }
     }
 }

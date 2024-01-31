@@ -26,8 +26,9 @@ namespace BorrowMyBookshelf.Server.Controllers
 
         // POST api/<ReviewsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromForm] CreateReviews createReviews)
         {
+            dbConnector.CreateReviews(createReviews);
         }
 
         // PUT api/<ReviewsController>/5
@@ -40,6 +41,7 @@ namespace BorrowMyBookshelf.Server.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            dbConnector.DeleteById(id);
         }
     }
 }

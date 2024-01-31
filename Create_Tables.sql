@@ -19,6 +19,8 @@ CREATE TABLE friends(
 friend_id INT auto_increment PRIMARY KEY,
 requester_user_id INT NOT NULL,
 reciever_user_id INT NOT NULL,
+accepted BOOL NOT NULL,
+create_date DATETIME NOT NULL,
 foreign key(requester_user_id) REFERENCES users(user_id),
 foreign key(reciever_user_id) REFERENCES users(user_id)
 );
@@ -26,19 +28,24 @@ foreign key(reciever_user_id) REFERENCES users(user_id)
 CREATE TABLE authors(
 author_id INT auto_increment PRIMARY KEY,
 first_name VARCHAR(50) NOT NULL,
+middle_name VARCHAR(50),
 last_name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE books(
 book_id INT auto_increment primary key,
-title VARCHAR(50),
+title VARCHAR(50) NOT NULL,
 author_id INT NOT NULL,
 page_count INT,
 create_date DATETIME NOT NULL,
-image BLOB,
+image_file_name CHAR(100) CHARACTER SET UTF8MB4,
+description VARCHAR(1000),
+audio_length INT,
 foreign key(author_id) REFERENCES
 authors(author_id)
 ); 
+
+DESCRIBE books;
 
 CREATE TABLE genres(
 genre_id INT auto_increment primary key,
@@ -137,13 +144,16 @@ CREATE TABLE book_requests(
 book_request_id INT auto_increment primary key,
 user_book_id INT NOT NULL,
 request_date DATETIME NOT NULL,
-state ENUM('pending', 'accepted', 'denied', 'borrowed', 'returned') NOT NULL,
+book_request_status ENUM('pending', 'accepted', 'denied', 'borrowed', 'returned') NOT NULL,
 due_date DATETIME,
 return_date DATETIME,
 borrower_user_id INT NOT NULL,
 foreign key(user_book_id) REFERENCES user_books(user_book_id),
 foreign key(borrower_user_id) REFERENCES users(user_id)
 );
+
+
+
 
 
 

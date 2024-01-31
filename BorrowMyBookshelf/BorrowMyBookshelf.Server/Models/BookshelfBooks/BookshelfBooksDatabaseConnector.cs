@@ -6,6 +6,7 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
     {
         protected override string TableName => "bookshelf_books";
         protected override string Id => "bookshelf_book_id";
+        protected override List<string> NullableColumns => [];
         protected override BookshelfBooks MakeRow(MySqlDataReader reader)
         {
             return new BookshelfBooks(
@@ -13,6 +14,16 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                 reader.GetInt32("bookshelf_id"),
                 reader.GetInt32("user_book_id")
                 );
+        }
+
+        public void CreateBookshelfBooks(CreateBookshelfBooks createBookshelfBooks)
+        {
+            List<(string, object?)> columnWithValues =
+                [
+                    ("bookshelf_id", createBookshelfBooks.BookshelfId),
+                    ("user_book_id", createBookshelfBooks.UserBookId)
+                ];
+            Insert(columnWithValues);
         }
     }
 }

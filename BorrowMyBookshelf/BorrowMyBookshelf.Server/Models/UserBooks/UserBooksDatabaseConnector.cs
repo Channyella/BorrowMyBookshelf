@@ -6,6 +6,7 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
     {
         protected override string TableName => "user_books";
         protected override string Id => "user_book_id";
+        protected override List<string> NullableColumns => [];
 
         protected override UserBooks MakeRow(MySqlDataReader reader)
         {            
@@ -36,6 +37,18 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
             {
                 return UserBooks.BookFormatEnum.AudioBook;
             }
+        }
+
+        public void CreateUserBooks(CreateUserBooks createUserBooks)
+        {
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("book_id", createUserBooks.BookId),
+                    ("borrowable", createUserBooks.Borrowable),
+                    ("book_format", createUserBooks.BookFormat),
+                    ("user_id", createUserBooks.UserId),
+                ];
+            Insert(columnsWithValues);
         }
     }
 }

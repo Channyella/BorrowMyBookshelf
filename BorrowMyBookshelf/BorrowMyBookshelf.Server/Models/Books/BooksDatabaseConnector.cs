@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using BorrowMyBookshelf.Server.Models.BookshelfBooks;
+using MySql.Data.MySqlClient;
 
 namespace BorrowMyBookshelf.Server.Models.Books
 {
@@ -6,6 +7,7 @@ namespace BorrowMyBookshelf.Server.Models.Books
     {
         protected override string TableName => "books";
         protected override string Id => "book_id";
+        protected override List<string> NullableColumns => [];
         protected override Books MakeRow(MySqlDataReader reader)
         {
             return new Books(
@@ -18,6 +20,21 @@ namespace BorrowMyBookshelf.Server.Models.Books
                 SafeGetString("description", reader),
                 SafeGetInt32("audio_length", reader)
                 ) ;
+        }
+
+        public void CreateBook(CreateBooks createBooks)
+        {
+            List<(string, object?)> columnsWithValues =
+            [
+                ("title", createBooks.Title),
+                ("author_id", createBooks.AuthorId),
+                ("page_count", createBooks.PageCount),
+                ("create_date", createBooks.CreateDate),
+                ("image_file_name", createBooks.ImageFileName),
+                ("description", createBooks.Description),
+                ("audio_length", createBooks.AudioLength),
+            ];
+            Insert(columnsWithValues);
         }
     }
 }
