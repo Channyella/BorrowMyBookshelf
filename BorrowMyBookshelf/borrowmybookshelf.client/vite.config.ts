@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // @ts-nocheck
 import { fileURLToPath, URL } from 'node:url';
 
