@@ -17,10 +17,20 @@ namespace BorrowMyBookshelf.Server.Models.FavBooks
         }
         public void CreateFavBook(CreateFavBooks createFavBooks)
         {
-            List<(string, object)> columnsWithValues = new();
+            List<(string, object?)> columnsWithValues = new();
             columnsWithValues.Add(("user_id", createFavBooks.UserId));
             columnsWithValues.Add(("book_id", createFavBooks.BookId));
             Insert(columnsWithValues);
+        }
+        public void UpdateFavBook(UpdateFavBooks updateFavBooks, int id)
+        {
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("user_id", updateFavBooks.UserId),
+                    ("book_id", updateFavBooks.BookId)
+                ];
+            List<string> NullableColumns = updateFavBooks.ColumnsToNullify.Split(',').ToList();
+            Update(columnsWithValues, id, NullableColumns);
         }
     }
 }

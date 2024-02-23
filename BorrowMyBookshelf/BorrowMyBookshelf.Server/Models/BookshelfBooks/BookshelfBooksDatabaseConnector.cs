@@ -25,5 +25,16 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                 ];
             Insert(columnWithValues);
         }
+
+        public void UpdateBookshelfBooks(UpdateBookshelfBooks updateBookshelfBooks, int id)
+        {
+            List<(string, object?)> columnWithValues =
+                [
+                    ("bookshelf_id", updateBookshelfBooks.BookshelfId),
+                    ("user_book_id", updateBookshelfBooks.UserBookId)
+                ];
+            List<string> NullableColumns = updateBookshelfBooks.ColumnsToNullify.Split(',').ToList();
+            Update(columnWithValues, id, NullableColumns);
+        }
     }
 }

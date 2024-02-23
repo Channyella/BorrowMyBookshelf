@@ -24,6 +24,13 @@ namespace BorrowMyBookshelf.Server.Controllers
             return dbConnector.GetById(id);
         }
 
+        // GET api/<BooksController>/5/detailed
+        [HttpGet("{id}/detailed")]
+        public DetailedBook? GetDetailed(int id)
+        {
+            return dbConnector.GetDetailedBookById(id);
+        }
+
         // POST api/<BooksController>
         [HttpPost]
         public void Post([FromForm] CreateBooks createBooks)
@@ -33,8 +40,9 @@ namespace BorrowMyBookshelf.Server.Controllers
 
         // PUT api/<BooksController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromForm] UpdateBooks updateBooks)
         {
+            dbConnector.UpdateBook(updateBooks, id);
         }
 
         // DELETE api/<BooksController>/5

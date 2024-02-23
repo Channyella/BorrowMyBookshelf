@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using BorrowMyBookshelf.Server.Models.Authors;
+using MySql.Data.MySqlClient;
 
 namespace BorrowMyBookshelf.Server.Models.Users
 {
@@ -6,7 +7,7 @@ namespace BorrowMyBookshelf.Server.Models.Users
     {
         protected override string TableName => "users";
         protected override string Id => "user_id";
-        protected override List<string> NullableColumns => [];
+        protected override List<string> NullableColumns => ["notes", "image_file_name", "update_date"];
 
         protected override Users MakeRow(MySqlDataReader reader)
         {
@@ -36,6 +37,22 @@ namespace BorrowMyBookshelf.Server.Models.Users
                     ("updated_date", createUsers.UpdatedDate)
                 ];
             Insert(columnsWithValues);
+        }
+        public void UpdateUsers(UpdateUsers updateUsers, int id)
+        {
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("first_name", updateUsers.FirstName),
+                    ("last_name", updateUsers.LastName),
+                    ("email", updateUsers.Email),
+                    ("password_hash", updateUsers.PasswordHash),
+                    ("notes", updateUsers.Notes),
+                    ("image_file_name", updateUsers.ImageFileName),
+                    ("create_date", updateUsers.CreateDate),
+                    ("updated_date", updateUsers.UpdatedDate)
+                ];
+            List<string> columnsToNullify = updateUsers.ColumnsToNullify.Split(',').ToList();
+            Update(columnsWithValues, id, columnsToNullify);
         }
     }
 }

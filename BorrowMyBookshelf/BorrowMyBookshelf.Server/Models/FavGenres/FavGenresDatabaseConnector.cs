@@ -22,5 +22,15 @@ namespace BorrowMyBookshelf.Server.Models.FavGenres
             columnsWithValues.Add(("genre_id", createFavGenres.GenreId));
             Insert(columnsWithValues);
         }
+        public void UpdateFavGenre(UpdateFavGenres updateFavGenres, int id)
+        {
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("user_id", updateFavGenres.UserId),
+                    ("genre_id", updateFavGenres.GenreId)
+                ];
+            List<string> NullableColumns = updateFavGenres.ColumnsToNullify.Split(',').ToList();
+            Update(columnsWithValues, id, NullableColumns);
+        }
     }
 }

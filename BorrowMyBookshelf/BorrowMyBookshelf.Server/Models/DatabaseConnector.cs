@@ -138,6 +138,28 @@ namespace BorrowMyBookshelf.Server.Models
             connection.Close();
             return result;
         }
+        public List<T> GetByForeignKey(string columnName, int id)
+        {
+            List<T> ResultList = new List<T>();
+            MySqlConnection connection = GetConnection();
+            try
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand($"SELECT * FROM {TableName} WHERE {columnName} = {id};", connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    ResultList.Add(MakeRow(reader));
+                }
+                reader.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            connection.Close();
+            return ResultList;
+        }
         public void DeleteById(int id)
         {
             MySqlConnection connection = GetConnection();

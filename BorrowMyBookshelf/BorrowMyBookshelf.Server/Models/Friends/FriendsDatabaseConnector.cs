@@ -29,5 +29,17 @@ namespace BorrowMyBookshelf.Server.Models.Friends
                 ];
             Insert(columnsWithValues);
         }
+        public void UpdateFriends (UpdateFriends updateFriends, int id)
+        {
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("requester_user_id", updateFriends.RequesterUserId),
+                    ("reciever_user_id", updateFriends.RecieverUserId),
+                    ("accepted", updateFriends.Accepted),
+                    ("create_date", updateFriends.CreateDate)
+                ];
+            List<string> NullableCollums = updateFriends.ColumnsToNullify.Split(',').ToList();
+            Update(columnsWithValues, id, NullableCollums);
+        }
     }
 }

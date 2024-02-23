@@ -6,7 +6,7 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
     {
         protected override string TableName => "reviews";
         protected override string Id => "review_id";
-        protected override List<string> NullableColumns => [];
+        protected override List<string> NullableColumns => ["book_format", "summary", "start_date", "finished_date", "updated_date"];
         protected override Reviews MakeRow(MySqlDataReader reader)
         {
             string? bookFormat = SafeGetString("book_format", reader);
@@ -53,6 +53,23 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
                     ("updated_date", createReviews.UpdatedDate)
                 ];
             Insert(columnsWithRows);
+        }
+        public void UpdateReviews(UpdateReviews updateReviews, int id)
+        {
+            List<(string, object?)> columnsWithRows =
+                [
+                    ("user_id", updateReviews.UserId),
+                    ("book_id", updateReviews.BookId),
+                    ("book_format", updateReviews.BookFormat),
+                    ("summary", updateReviews.Summary),
+                    ("rating", updateReviews.Rating),
+                    ("start_date", updateReviews.StartDate),
+                    ("finished_date", updateReviews.FinishedDate),
+                    ("create_date", updateReviews.CreateDate),
+                    ("updated_date", updateReviews.UpdatedDate)
+                ];
+            List<string> NullableColumns = updateReviews.ColumnsToNullify.Split(',').ToList();
+            Update(columnsWithRows, id, NullableColumns);
         }
     }
 }

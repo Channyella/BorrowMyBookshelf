@@ -18,10 +18,22 @@ namespace BorrowMyBookshelf.Server.Models.Bookshelves
         }
         public void CreateBookshelf(CreateBookshelves createBookshelves)
         {
-            List<(string, object)> columnsWithValues = new List<(string, object)>();
-            columnsWithValues.Add(("bookshelf_name", createBookshelves.BookshelfName));
-            columnsWithValues.Add(("user_id", createBookshelves.UserId));
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("bookshelf_name", createBookshelves.BookshelfName),
+                    ("user_id", createBookshelves.UserId)
+                ];
             Insert(columnsWithValues);
+        }
+        public void UpdateBookshelf(UpdateBookshelves updateBookshelves, int id)
+        {
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("bookshelf_name", updateBookshelves.BookshelfName),
+                    ("user_id", updateBookshelves.UserId)
+                ];
+            List<string> NullableColumns = updateBookshelves.ColumnsToNullify.Split(',').ToList();
+            Update(columnsWithValues, id, NullableColumns);
         }
     }
 }

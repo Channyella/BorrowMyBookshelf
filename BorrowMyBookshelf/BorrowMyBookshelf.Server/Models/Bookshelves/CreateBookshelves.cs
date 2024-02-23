@@ -6,7 +6,7 @@ namespace BorrowMyBookshelf.Server.Models.Bookshelves
     {
         public string BookshelfName { get; set; }
         public int UserId { get; set; }
-        public void CreateBookshelf()
+        public CreateBookshelves()
         {
             BookshelfName = string.Empty;
             UserId = -1;

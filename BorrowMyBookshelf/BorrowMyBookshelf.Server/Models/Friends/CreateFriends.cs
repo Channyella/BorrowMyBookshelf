@@ -6,7 +6,7 @@
         public int RecieverUserId { get; set; }
         public bool Accepted { get; set; }
         public DateTime CreateDate { get; set; }
-        public void CreateFriend()
+        public CreateFriends()
         {
             RequesterUserId = -1;
             RecieverUserId = -1;

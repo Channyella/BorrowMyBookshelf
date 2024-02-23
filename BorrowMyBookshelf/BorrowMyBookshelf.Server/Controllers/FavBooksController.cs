@@ -33,8 +33,9 @@ namespace BorrowMyBookshelf.Server.Controllers
 
         // PUT api/<FavBooksController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromForm] UpdateFavBooks updateFavBooks)
         {
+            dbConnector.UpdateFavBook(updateFavBooks, id);
         }
 
         // DELETE api/<FavBooksController>/5
