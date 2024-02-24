@@ -9,7 +9,7 @@ namespace BorrowMyBookshelf.Server.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly BooksDatabaseConnector dbConnector = new BooksDatabaseConnector();
+        private readonly BooksDatabaseConnector dbConnector = new();
         // GET: api/<BooksController>
         [HttpGet]
         public IEnumerable<Books> Get()

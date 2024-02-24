@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import './App.css';
+import { Book } from './models/Book';
 
 function App() {
-    const [books, setBooks] = useState();
+    const [books, setBooks] = useState<Book[] | undefined>();
 
     useEffect(() => {
         populateWeatherData();
@@ -43,7 +44,7 @@ function App() {
     
     async function populateWeatherData() {
         const response = await fetch('api/books');
-        const data = await response.json();
+        const data: Book[] = await response.json();
         setBooks(data);
     }
 }
