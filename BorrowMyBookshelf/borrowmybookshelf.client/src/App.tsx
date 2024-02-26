@@ -1,13 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { Book } from './models/Book';
+import LoginForm from "./components/LoginForm";
 
 function App() {
     const [books, setBooks] = useState<Book[] | undefined>();
 
     useEffect(() => {
-        populateWeatherData();
+        populateBookData();
     }, []);
+
+    const Login = () => {
+        return (
+            <div className="login">
+                <form>
+                    <LoginForm placeholder = "Email" />
+                    <LoginForm placeholder = "Password" />
+                </form>
+             </div>
+        );
+    };
+
+    const loggedIn = true; // todo: check if they are logged in
+
+    if (!loggedIn) {
+        return Login();
+    }
 
     const contents = books === undefined
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
@@ -15,20 +34,22 @@ function App() {
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Author Id</th>
+                    <th>Author</th>
                     <th>Page Count</th>
                     <th>Description</th>
                     <th>Audio Length</th>
+                    <th>Genres</th>
                 </tr>
             </thead>
             <tbody>
                 {books.map(book =>
                     <tr key={book.title}>
                         <td>{book.title}</td>
-                        <td>{book.authorId}</td>
+                        <td>{`${book.author.firstName} ${book.author.middleName ?? ""} ${book.author.lastName}`}</td>
                         <td>{book.pageCount}</td>
                         <td>{book.description}</td>
                         <td>{book.audioLength}</td>
+                        <td>{book.genres.map(genre => genre.genreType).join(", ")}</td>
                     </tr>
                 )}
             </tbody>
@@ -36,14 +57,13 @@ function App() {
 
     return (
         <div>
-            <h1 id="tabelLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
+            <h1 id="tabelLabel">Your Books:</h1>
             {contents}
         </div>
     );
     
-    async function populateWeatherData() {
-        const response = await fetch('api/books');
+    async function populateBookData() {
+        const response = await fetch('api/books/detailed');
         const data: Book[] = await response.json();
         setBooks(data);
     }

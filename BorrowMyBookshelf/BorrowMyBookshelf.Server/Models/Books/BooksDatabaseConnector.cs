@@ -54,16 +54,27 @@ namespace BorrowMyBookshelf.Server.Models.Books
             List<string> columnsToNullify = updateBooks.ColumnsToNullify.Split(',').ToList();
             Update(columnsWithValues, id, columnsToNullify);
         }
+
+        private static DetailedBook? BookToDetailedBook(Books book)
+        {
+            AuthorsDatabaseConnector authorsConnector = new();
+            Authors.Authors? authorInfo = authorsConnector.GetById(book.AuthorId);
+            if (authorInfo == null) return null;
+            BookGenresDatabaseConnector bookGenresDatabaseConnector = new();
+            List<Genres.Genres> genres = bookGenresDatabaseConnector.GetGenresByBookId(book.BookId);
+            return new DetailedBook(book, authorInfo, genres.ToArray());
+        }
         public DetailedBook? GetDetailedBookById(int id)
         {
             Books? bookInfo = GetById(id);
             if (bookInfo == null) return null;
-            AuthorsDatabaseConnector authorsConnector = new();
-            Authors.Authors? authorInfo = authorsConnector.GetById(bookInfo.AuthorId);
-            if (authorInfo == null) return null;
-            BookGenresDatabaseConnector bookGenresDatabaseConnector = new();
-            List<Genres.Genres> genres = bookGenresDatabaseConnector.GetGenresByBookId(bookInfo.BookId);
-            return new DetailedBook(bookInfo, authorInfo, genres.ToArray());
+            return BookToDetailedBook(bookInfo);
+        }
+
+        public List<DetailedBook?> GetDetailedBooks()
+        {
+            List<Books> allBookInfo = GetAllFromTable();
+            return allBookInfo.Select(book => BookToDetailedBook(book)).ToList();
         }
     }
 }
