@@ -95,12 +95,12 @@
 
 .btn.btn-success {
     background-color: #9d86b7;
-    border-color: #778262;
+    border-color: #9d86b7;
 }
 
-.btn.btn-success:hover {
-        background-color: seagreen;
-        border-color: seagreen;
+    .btn.btn-success:hover {
+        background-color: #705d86;
+        border-color: #705d86;
     }
 
 .form_container {

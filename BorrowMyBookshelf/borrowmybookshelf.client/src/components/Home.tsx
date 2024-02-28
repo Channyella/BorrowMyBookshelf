@@ -10,7 +10,7 @@ export default function Home() {
     }, []);
     const contents = books === undefined
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tabelLabel">
+        : <table className="table table-striped" aria-labelledby="tableLabel">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -37,7 +37,7 @@ export default function Home() {
 
     return (
         <div>
-            <h1 id="tabelLabel">Your Books:</h1>
+            <h1 id="tableLabel">Your Books:</h1>
             {contents}
         </div>
     );

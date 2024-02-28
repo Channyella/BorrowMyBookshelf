@@ -7,6 +7,7 @@ export default function CreateBook() {
     const [format, setFormat] = useState<string>('');
     const [length, setLength] = useState<string>('');
     const [pageCount, setPageCount] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
@@ -24,11 +25,18 @@ export default function CreateBook() {
         setPageCount(event.target.value);
     };
 
+    const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDescription(event.target.value);
+    };
+
     const createBook = () => {
         const formData = new FormData();
         const book = {
             'title': title,
             'authorId': 1,
+            'decription': description,
+            'pageCount': pageCount,
+            'audioLength': length,
         };
         for (const pair of Object.entries(book)) {
             formData.append(pair[0], pair[1].toString());
@@ -86,8 +94,8 @@ export default function CreateBook() {
                     </div>
 
                     <div className='mb-2'>
-                        <label htmlFor="summary">Summary</label>
-                        <input type="text" placeholder="Enter Summary" className='form-control' name="description" />
+                        <label htmlFor="description">Summary</label>
+                        <input type="text" placeholder="Enter Summary" className='form-control' name="description" value={description} onChange={handleDescriptionChange} />
                     </div>
                     <div className='mb-2'>
                         <label htmlFor="genre">Genre</label>

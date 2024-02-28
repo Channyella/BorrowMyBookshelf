@@ -10,6 +10,7 @@ import Friends from './components/Friends';
 import Borrowed from './components/Borrowed';
 import Profile from './components/Profile';
 import CreateBook from './components/CreateBook';
+import BookshelfBooks from './components/BookshelfBooks';
 function App() {
     function LogIn() {
         return (
@@ -32,6 +33,7 @@ function App() {
                         <Route path='profile' element={<CreateBook />} />
                         <Route path='friends' element={<Friends />} />
                         <Route path='borrowed' element={<Borrowed />} />
+                        <Route path='bookshelf-books/:bookshelfId' element={<BookshelfBooks /> } />
                     </Route>
                     <Route path='*' element={<Navigate to="/" />} />
                 </Routes>
