@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+
+.pink-bg {
+    background-color: #E7958D;
+}
+
+.dark-pink-bg {
+    background-color: #C15f33;
+}
+
+.yellow-bg {
+    background-color: #f5f092;
+}
+
+.dark-yellow-bg {
+    background-color: #ddb159;
+}
+
+.green-bg {
+    background-color: #84b09f;
+}
+
+.dark-green-bg {
+    background-color: #778262;
+}
+
+.orange-bg {
+    background-color: #d68153;
+}
+
+.dark-orange-bg {
+    background-color: #c15f33;
+}
+.teal-bg {
+    background-color: #385354;
+}
+
+.dark-teal-bg {
+    background-color: #323d34;
+}
+
+.light-purple-bg {
+    background-color: #d1c2e2;
+}
+.purple-bg {
+    background-color: #9d86b7;
+}
+
+.dark-purple-bg {
+    background-color: #705d86;
+}
+
+.grey-background {
+    background-color: #cecece;
+}
+
+.sidebar {
+    height: 100%;
+    width: 250px;
+    border-left: 4px solid #9d86b7;
+    padding: 20px;
+}
+
+.page-wrapper {
+    display:flex;
+    height: calc(100vh - 81px);
+    justify-content: flex-end;
+}
+
+.outlet-wrapper {
+    height: 100%;
+    width: calc(100vw - 250px);
+    overflow-y: auto;
+}
+
+.outlet-content {
+    min-height: 100%;
+}
+
+.sacramento-regular {
+    font-family: "Sacramento", cursive;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.btn.btn-primary {
+    background-color: #84b09f;
+    border-color: #84b09f;
+}
+
+.btn.btn-primary:hover {
+    background-color: #778262;
+    border-color: #778262;
+}
+
+.btn.btn-success {
+    background-color: #9d86b7;
+    border-color: #778262;
+}
+
+.btn.btn-success:hover {
+        background-color: seagreen;
+        border-color: seagreen;
+    }
+
+.form_container {
+    width: 30%;
+}
+
+.form-container-forms {
+    width: 50%;
+}
+
+a.linkColor {
+    color: seagreen;
+}
+
+a.linkColor:visited {
+    color: seagreen;
+}
+
+.radio-button-container {
+    display: flex;
+    gap:2px;
+}
+
+.radio-button-container label {
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 1000px) {
+    .form_container {
+        width: 45%
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .form_container {
+        width: 65%
+    }
+}
