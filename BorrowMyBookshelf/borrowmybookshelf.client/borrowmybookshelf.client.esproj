@@ -11,4 +11,7 @@
   <ItemGroup>
     <TypeScriptConfiguration Include="tsconfig.node.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\api\" />
+  </ItemGroup>
 </Project>

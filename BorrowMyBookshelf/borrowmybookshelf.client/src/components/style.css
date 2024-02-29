@@ -1,5 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
 
+#firstNameNote {
+    background-color: #f5f092;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+#lastNameNote {
+    background-color: #f5f092;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+#emailNote {
+    background-color: #f5f092;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+#pwdNote {
+    background-color: #f5f092;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+#confirmNote {
+    background-color: #f5f092;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.valid {
+    display: inline-block; /* Display the icon */
+    color: green; /* Color for valid state */
+    margin-left: 5px;
+}
+
+.invalid {
+    display: inline-block; /* Display the icon */
+    color: red; /* Color for invalid state */
+    margin-left: 5px;
+}
+
+.hide {
+    display: none; /* Hide the icon */
+}
+
+.offscreen {
+    display: none;
+}
+
 .pink-bg {
     background-color: #E7958D;
 }
@@ -93,15 +142,21 @@
     border-color: #778262;
 }
 
+.btn.btn-primary:disabled {
+    background-color: #84b09f;
+    border-color: #84b09f;
+}
+
 .btn.btn-success {
     background-color: #9d86b7;
     border-color: #9d86b7;
 }
 
-    .btn.btn-success:hover {
-        background-color: #705d86;
-        border-color: #705d86;
-    }
+.btn.btn-success:hover {
+    background-color: #705d86;
+    border-color: #705d86;
+}
+
 
 .form_container {
     width: 30%;

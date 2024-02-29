@@ -41,7 +41,7 @@ function App() {
         )
     }
 
-    const loggedIn = true; // todo: check if they are logged in
+    const loggedIn = false; // todo: check if they are logged in
 
     if (!loggedIn) {
         return LogIn();
