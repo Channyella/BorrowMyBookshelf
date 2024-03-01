@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import './style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from '../api/axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 const userRegex = /^[a-zA-Z][a-zA-Z'\-\s]+$/;
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 const pwdRegex = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-const registerURL = '/signup';
+const registerURL = 'api/users';
 
 function SignUp() {
     const firstNameRef = useRef<HTMLInputElement>(null);
@@ -89,13 +90,34 @@ function SignUp() {
             return;
         }
         try {
-            const response = await axios.post(registerURL,
-                JSON.stringify({ firstName: first_name, lastName: last_name, email, pwd: password_hash }),
+            // send as form data
+            const data = new FormData();
+            data.append("FirstName", firstName);
+            data.append("LastName", lastName);
+            data.append("Email", email);
+            data.append("PasswordHash", pwd);
+            const response = await axios.post<AxiosResponse<object, object>>(registerURL, data,
                 {
-                    headers: { 'Content-Type': 'application/json'}
-                })
-        } catch (err) {
+                    withCredentials: true,
+                    headers: { "Content-Type": "multipart/form-data" },
+                }
+            );
 
+            console.log(response.data);
+            console.log(JSON.stringify(response));
+            setSuccess(true);
+            //clear input fields, set back to empty strings.
+        } catch (err: unknown) {
+            if (!err || !(err instanceof Error)) {
+                setErrorMessage("No Server Response");
+            } else {
+                const errorResponse = err as AxiosError<any>;
+                if (errorResponse.response?.status === 409) {
+                setErrorMessage("Already Taken.")
+            } else {
+                setErrorMessage("Registration Failed.")
+            }
+                errRef.current?.focus();
         }
     }
 

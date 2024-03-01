@@ -7,7 +7,13 @@ namespace BorrowMyBookshelf.Server.Models.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string PasswordHash { get; set; }
+        private string _PasswordHash;
+        
+        public string PasswordHash {
+            get { return _PasswordHash; }
+            set { _PasswordHash = PasswordHelper.GetHashString(value); }
+        }
+        
         public string? Notes { get; set; }
         public string? ImageFileName { get; set; }
         public DateTime CreateDate { get; set; }
@@ -18,7 +24,7 @@ namespace BorrowMyBookshelf.Server.Models.Users
             FirstName = string.Empty;
             LastName = string.Empty;
             Email = string.Empty;
-            PasswordHash = string.Empty;
+            _PasswordHash = string.Empty;
             Notes = null;
             ImageFileName = null;
             CreateDate = DateTime.Now;
