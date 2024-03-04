@@ -79,8 +79,9 @@ namespace BorrowMyBookshelf.Server.Models
             return ResultList;
         }
 
-        protected void Insert(List<(string, object?)> columnsWithValues)
+        protected long Insert(List<(string, object?)> columnsWithValues)
         {
+            long id = -1;
             List<(string, object)> safeColumnsWithValues = Safe(columnsWithValues).ToList();
             MySqlConnection connection = GetConnection();
             StringBuilder columns = new();
@@ -103,11 +104,13 @@ namespace BorrowMyBookshelf.Server.Models
                 MySqlCommand cmd = new MySqlCommand(InsertQuery, connection);
                 safeColumnsWithValues.ForEach(columnWithValue => cmd.Parameters.AddWithValue("@" + columnWithValue.Item1, columnWithValue.Item2));
                 cmd.ExecuteNonQuery();
+                id = cmd.LastInsertedId;
             } catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
             connection.Close();
+            return id;
         }
 
         protected void Update(List<(string, object?)> columnsWithValues, int id, List<string> columnsToNullify)

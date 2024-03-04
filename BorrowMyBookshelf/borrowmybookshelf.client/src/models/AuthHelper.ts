@@ -30,6 +30,10 @@ export function SetAuthCookie(token: string) {
     setCookie("auth", token, 31);
 }
 
+export function deleteCookie(): void {
+    document.cookie = `auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+
 export function GetCurrentUser(): UserInfo | null {
     const authCookie = getCookie("auth");
     if (!authCookie) {

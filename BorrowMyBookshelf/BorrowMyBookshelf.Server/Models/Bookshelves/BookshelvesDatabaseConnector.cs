@@ -16,14 +16,14 @@ namespace BorrowMyBookshelf.Server.Models.Bookshelves
                 reader.GetInt32("user_id")
                 );
         }
-        public void CreateBookshelf(CreateBookshelves createBookshelves)
+        public long CreateBookshelf(CreateBookshelves createBookshelves)
         {
             List<(string, object?)> columnsWithValues =
                 [
                     ("bookshelf_name", createBookshelves.BookshelfName),
                     ("user_id", createBookshelves.UserId)
                 ];
-            Insert(columnsWithValues);
+            return Insert(columnsWithValues);
         }
         public void UpdateBookshelf(UpdateBookshelves updateBookshelves, int id)
         {

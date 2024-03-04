@@ -13,6 +13,7 @@ import CreateBook from './components/CreateBook';
 import BookshelfBooks from './components/BookshelfBooks';
 import AuthContext from './context/AuthProvider';
 import { useContext } from 'react';
+import AddBookshelf from './components/AddBookshelf';
 function App() {
 
     const { auth } = useContext(AuthContext);
@@ -37,7 +38,8 @@ function App() {
                         <Route path='profile' element={<CreateBook />} />
                         <Route path='friends' element={<Friends />} />
                         <Route path='borrowed' element={<Borrowed />} />
-                        <Route path='bookshelf-books/:bookshelfId' element={<BookshelfBooks /> } />
+                        <Route path='bookshelf-books/:bookshelfId' element={<BookshelfBooks />} />
+                        <Route path='add-bookshelf' element={<AddBookshelf/> } />
                     </Route>
                     <Route path='*' element={<Navigate to="/" />} />
                 </Routes>

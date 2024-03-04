@@ -57,14 +57,14 @@ export default function CreateBook() {
                 <form id="new-book">
                     <h3 className="text-center">Create New Book</h3>
                     <div className='mb-2'>
-                        <label htmlFor="email">Title</label>
+                        <label htmlFor="title">Title</label>
                         <input type="text" value={title} placeholder="Enter Title" className='form-control' name="title" onChange={handleTitleChange} />
                     </div>
                     <div>
                         <h5 className="text-center">Author's Name:</h5>
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor="FirstName">First Name</label>
+                        <label htmlFor="firstName">First Name</label>
                         <input type="text" placeholder="Enter First Name" className='form-control' name="first_name" />
                     </div>
                     <div className='mb-2'>

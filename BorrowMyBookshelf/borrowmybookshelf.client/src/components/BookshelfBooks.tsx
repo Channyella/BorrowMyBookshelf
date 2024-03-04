@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Bookshelf } from '../models/Bookshelf';
+import axios from 'axios';
+import { GetAuthHeader } from '../models/AuthHelper';
 
 export default function BookshelfBooks() {
     const { bookshelfId } = useParams<{ bookshelfId: string }>() ?? "";
@@ -14,9 +16,12 @@ export default function BookshelfBooks() {
 
     const fetchBookshelf = async (id: string) => {
         try {
-            const response = await fetch(`/api/bookshelves/${id}`);
-            const data = await response.json();
-            setBookshelf(data);
+            const response = await axios.get<Bookshelf>(`/api/bookshelves/${id}`,
+                {
+                    withCredentials: true,
+                    headers: GetAuthHeader(),
+                });
+            setBookshelf(response.data);
         } catch (error) {
             console.error('Error fetching bookshelf data:', error);
         }

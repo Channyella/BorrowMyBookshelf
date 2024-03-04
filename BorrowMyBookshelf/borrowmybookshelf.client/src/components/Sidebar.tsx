@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext} from 'react';
 import './style.css';
-import { Bookshelf } from '../models/Bookshelf';
 import { Link } from 'react-router-dom';
+import { GetCurrentUser } from '../models/AuthHelper';
+import BookshelfContext from '../context/BookshelfContext';
 
 export default function Sidebar() {
-    const [bookshelves, setBookshelves] = useState<Bookshelf[] | undefined>();
-    useEffect(() => {
-        populateBookshelfData();
-    }, []);
+    const { bookshelves } = useContext(BookshelfContext);
+    const userInfo = GetCurrentUser();
+    const userFirstName = userInfo?.firstName;
 
     const contents = bookshelves === undefined
         ? <p>Boo.</p>
         : (
             <ul className="bookshelvesList" aria-labelledby="sideNavLabel">
-                {bookshelves.map(bookshelf =>
+                {bookshelves?.map(bookshelf =>
                     <li key={bookshelf.bookshelfId}>
                         <Link to={`/bookshelf-books/${bookshelf.bookshelfId}`}> {bookshelf.bookshelfName} </Link>
                     </li>
@@ -22,16 +22,14 @@ export default function Sidebar() {
 
     return (
         <div className="sidebar green-bg">
-            <h2 className= "row justify-content-center mt-3">Bookshelves</h2>
+            <h2 className="row justify-content-center text-center mt-3"> {userFirstName}'s Bookshelves</h2>
                 {contents}
             <div className="text-center">
-                <button className="btn btn-success" >Add Bookshelf</button>
+                <Link to="/add-bookshelf">
+                    <button className="btn btn-success" >Add Bookshelf</button>
+                </Link>
             </div>
         </div>
     );
-    async function populateBookshelfData() {
-        const response = await fetch('api/bookshelves');
-        const data: Bookshelf[] = await response.json();
-        setBookshelves(data);
-    }
+
   }

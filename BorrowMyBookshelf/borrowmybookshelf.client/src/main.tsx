@@ -3,7 +3,7 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import 'bootstrap/dist/css/bootstrap.css'
-import { AuthProvider } from './context/AuthProvider.js';
+import { AuthProvider } from './context/AuthProvider';
 
 const maybeRootInIndexFile = document.getElementById('root');
 maybeRootInIndexFile ? ReactDOM.createRoot(maybeRootInIndexFile).render(
