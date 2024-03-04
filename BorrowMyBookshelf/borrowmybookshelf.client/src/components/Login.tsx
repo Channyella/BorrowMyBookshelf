@@ -1,8 +1,15 @@
-import React, { useRef, useState, useEffect, FormEvent } from 'react';
+import React, { useRef, useState, useEffect, FormEvent, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './style.css';
+import AuthContext from '../context/AuthProvider';
+import axios from '../api/axios';
+import { AxiosError, AxiosResponse } from 'axios';
+import { GetCurrentUser, SetAuthCookie } from '../models/AuthHelper';
+
+const loginURL = 'api/login';
 
 function Login() {
+    const { setAuth } = useContext(AuthContext);
     const userRef = useRef<HTMLInputElement>(null);
     const errRef = useRef<HTMLInputElement>(null);
 
@@ -21,8 +28,41 @@ function Login() {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setUser('');
-        setPwd('');
+
+        try {
+            const data = new FormData();
+            data.append("Email", user);
+            data.append("Password", pwd);
+            const response: AxiosResponse<string> = await axios.post(loginURL, data,
+                {
+                    withCredentials: true,
+                    headers: { "Content-Type": "multipart/form-data" },
+                }
+            );
+            const token = response.data;
+            SetAuthCookie(token);
+            console.log(GetCurrentUser());
+            const userInfo = GetCurrentUser();
+            setAuth(userInfo);
+            setUser('');
+            setPwd('');
+            setSuccess(true);
+
+        } catch (err: unknown) {
+            if (!err || !(err instanceof Error)) {
+                setErrorMessage("No Server Response");
+            } else {
+                const errorResponse = err as AxiosError<unknown>;
+                if (errorResponse.response?.status === 400) {
+                    setErrorMessage("Missing Username or Password")
+                } else if (errorResponse.response?.status === 401) {
+                    setErrorMessage("Unauthorized")
+                } else {
+                    setErrorMessage('Login Failed.')
+                }
+                errRef.current?.focus();
+            }
+        }
     }
 
     return (

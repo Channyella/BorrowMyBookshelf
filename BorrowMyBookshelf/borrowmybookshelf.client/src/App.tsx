@@ -11,7 +11,11 @@ import Borrowed from './components/Borrowed';
 import Profile from './components/Profile';
 import CreateBook from './components/CreateBook';
 import BookshelfBooks from './components/BookshelfBooks';
+import AuthContext from './context/AuthProvider';
+import { useContext } from 'react';
 function App() {
+
+    const { auth } = useContext(AuthContext);
     function LogIn() {
         return (
             <BrowserRouter>
@@ -41,9 +45,7 @@ function App() {
         )
     }
 
-    const loggedIn = false; // todo: check if they are logged in
-
-    if (!loggedIn) {
+    if (!auth) {
         return LogIn();
     }
     return Main();

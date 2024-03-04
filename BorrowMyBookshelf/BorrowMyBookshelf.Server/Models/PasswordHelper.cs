@@ -19,5 +19,6 @@ namespace BorrowMyBookshelf.Server.Models
 
             return hashedPassword.ToString();
         }
+
     }
 }

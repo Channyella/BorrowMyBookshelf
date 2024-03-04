@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './style.css';
+import axios from 'axios';
+import { GetAuthHeader } from '../models/AuthHelper';
 
 export default function CreateBook() {
     const [title, setTitle] = useState<string>('');
@@ -41,10 +43,12 @@ export default function CreateBook() {
         for (const pair of Object.entries(book)) {
             formData.append(pair[0], pair[1].toString());
         }
-        fetch('/api/books', {
-            method: 'POST',
-            body: formData,
-        });
+        
+        axios.post('/api/books', formData,
+            {
+                withCredentials: true,
+                headers: GetAuthHeader(),
+            });
     };
 
     return (

@@ -2,6 +2,8 @@ import React from 'react';
 import './style.css';
 import { useEffect, useState } from 'react';
 import { Book } from '../models/Book';
+import axios, { AxiosResponse } from 'axios';
+import { GetAuthHeader } from '../models/AuthHelper';
 
 export default function Home() {
     const [books, setBooks] = useState<Book[] | undefined>();
@@ -42,8 +44,10 @@ export default function Home() {
         </div>
     );
     async function populateBookData() {
-        const response = await fetch('api/books/detailed');
-        const data: Book[] = await response.json();
-        setBooks(data);
+        const response: AxiosResponse<Book[]> = await axios.get('api/books/detailed', {
+            withCredentials: true,
+            headers: GetAuthHeader(),
+        });
+        setBooks(response.data);
     }
 }

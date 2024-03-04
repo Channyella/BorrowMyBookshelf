@@ -54,5 +54,20 @@ namespace BorrowMyBookshelf.Server.Models.Users
             List<string> columnsToNullify = updateUsers.ColumnsToNullify.Split(',').ToList();
             Update(columnsWithValues, id, columnsToNullify);
         }
+
+        public Users? FoundUser(string email, string passwordHash)
+        {
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("email", email),
+                    ("password_hash", passwordHash),
+                ];
+            List<Users> user = GetByColumns(columnsWithValues);
+            if (user.Count == 0)
+            {
+                return null;
+            }
+            return user[0];
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Google.Protobuf.WellKnownTypes;
+using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using Mysqlx.Session;
+using MySqlX.XDevAPI.Relational;
 using System.Data;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -27,6 +29,42 @@ namespace BorrowMyBookshelf.Server.Models
                 connection.Open();
                 MySqlCommand command = new MySqlCommand($"SELECT * FROM {TableName};", connection);
                 MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    ResultList.Add(MakeRow(reader));
+                }
+                reader.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            connection.Close();
+            return ResultList;
+        }
+
+        public List<T> GetByColumns(List<(string, object?)> columnsWithValues)
+        {
+            List<(string, object)> safeColumnsWithValues = Safe(columnsWithValues).ToList();
+            List<T> ResultList = new List<T>();
+            MySqlConnection connection = GetConnection();
+            StringBuilder condition = new();
+            bool isFirst = true;
+            safeColumnsWithValues.ForEach(columnWithValue => {
+                if (!isFirst)
+                {
+                    condition.Append(" AND ");
+                }
+                condition.Append(columnWithValue.Item1 + " = @" + columnWithValue.Item1);
+                isFirst = false;
+            });
+            try
+            {
+                connection.Open();
+                string InsertQuery = ($"SELECT * FROM {TableName} WHERE ({condition});");
+                MySqlCommand cmd = new MySqlCommand(InsertQuery, connection);
+                safeColumnsWithValues.ForEach(columnWithValue => cmd.Parameters.AddWithValue("@" + columnWithValue.Item1, columnWithValue.Item2));
+                MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     ResultList.Add(MakeRow(reader));
