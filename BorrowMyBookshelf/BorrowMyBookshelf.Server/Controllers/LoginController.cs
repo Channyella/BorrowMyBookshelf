@@ -1,5 +1,6 @@
 ﻿using BorrowMyBookshelf.Server.Models;
 using BorrowMyBookshelf.Server.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using System.Text;
 
 namespace BorrowMyBookshelf.Server.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
