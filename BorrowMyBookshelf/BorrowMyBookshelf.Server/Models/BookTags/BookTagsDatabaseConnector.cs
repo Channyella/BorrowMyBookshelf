@@ -16,14 +16,14 @@ namespace BorrowMyBookshelf.Server.Models.BookTags
                 reader.GetInt32("tag_id")
                 );
         }
-        public void CreateBookTags(CreateBookTags createBookTags)
+        public long CreateBookTags(CreateBookTags createBookTags)
         {
             List<(string, object?)> columnsWithValues =
                 [
                     ("user_book_id", createBookTags.UserBookId),
                     ("tag_id", createBookTags.TagId)
                 ];
-            Insert(columnsWithValues);
+            return Insert(columnsWithValues);
         }
         public void UpdateBookTags(UpdateBookTags updateBookTags, int id) 
         {

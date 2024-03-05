@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using BorrowMyBookshelf.Server.Models.Books;
+using MySql.Data.MySqlClient;
 
 namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
 {
@@ -16,14 +17,14 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                 );
         }
 
-        public void CreateBookshelfBooks(CreateBookshelfBooks createBookshelfBooks)
+        public long CreateBookshelfBooks(CreateBookshelfBooks createBookshelfBooks)
         {
             List<(string, object?)> columnWithValues =
                 [
                     ("bookshelf_id", createBookshelfBooks.BookshelfId),
                     ("user_book_id", createBookshelfBooks.UserBookId)
                 ];
-            Insert(columnWithValues);
+            return Insert(columnWithValues);
         }
 
         public void UpdateBookshelfBooks(UpdateBookshelfBooks updateBookshelfBooks, int id)
@@ -35,6 +36,11 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                 ];
             List<string> NullableColumns = updateBookshelfBooks.ColumnsToNullify.Split(',').ToList();
             Update(columnWithValues, id, NullableColumns);
+        }
+        public List<DetailedBook?> GetDetailedBooksByBookshelfId()
+        {
+            List<BookshelfBooks> allBookInfo = GetAllFromTable();
+            return allBookInfo.Select(book => BookToDetailedBook(book)).ToList();
         }
     }
 }

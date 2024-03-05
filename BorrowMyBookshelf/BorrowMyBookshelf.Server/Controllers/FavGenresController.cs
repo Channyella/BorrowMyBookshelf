@@ -28,9 +28,9 @@ namespace BorrowMyBookshelf.Server.Controllers
 
         // POST api/<FavGenresController>
         [HttpPost]
-        public void Post([FromForm] CreateFavGenres createFavGenres)
+        public long Post([FromForm] CreateFavGenres createFavGenres)
         {
-            dbConnector.CreateFavGenre(createFavGenres);
+            return dbConnector.CreateFavGenre(createFavGenres);
         }
 
         // PUT api/<FavGenresController>/5

@@ -38,7 +38,7 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
                 return Reviews.BookFormatEnum.AudioBook;
             }
         }
-        public void CreateReviews(CreateReviews createReviews)
+        public long CreateReviews(CreateReviews createReviews)
         {
             List<(string, object?)> columnsWithRows =
                 [
@@ -52,7 +52,7 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
                     ("create_date", createReviews.CreateDate),
                     ("updated_date", createReviews.UpdatedDate)
                 ];
-            Insert(columnsWithRows);
+            return Insert(columnsWithRows);
         }
         public void UpdateReviews(UpdateReviews updateReviews, int id)
         {

@@ -23,7 +23,7 @@ namespace BorrowMyBookshelf.Server.Models.Users
                 SafeGetDateTime("updated_date", reader)
                 );
         }
-        public void CreateUsers(CreateUsers createUsers)
+        public long CreateUsers(CreateUsers createUsers)
         {
             List<(string, object?)> columnsWithValues =
                 [
@@ -36,7 +36,7 @@ namespace BorrowMyBookshelf.Server.Models.Users
                     ("create_date", createUsers.CreateDate),
                     ("updated_date", createUsers.UpdatedDate)
                 ];
-            Insert(columnsWithValues);
+            return Insert(columnsWithValues);
         }
         public void UpdateUsers(UpdateUsers updateUsers, int id)
         {

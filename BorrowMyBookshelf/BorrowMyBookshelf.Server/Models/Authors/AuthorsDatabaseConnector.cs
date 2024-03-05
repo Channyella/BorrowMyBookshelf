@@ -18,13 +18,18 @@ namespace BorrowMyBookshelf.Server.Models.Authors
                 );
         }
 
-        public void CreateAuthor(CreateAuthors createAuthors)
+        public long CreateAuthor(CreateAuthors createAuthors)
         {
             List<(string, object?)> columnsWithValues = new();
             columnsWithValues.Add(("first_name", createAuthors.FirstName));
             columnsWithValues.Add(("middle_name", createAuthors.MiddleName));
             columnsWithValues.Add(("last_name", createAuthors.LastName));
-            Insert(columnsWithValues);
+            List<Authors> existingAuthor = GetByColumns(columnsWithValues);
+            if (existingAuthor.Count() > 0)
+            {
+                return existingAuthor[0].AuthorId;
+            }
+            return Insert(columnsWithValues);
         }
         public void UpdateAuthor(UpdateAuthors updateAuthors, int id)
         {

@@ -14,6 +14,8 @@ import BookshelfBooks from './components/BookshelfBooks';
 import AuthContext from './context/AuthProvider';
 import { useContext } from 'react';
 import AddBookshelf from './components/AddBookshelf';
+import UpdateBookshelf from './components/UpdateBookshelf';
+import AllBooks from './components/AllBooks';
 function App() {
 
     const { auth } = useContext(AuthContext);
@@ -35,11 +37,14 @@ function App() {
                 <Routes>
                     <Route path='/' element={<Layout />}>
                         <Route index element={<Home />} />
-                        <Route path='profile' element={<CreateBook />} />
+                        <Route path='profile' element={<Profile/>} />
                         <Route path='friends' element={<Friends />} />
                         <Route path='borrowed' element={<Borrowed />} />
+                        <Route path='all-books' element={<AllBooks />} />
                         <Route path='bookshelf-books/:bookshelfId' element={<BookshelfBooks />} />
-                        <Route path='add-bookshelf' element={<AddBookshelf/> } />
+                        <Route path='add-bookshelf' element={<AddBookshelf />} />
+                        <Route path='add-book/:bookshelfId' element={<CreateBook />} />
+                        <Route path='update-bookshelf/:bookshelfId' element={<UpdateBookshelf />} />
                     </Route>
                     <Route path='*' element={<Navigate to="/" />} />
                 </Routes>

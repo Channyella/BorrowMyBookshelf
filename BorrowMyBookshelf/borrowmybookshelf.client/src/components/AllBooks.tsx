@@ -39,7 +39,7 @@ export default function Home() {
 
     return (
         <div>
-            <h1 id="tableLabel">Your Books:</h1>
+            <h1 id="tableLabel">All Books:</h1>
             {contents}
         </div>
     );

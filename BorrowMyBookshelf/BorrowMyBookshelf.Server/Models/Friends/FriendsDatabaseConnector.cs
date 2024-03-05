@@ -18,7 +18,7 @@ namespace BorrowMyBookshelf.Server.Models.Friends
                 reader.GetDateTime("create_date")
                 );
         }
-        public void CreateFriends (CreateFriends createFriends)
+        public long CreateFriends (CreateFriends createFriends)
         {
             List<(string, object?)> columnsWithValues =
                 [
@@ -27,7 +27,7 @@ namespace BorrowMyBookshelf.Server.Models.Friends
                     ("accepted", createFriends.Accepted),
                     ("create_date", createFriends.CreateDate)
                 ];
-            Insert(columnsWithValues);
+            return Insert(columnsWithValues);
         }
         public void UpdateFriends (UpdateFriends updateFriends, int id)
         {

@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode } from 'react';
-import { GetCurrentUser, UserInfo } from '../models/AuthHelper';
+import { GetCurrentUser, UserInfo } from '../helpers/AuthHelper';
 
 interface AuthContextType {
     auth: UserInfo | null;

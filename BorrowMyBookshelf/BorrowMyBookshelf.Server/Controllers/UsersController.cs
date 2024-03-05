@@ -26,14 +26,6 @@ namespace BorrowMyBookshelf.Server.Controllers
             return dbConnector.GetById(id);
         }
 
-        // POST api/<UserController>
-        [HttpPost]
-        public CreateUsers Post([FromForm] CreateUsers createUsers)
-        {
-            dbConnector.CreateUsers(createUsers);
-            return createUsers;
-        }
-
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromForm] UpdateUsers updateUsers)

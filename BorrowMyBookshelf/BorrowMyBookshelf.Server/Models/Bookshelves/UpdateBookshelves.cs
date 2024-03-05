@@ -9,7 +9,7 @@
         {
             BookshelfName = null;
             UserId = null;
-            ColumnsToNullify = String.Empty;
+            ColumnsToNullify = "user_id";
         }
     }
 }

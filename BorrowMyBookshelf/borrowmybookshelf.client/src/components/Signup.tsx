@@ -10,7 +10,7 @@ const userRegex = /^[a-zA-Z][a-zA-Z'\-\s]+$/;
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 const pwdRegex = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-const registerURL = 'api/users';
+const registerURL = 'api/signup';
 
 function SignUp() {
     const firstNameRef = useRef<HTMLInputElement>(null);

@@ -28,9 +28,9 @@ namespace BorrowMyBookshelf.Server.Controllers
 
         // POST api/<TagsController>
         [HttpPost]
-        public void Post([FromForm] CreateTag createTag)
+        public long Post([FromForm] CreateTag createTag)
         {
-            dbConnector.CreateTags(createTag);
+            return dbConnector.CreateTags(createTag);
         }
 
         // PUT api/<TagsController>/5

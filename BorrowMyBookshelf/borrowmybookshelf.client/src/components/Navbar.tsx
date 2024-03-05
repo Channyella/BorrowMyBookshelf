@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import './style.css';
 import { Link } from 'react-router-dom';
-import { deleteCookie } from '../models/AuthHelper';
+import { deleteCookie } from '../helpers/AuthHelper';
 import AuthContext from '../context/AuthProvider';
 
 export default function TopNavbar() {
@@ -36,6 +36,9 @@ export default function TopNavbar() {
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/borrowed">Being Borrowed</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/all-books">All Books</Link>
                     </li>
                     <li className="nav-item">
                         <button className="btn btn-success" onClick={deleteCookieOnClick}>Logout</button>

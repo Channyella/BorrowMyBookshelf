@@ -5,23 +5,26 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Data.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace BorrowMyBookshelf.Server.Controllers
 {
-    [Authorize]
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class LoginController : ControllerBase
     {
+        private readonly UsersDatabaseConnector dbConnector = new UsersDatabaseConnector();
+
         private IConfiguration _config;
         public LoginController(IConfiguration config)
         {
             _config = config;
         }
-        [HttpPost]
+        // POST api/login
+        [HttpPost("login")]
         public IActionResult Post([FromForm] LoginRequest loginRequest)
         {
             UsersDatabaseConnector usersDatabaseConnector = new UsersDatabaseConnector();
@@ -49,6 +52,13 @@ namespace BorrowMyBookshelf.Server.Controllers
             var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
 
             return Ok(token);
+        }
+
+        // POST api/signup
+        [HttpPost("signup")]
+        public long Post([FromForm] CreateUsers createUsers)
+        {
+            return dbConnector.CreateUsers(createUsers);
         }
     }
 }

@@ -15,12 +15,12 @@ namespace BorrowMyBookshelf.Server.Models.FavGenres
                 reader.GetInt32("genre_id")
                 );
         }
-        public void CreateFavGenre(CreateFavGenres createFavGenres)
+        public long CreateFavGenre(CreateFavGenres createFavGenres)
         {
             List<(string, object?)> columnsWithValues = new();
             columnsWithValues.Add(("user_id", createFavGenres.UserId));
             columnsWithValues.Add(("genre_id", createFavGenres.GenreId));
-            Insert(columnsWithValues);
+            return Insert(columnsWithValues);
         }
         public void UpdateFavGenre(UpdateFavGenres updateFavGenres, int id)
         {

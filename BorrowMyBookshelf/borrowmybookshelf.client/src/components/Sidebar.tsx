@@ -1,7 +1,7 @@
 import React, { useContext} from 'react';
 import './style.css';
 import { Link } from 'react-router-dom';
-import { GetCurrentUser } from '../models/AuthHelper';
+import { GetCurrentUser } from '../helpers/AuthHelper';
 import BookshelfContext from '../context/BookshelfContext';
 
 export default function Sidebar() {

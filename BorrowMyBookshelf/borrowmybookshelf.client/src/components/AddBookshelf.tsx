@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import './style.css';
 import axios from 'axios';
-import { GetAuthHeader, GetCurrentUser} from '../models/AuthHelper';
+import { GetAuthHeader, GetCurrentUser} from '../helpers/AuthHelper';
 import BookshelfContext from '../context/BookshelfContext';
 import { useNavigate } from 'react-router-dom';
 

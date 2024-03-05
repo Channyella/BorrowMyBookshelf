@@ -14,11 +14,15 @@ namespace BorrowMyBookshelf.Server.Models.Genres
                 reader.GetInt32("genre_id"),
                 reader.GetString("genre_type"));
         }
-        public void CreateGenres(CreateGenres createGenres)
+        public long CreateGenres(CreateGenres createGenres)
         {
             List<(string, object?)> columnsWithValues = new();
             columnsWithValues.Add(("genre_type", createGenres.GenreType));
-            Insert(columnsWithValues);
+            List<Genres> existingGenre = GetByColumns(columnsWithValues);
+            if (existingGenre.Count() > 0) {
+                return existingGenre[0].GenreId;
+            }
+            return Insert(columnsWithValues);
         }
         public void UpdateGenres( UpdateGenres updateGenres, int id)
         {

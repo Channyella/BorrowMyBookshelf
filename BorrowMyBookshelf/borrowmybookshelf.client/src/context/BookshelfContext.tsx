@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import { Bookshelf } from '../models/Bookshelf';
-import { GetAuthHeader } from '../models/AuthHelper';
+import { GetAuthHeader } from '../helpers/AuthHelper';
 
 interface BookshelfContextType {
     bookshelves: Bookshelf[],

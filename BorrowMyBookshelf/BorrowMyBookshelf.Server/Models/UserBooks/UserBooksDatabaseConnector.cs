@@ -39,7 +39,7 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
             }
         }
 
-        public void CreateUserBooks(CreateUserBooks createUserBooks)
+        public long CreateUserBooks(CreateUserBooks createUserBooks)
         {
             List<(string, object?)> columnsWithValues =
                 [
@@ -48,7 +48,7 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
                     ("book_format", createUserBooks.BookFormat),
                     ("user_id", createUserBooks.UserId),
                 ];
-            Insert(columnsWithValues);
+            return Insert(columnsWithValues);
         }
         public void UpdateUserBooks(UpdateUserBooks updateUserBooks, int id)
         {

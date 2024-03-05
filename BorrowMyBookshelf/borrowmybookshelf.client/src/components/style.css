@@ -106,7 +106,6 @@
 .sidebar {
     height: 100%;
     width: 250px;
-    border-left: 4px solid #9d86b7;
     padding: 20px;
 }
 
@@ -181,6 +180,33 @@ a.linkColor:visited {
 
 .radio-button-container label {
     margin-right: 10px;
+}
+html,body {
+    height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.footer {
+    justify-self: flex-end;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+}
+
+.bookshelf-main {
+    height: calc(100% - 109px);
+    overflow-y: auto;
+}
+
+.main {
+    flex-grow: 1;
 }
 
 @media screen and (max-width: 1000px) {

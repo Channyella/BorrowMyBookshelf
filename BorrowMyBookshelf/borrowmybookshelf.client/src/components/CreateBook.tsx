@@ -1,22 +1,47 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import './style.css';
 import axios from 'axios';
-import { GetAuthHeader } from '../models/AuthHelper';
+import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
+import { Bookshelf } from '../models/Bookshelf';
+import { BookFormat } from '../models/UserBook';
+import { AddBookToBookshelf } from '../helpers/BookHelper';
 
 export default function CreateBook() {
+    const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
+    const [bookshelf, setBookshelf] = useState<Bookshelf | null>(null);
+    const userInfo = GetCurrentUser();
+    const userId = userInfo?.userId ?? -1;
+    const navigate = useNavigate();
     const [title, setTitle] = useState<string>('');
-    const [format, setFormat] = useState<string>('');
+    const [firstName, setFirstName] = useState<string>('');
+    const [middleName, setMiddleName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
+    const [format, setFormat] = useState<BookFormat>(BookFormat.Hardcover);
     const [length, setLength] = useState<string>('');
+    const [borrowable, setBorrowable] = useState<boolean>(false);
     const [pageCount, setPageCount] = useState<string>('');
     const [description, setDescription] = useState<string>('');
+    const [genreList, setGenreList] = useState<string[]>([]);
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
     };
 
+    const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFirstName(event.target.value);
+    };
+
+    const handleMiddleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setMiddleName(event.target.value);
+    };
+
+    const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setLastName(event.target.value);
+    };
+
     const handleFormatChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFormat(event.target.value);
+        setFormat(event.target.value as unknown as BookFormat);
     };
 
     const handleLengthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,29 +52,56 @@ export default function CreateBook() {
         setPageCount(event.target.value);
     };
 
+    const handleBorrowableChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setBorrowable(event.target.value === 'true');
+    };
+
     const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDescription(event.target.value);
     };
 
-    const createBook = () => {
-        const formData = new FormData();
-        const book = {
-            'title': title,
-            'authorId': 1,
-            'decription': description,
-            'pageCount': pageCount,
-            'audioLength': length,
-        };
-        for (const pair of Object.entries(book)) {
-            formData.append(pair[0], pair[1].toString());
-        }
-        
-        axios.post('/api/books', formData,
-            {
-                withCredentials: true,
-                headers: GetAuthHeader(),
-            });
+    const handleGenreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const commaSeparatedList = event.target.value;
+        const genreList = commaSeparatedList.split(',').map(genre => genre.trim());
+        setGenreList(genreList);
     };
+
+    const fetchBookshelf = async (id: string) => {
+        try {
+            const response = await axios.get<Bookshelf>(`/api/bookshelves/${id}`,
+                {
+                    withCredentials: true,
+                    headers: GetAuthHeader(),
+                });
+            setBookshelf(response.data);
+        } catch (error) {
+            console.error('Error fetching bookshelf data:', error);
+        }
+    }
+
+    useEffect(() => {
+        if (bookshelfId) {
+            fetchBookshelf(bookshelfId);
+        }
+    }, [bookshelfId]);
+
+    async function createBook() {
+        await AddBookToBookshelf({
+            firstName,
+            middleName,
+            lastName,
+            title,
+            description,
+            pageCount: pageCount ? parseInt(pageCount) : undefined,
+            audioLength: length ? parseInt(length) : undefined,
+            borrowable,
+            bookFormat: format,
+            userId,
+            bookshelfId: parseInt(bookshelfId),
+            genreTypes: genreList
+        });
+        navigate(`/bookshelf-books/${bookshelfId}`);
+    }
 
     return (
         <div className="create-book outlet-content template d-flex justify-content-center align-items-center yellow-bg">
@@ -58,52 +110,122 @@ export default function CreateBook() {
                     <h3 className="text-center">Create New Book</h3>
                     <div className='mb-2'>
                         <label htmlFor="title">Title</label>
-                        <input type="text" value={title} placeholder="Enter Title" className='form-control' name="title" onChange={handleTitleChange} />
+                        <input type="text"
+                            value={title}
+                            placeholder="Enter Title"
+                            className='form-control'
+                            name="title"
+                            onChange={handleTitleChange} />
                     </div>
                     <div>
                         <h5 className="text-center">Author's Name:</h5>
                     </div>
                     <div className='mb-2'>
                         <label htmlFor="firstName">First Name</label>
-                        <input type="text" placeholder="Enter First Name" className='form-control' name="first_name" />
+                        <input type="text"
+                            value={firstName}
+                            placeholder="Enter First Name"
+                            className='form-control'
+                            name="first_name"
+                            onChange={handleFirstNameChange}
+                        />
                     </div>
                     <div className='mb-2'>
                         <label htmlFor="authorMiddleName">Middle Name</label>
-                        <input type="text" placeholder="Enter Middle Name" className='form-control' name="middle_name"/>
+                        <input type="text"
+                            value={middleName}
+                            placeholder="Enter Middle Name"
+                            className='form-control'
+                            name="middle_name"
+                            onChange={handleMiddleNameChange}
+                        />
                     </div>
                     <div className='mb-2'>
                         <label htmlFor="authorLastName">Last Name</label>
-                        <input type="text" placeholder="Enter Last Name" className='form-control' name="last_name" />
+                        <input type="text"
+                            value={lastName}
+                            placeholder="Enter Last Name"
+                            className='form-control'
+                            name="last_name"
+                            onChange={handleLastNameChange}
+                        />
                     </div>
 
                     <div className="radio-button-container">
-                        <input type="radio" id="audio" name="format" value="audio" onChange={handleFormatChange} />
-                        <label htmlFor="audio">Audio</label>
-                        <input type="radio" id="physical" name="format" value="physical" onChange={handleFormatChange} />
-                        <label htmlFor="physical">Physical</label>
+                        <input type="radio"
+                            id="hardcover"
+                            name="format"
+                            value={ BookFormat.Hardcover }
+                            onChange={handleFormatChange} />
+                        <label htmlFor="hardcover">Hardcover</label>
+                        <input type="radio"
+                            id="paperback"
+                            name="format"
+                            value={BookFormat.Paperback}
+                            onChange={handleFormatChange} />
+                        <label htmlFor="paperback">Paperback</label>
+                        <input type="radio"
+                            id="eBook"
+                            name="format"
+                            value={ BookFormat.eBook}
+                            onChange={handleFormatChange} />
+                        <label htmlFor="eBook">eBook</label>
+                        <input type="radio"
+                            id="audioBook"
+                            name="format"
+                            value={BookFormat.AudioBook}
+                            onChange={handleFormatChange} />
+                        <label htmlFor="audioBook">Audio Book</label>
                     </div>
                     <div className="">
-                        {format === 'physical' && (
                             <div className='mb-2'>
                                 <label htmlFor="pageCount">Page Count</label>
-                                <input type="number" value={pageCount} placeholder="Enter Page Count" className='form-control' name="page_count" onChange={handlePageCountChange} checked/>
+                                <input type="number"
+                                    value={pageCount}
+                                    placeholder="Enter Page Count"
+                                    className='form-control'
+                                    name="page_count"
+                                    onChange={handlePageCountChange}                                />
                             </div>
-                        )}
-                    {format === 'audio' && (
                         <div className='mb-2'>
                             <label htmlFor="audioLength">Audio Length</label>
-                                <input type="text" value={length} placeholder="Enter Audio Length" className='form-control' name="audio_length" onChange={handleLengthChange} />
+                                <input type="text"
+                                    value={length}
+                                    placeholder="Enter Audio Length"
+                                    className='form-control'
+                                    name="audio_length"
+                                    onChange={handleLengthChange} />
                         </div>
-                    )}
                     </div>
 
                     <div className='mb-2'>
                         <label htmlFor="description">Summary</label>
-                        <input type="text" placeholder="Enter Summary" className='form-control' name="description" value={description} onChange={handleDescriptionChange} />
+                        <input type="text"
+                            placeholder="Enter Summary"
+                            className='form-control'
+                            name="description"
+                            value={description}
+                            onChange={handleDescriptionChange} />
+                    </div>
+                    <div className='mb-2'>
+                        <label htmlFor="borrowable">Borrowable?</label>
+                        <select id="borrowable"
+                            className='form-control'
+                            name="borrowable"
+                            value={borrowable ? 'true' : 'false'}
+                            onChange={handleBorrowableChange}>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>   
+                        </select>
                     </div>
                     <div className='mb-2'>
                         <label htmlFor="genre">Genre</label>
-                        <input type="text" placeholder="Enter Genre" className='form-control' name="genre"/>
+                        <input type="text"
+                            placeholder="Enter Genres (ex: horror, sci-fi)"
+                            className='form-control'
+                            name="genre"
+                            onChange={handleGenreChange}
+                        />
                     </div>
                 </form>
                 <div className='d-grid'>

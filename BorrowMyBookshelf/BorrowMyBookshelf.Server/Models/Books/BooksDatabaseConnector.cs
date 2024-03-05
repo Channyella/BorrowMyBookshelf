@@ -24,7 +24,7 @@ namespace BorrowMyBookshelf.Server.Models.Books
                 ) ;
         }
 
-        public void CreateBook(CreateBooks createBooks)
+        public long CreateBook(CreateBooks createBooks)
         {
             List<(string, object?)> columnsWithValues =
             [
@@ -36,7 +36,17 @@ namespace BorrowMyBookshelf.Server.Models.Books
                 ("description", createBooks.Description),
                 ("audio_length", createBooks.AudioLength),
             ];
-            Insert(columnsWithValues);
+            List<(string, object?)> uniqueColumnsWithValues =
+            [
+                ("title", createBooks.Title),
+                ("author_id", createBooks.AuthorId),
+            ];
+            List<Books> existingBook = GetByColumns(uniqueColumnsWithValues);
+            if (existingBook.Count() > 0)
+            {
+                return existingBook[0].BookId;
+            }
+            return Insert(columnsWithValues);
         }
 
         public void UpdateBook(UpdateBooks updateBooks, int id)

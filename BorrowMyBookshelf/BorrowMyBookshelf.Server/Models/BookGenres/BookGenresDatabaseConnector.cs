@@ -16,12 +16,17 @@ namespace BorrowMyBookshelf.Server.Models.BookGenres
                 reader.GetInt32("genre_id")
                 );
         }
-        public void CreateBookGenres(CreateBookGenres createBookGenres)
+        public long CreateBookGenres(CreateBookGenres createBookGenres)
         {
             List<(string, object?)> columnsWithValues = new();
             columnsWithValues.Add(("book_id", createBookGenres.BookId));
             columnsWithValues.Add(("genre_id", createBookGenres.GenreId));
-            Insert(columnsWithValues);
+            List<BookGenres> existingBookGenre = GetByColumns(columnsWithValues);
+            if (existingBookGenre.Count() > 0)
+            {
+                return existingBookGenre[0].BookGenreId;
+            }
+            return Insert(columnsWithValues);
         }
 
         public void UpdateBookGenres(UpdateBookGenres updateBookGenres, int id)
@@ -41,7 +46,7 @@ namespace BorrowMyBookshelf.Server.Models.BookGenres
             List<Genres.Genres> genres = new();
             foreach (BookGenres bookGenre in bookGenres)
             {
-                Genres.Genres? genre = genresDatabase.GetById(bookGenre.BookId);
+                Genres.Genres? genre = genresDatabase.GetById(bookGenre.GenreId);
                 if (genre != null)
                 {
                     genres.Add(genre);

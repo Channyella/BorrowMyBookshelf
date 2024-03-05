@@ -43,7 +43,7 @@ namespace BorrowMyBookshelf.Server.Models.BookRequests
                 return BookRequests.StatusEnum.Returned;
             }
         }
-        public void CreateBookRequests(CreateBookRequests createBookRequests)
+        public long CreateBookRequests(CreateBookRequests createBookRequests)
         {
             List<(string, object?)> columnsWithValues =
                 [
@@ -54,7 +54,7 @@ namespace BorrowMyBookshelf.Server.Models.BookRequests
                     ("return_date", createBookRequests.ReturnDate),
                     ("borrower_user_id", createBookRequests.BorrowerUserId)
                 ];
-            Insert(columnsWithValues);
+            return Insert(columnsWithValues);
         }
         public void UpdateBookRequests(UpdateBookRequests updateBookRequests, int id)
         {

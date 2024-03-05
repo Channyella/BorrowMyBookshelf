@@ -4,7 +4,7 @@ import './style.css';
 import AuthContext from '../context/AuthProvider';
 import axios from '../api/axios';
 import { AxiosError, AxiosResponse } from 'axios';
-import { GetCurrentUser, SetAuthCookie } from '../models/AuthHelper';
+import { GetCurrentUser, SetAuthCookie } from '../helpers/AuthHelper';
 
 const loginURL = 'api/login';
 
