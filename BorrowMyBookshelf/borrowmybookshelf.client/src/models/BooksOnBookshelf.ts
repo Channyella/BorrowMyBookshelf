@@ -1,15 +1,17 @@
+import { UserBook } from "./UserBook";
+
 export class BooksOnBookshelf {
     public bookshelfBookId: number;
     public bookshelfId: number;
-    public userBookId: number;
+    public userBook: UserBook;
 
     constructor(
         bookshelfBookId: number,
         bookshelfId: number,
-        userBookId: number
+        userBook: UserBook,
     ) {
         this.bookshelfBookId = bookshelfBookId;
         this.bookshelfId = bookshelfId;
-        this.userBookId = userBookId;
+        this.userBook = userBook;
     }
 }

@@ -27,4 +27,8 @@
     </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BorrowMyBookshelf\Server\" />
+  </ItemGroup>
+
 </Project>

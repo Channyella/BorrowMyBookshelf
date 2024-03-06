@@ -3,7 +3,7 @@
 .table {
     --bs-table-striped-bg: #ddb159 !important;
 }
-.table-striped > tbody > tr:nth-of-type(odd) {
+.table-striped > tbody > tr:nth-of-type(odd), .table-striped > tbody > tr:nth-of-type(even) {
     border-color: #9d86b7;
     border-bottom-width: 2px;
     border-top-width: 2px;
@@ -186,7 +186,7 @@ button.btn.btn-success:hover, button.btn.btn-success:active {
 }
 
 .custom-input {
-    background-image: url('./public/search.png');
+    background-image: url('/search.png');
     background-size:  initial;
     background-repeat: no-repeat;
     background-position:right center;
