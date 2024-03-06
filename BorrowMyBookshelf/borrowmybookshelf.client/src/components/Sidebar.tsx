@@ -13,11 +13,11 @@ export default function Sidebar() {
         ? <p>Boo.</p>
         : (
             <ul className="bookshelvesList" aria-labelledby="sideNavLabel">
-                <li>
+                <li className="bullet-style">
                     <Link className="sidebar-link" to={`/all-user-books`}> All {GetCurrentUser()?.firstName ?? ""}'s Books </Link>
                 </li>
                 {bookshelves?.map(bookshelf =>
-                    <li key={bookshelf.bookshelfId}>
+                    <li key={bookshelf.bookshelfId} className="bullet-style">
                         <Link className="sidebar-link" to={`/bookshelf-books/${bookshelf.bookshelfId}`}> {bookshelf.bookshelfName} </Link>
                     </li>
                 )}

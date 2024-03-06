@@ -70,11 +70,19 @@ export default function BookshelfBooks() {
             <nav className="navbar navbar-expand orange-bg navbar-fixed-top mini-nav">
                 <div className="container-fluid">
                     <h2 className="navbar-header ms-3">{bookshelf?.bookshelfName}</h2>
-                    <div className="nav navbar-nav navbar-right">
+                    <div className="nav navbar-nav navbar-left">
                         <Link to={`/update-bookshelf/${bookshelfId}`}>
-                            <button className="btn btn-success nav-item ms-3"> Change Name </button>
+                            <button className="btn btn-success nav-item ms-3"> <img src="/edit.png" alt="Edit Name" /> </button>
                         </Link>
-                        <button onClick={confirmDelete} className = "btn btn-success nav-item ms-3">Delete Bookshelf</button>
+                        <button onClick={confirmDelete} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Bookshelf" /></button>
+                    </div>
+                        <div className="nav navbar-nav navbar-right">
+                            <input className="nav-item custom-input"
+                                type="text"
+                                placeholder="Search"
+                            />
+                            <button className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
+                            <button className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /> </button>
                         </div>
                 </div>
             </nav>

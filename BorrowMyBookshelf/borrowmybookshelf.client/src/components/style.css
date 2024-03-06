@@ -13,9 +13,21 @@ a:hover, Link:hover {
     cursor: pointer;
 }
 
-.sidebar-link {
-    text-decoration:none;
+.bullet-style {
+    list-style-image: url('./public/closed_book.png');
 }
+
+.sidebar-link {
+    text-decoration: none;
+    color: black;
+}
+
+    .sidebar-link:hover {
+        color: #705d86;
+    }
+    .sidebar-link:active {
+        color: #9d86b7;
+    }
 
 #firstNameNote {
     background-color: #f5f092;
@@ -168,9 +180,20 @@ a:hover, Link:hover {
     border-color: #9d86b7;
 }
 
-.btn.btn-success:hover {
+button.btn.btn-success:hover, button.btn.btn-success:active {
     background-color: #705d86;
     border-color: #705d86;
+}
+
+.custom-input {
+    background-image: url('./public/search.png');
+    background-size:  initial;
+    background-repeat: no-repeat;
+    background-position:right center;
+    vertical-align: middle;
+    border-radius: 5px;
+    padding-left: 5px;
+    margin-left: 10px;
 }
 
 

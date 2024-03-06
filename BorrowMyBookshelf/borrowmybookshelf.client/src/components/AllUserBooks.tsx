@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import { UserBook } from '../models/UserBook';
 import { Genre } from '../models/Genre';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
     const [userBooks, setUserBooks] = useState<UserBook[] | undefined>();
@@ -49,7 +50,6 @@ export default function Home() {
                     <th>Title</th>
                     <th>Author</th>
                     <th>Page Count</th>
-                    <th>Description</th>
                     <th>Audio Length</th>
                     <th>Genres</th>
                     <th>Borrowable</th>
@@ -62,13 +62,12 @@ export default function Home() {
                         <td>{userBook.book.title}</td>
                         <td>{`${userBook.book.author.firstName} ${userBook.book.author.middleName ?? ""} ${userBook.book.author.lastName}`}</td>
                         <td>{userBook.book.pageCount}</td>
-                        <td>{userBook.book.description}</td>
                         <td>{userBook.book.audioLength}</td>
                         <td>{maybeShortenGenresListDisplay(userBook.book.genres)}</td>
                         <td>{userBook.borrowable ? "Yes" : "No"}</td>
                         <td>{getBookFormatString(userBook.bookFormat)}</td>
                         <td>
-                            <button className="btn btn-success"><img src=".\public\vert_dropdown.png" alt="Details"></img></button>
+                            <button className="btn btn-success"><img src="/vert_dropdown.png" alt="Details"></img></button>
                         </td>
                     </tr>
                 )}
@@ -80,6 +79,14 @@ export default function Home() {
             <nav className="navbar navbar-expand orange-bg navbar-fixed-top mini-nav">
                 <div className="container-fluid">
                     <h2 className="navbar-header ms-3">All {GetCurrentUser()?.firstName ?? ""}'s Books</h2>
+                    <div className="nav navbar-nav navbar-right">
+                        <input className="nav-item custom-input"
+                            type="text"
+                            placeholder="Search"
+                        />
+                        <button className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter"/> </button>
+                        <button className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /></button>
+                    </div>
                 </div>
             </nav>
             {contents}
