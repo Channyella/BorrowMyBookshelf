@@ -32,7 +32,7 @@ export default function AddBookshelf() {
                 withCredentials: true,
                 headers: GetAuthHeader(),
             });
-        await refreshBookshelf();
+        await refreshBookshelf(userId);
         console.log(`/bookshelf-books/${id.data}`);
         navigate(`/bookshelf-books/${id.data}`);
     }

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Bookshelf } from '../models/Bookshelf';
 import axios from 'axios';
-import { GetAuthHeader } from '../helpers/AuthHelper';
+import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import BookshelfContext from '../context/BookshelfContext';
 import ConfirmModal from './ConfirmModal';
 
@@ -51,7 +51,7 @@ export default function BookshelfBooks() {
         if (bookshelfId) {
             const isDeleted = await deleteBookshelf(bookshelfId);
             if (isDeleted) {
-                await refreshBookshelf();
+                await refreshBookshelf(GetCurrentUser()?.userId ?? -1);
                 navigate(`/`);
             }
         }

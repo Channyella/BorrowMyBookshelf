@@ -12,6 +12,8 @@ namespace BorrowMyBookshelf.Server.Models
     abstract public class DatabaseConnector<T>
     {
         abstract protected string TableName { get; }
+        protected virtual string SelectColumns => "*";
+        protected virtual string GroupBy => "";
         abstract protected string Id { get; }
         abstract protected List<string> NullableColumns { get; }
         private static MySqlConnection GetConnection()
@@ -27,7 +29,7 @@ namespace BorrowMyBookshelf.Server.Models
             try
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand($"SELECT * FROM {TableName};", connection);
+                MySqlCommand command = new MySqlCommand($"SELECT {SelectColumns} FROM {TableName} {GroupBy};", connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -61,7 +63,7 @@ namespace BorrowMyBookshelf.Server.Models
             try
             {
                 connection.Open();
-                string InsertQuery = ($"SELECT * FROM {TableName} WHERE ({condition});");
+                string InsertQuery = ($"SELECT {SelectColumns} FROM {TableName} WHERE ({condition}) {GroupBy};");
                 MySqlCommand cmd = new MySqlCommand(InsertQuery, connection);
                 safeColumnsWithValues.ForEach(columnWithValue => cmd.Parameters.AddWithValue("@" + columnWithValue.Item1, columnWithValue.Item2));
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -164,7 +166,7 @@ namespace BorrowMyBookshelf.Server.Models
             try
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand($"SELECT * FROM {TableName} WHERE {Id} = {id};", connection);
+                MySqlCommand command = new MySqlCommand($"SELECT {SelectColumns} FROM {TableName} WHERE {Id} = {id} {GroupBy};", connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -186,7 +188,7 @@ namespace BorrowMyBookshelf.Server.Models
             try
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand($"SELECT * FROM {TableName} WHERE {columnName} = {id};", connection);
+                MySqlCommand command = new MySqlCommand($"SELECT {SelectColumns} FROM {TableName} WHERE {columnName} = {id} {GroupBy};", connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {

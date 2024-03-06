@@ -26,6 +26,12 @@ namespace BorrowMyBookshelf.Server.Controllers
             return dbConnector.GetById(id);
         }
 
+        //Get api/<BookshelvesController>/user-id/5
+        [HttpGet("user-id/{id}")]
+        public IEnumerable<Bookshelves> GetAllByUserId(int id) { 
+            return dbConnector.BookshelfByUserId(id);
+        }
+
         // POST api/<BookshelvesController>
         [HttpPost]
         public long Post([FromForm] CreateBookshelves createBookshelves)

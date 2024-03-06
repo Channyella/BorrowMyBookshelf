@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import { Bookshelf } from '../models/Bookshelf';
-import { GetAuthHeader } from '../helpers/AuthHelper';
+import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 
 interface BookshelfContextType {
     bookshelves: Bookshelf[],
     setBookshelf: React.Dispatch<React.SetStateAction<Bookshelf[]>>;
-    refreshBookshelf: () => void;
+    refreshBookshelf: (userId: number) => void;
 }
 
 const initialBookshelfContext: BookshelfContextType = {
@@ -24,9 +24,9 @@ interface BookshelfProviderProps {
 export const BookshelfProvider: React.FC<BookshelfProviderProps> = ({ children }) => {
     const [bookshelves, setBookshelf] = useState<Bookshelf[]>(initialBookshelfContext.bookshelves);
 
-    const fetchBookshelfData = async () => {
+    const fetchBookshelfData = async (userId: number) => {
         try {
-            const response = await axios.get<Bookshelf[]>('/api/bookshelves',
+            const response = await axios.get<Bookshelf[]>(`/api/bookshelves/user-id/${userId}`,
                 {
                     withCredentials: true,
                     headers: GetAuthHeader(),
@@ -38,11 +38,12 @@ export const BookshelfProvider: React.FC<BookshelfProviderProps> = ({ children }
     };
 
     useEffect(() => {
-        fetchBookshelfData();
+        const userId = GetCurrentUser()?.userId ?? -1;
+        fetchBookshelfData(userId);
     }, []);
 
-    const refreshBookshelf = () => {
-        fetchBookshelfData();
+    const refreshBookshelf = (userId: number) => {
+        fetchBookshelfData(userId);
     };
     return (
         <BookshelfContext.Provider value={{ bookshelves, setBookshelf, refreshBookshelf }}>

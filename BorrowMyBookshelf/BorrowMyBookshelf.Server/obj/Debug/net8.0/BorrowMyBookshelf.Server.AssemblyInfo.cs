@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BorrowMyBookshelf.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4dc7c7999bfef6efc1337a3e2c07f1008a2cdf82")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c527245a810c5165fb720a0ce5ba67fb69987af")]
 [assembly: System.Reflection.AssemblyProductAttribute("BorrowMyBookshelf.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BorrowMyBookshelf.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

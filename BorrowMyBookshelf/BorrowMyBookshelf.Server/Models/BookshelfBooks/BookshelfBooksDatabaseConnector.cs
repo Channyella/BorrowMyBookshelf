@@ -37,10 +37,5 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
             List<string> NullableColumns = updateBookshelfBooks.ColumnsToNullify.Split(',').ToList();
             Update(columnWithValues, id, NullableColumns);
         }
-        public List<DetailedBook?> GetDetailedBooksByBookshelfId()
-        {
-            List<BookshelfBooks> allBookInfo = GetAllFromTable();
-            return allBookInfo.Select(book => BookToDetailedBook(book)).ToList();
-        }
     }
 }

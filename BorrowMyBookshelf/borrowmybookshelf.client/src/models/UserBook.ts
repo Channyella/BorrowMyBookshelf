@@ -1,3 +1,4 @@
+import { Book } from "./Book";
 
 export enum BookFormat {
     Hardcover = 1,
@@ -7,20 +8,20 @@ export enum BookFormat {
 }
 export class UserBook {
     public userBookId: number;
-    public bookId: number;
+    public book: Book;
     public borrowable: boolean;
     public bookFormat: BookFormat;
     public userId: number;
 
     constructor(
         userBookId: number,
-        bookId: number,
+        book: Book,
         borrowable: boolean,
         bookFormat: BookFormat,
         userId: number
     ) {
         this.userBookId = userBookId;
-        this.bookId = bookId;
+        this.book = book;
         this.borrowable = borrowable;
         this.bookFormat = bookFormat;
         this.userId = userId;

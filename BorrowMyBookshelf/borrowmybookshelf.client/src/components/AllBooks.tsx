@@ -38,8 +38,12 @@ export default function Home() {
         </table>;
 
     return (
-        <div>
-            <h1 id="tableLabel">All Books:</h1>
+        <div className="wrapper">
+            <nav className="navbar navbar-expand orange-bg navbar-fixed-top mini-nav">
+                <div className="container-fluid">
+                    <h2 className="navbar-header ms-3">All Books</h2>
+                </div>
+            </nav>
             {contents}
         </div>
     );

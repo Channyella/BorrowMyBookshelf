@@ -1,5 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
 
+.table {
+    --bs-table-striped-bg: #ddb159 !important;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+    border-color: #9d86b7;
+    border-bottom-width: 2px;
+    border-top-width: 2px;
+}
+
+a:hover, Link:hover {
+    cursor: pointer;
+}
+
+.sidebar-link {
+    text-decoration:none;
+}
+
 #firstNameNote {
     background-color: #f5f092;
     border-radius: 5px;
@@ -189,7 +206,9 @@ html,body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    background-color: #f5f092;
 }
+
 
 .footer {
     justify-self: flex-end;

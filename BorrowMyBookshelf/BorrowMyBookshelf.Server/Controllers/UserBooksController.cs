@@ -1,4 +1,5 @@
-﻿using BorrowMyBookshelf.Server.Models.UserBooks;
+﻿using BorrowMyBookshelf.Server.Models.Bookshelves;
+using BorrowMyBookshelf.Server.Models.UserBooks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace BorrowMyBookshelf.Server.Controllers
     public class UserBooksController : ControllerBase
     {
         private readonly UserBooksDatabaseConnector dbConnector = new UserBooksDatabaseConnector();
+        private readonly DetailedUserBooksDatabaseConnector detailedDbConnector = new DetailedUserBooksDatabaseConnector();
         // GET: api/<UserBooksController>
         [HttpGet]
         public IEnumerable<UserBooks> Get()
@@ -24,6 +26,13 @@ namespace BorrowMyBookshelf.Server.Controllers
         public UserBooks? Get(int id)
         {
             return dbConnector.GetById(id);
+        }
+
+        //Get api/<UserBooksController>/user-id/5
+        [HttpGet("user-id/{id}")]
+        public IEnumerable<DetailedUserBooks> GetAllByUserId(int id)
+        {
+            return detailedDbConnector.GetUserBooksByUserId(id);
         }
 
         // POST api/<UserBooksController>

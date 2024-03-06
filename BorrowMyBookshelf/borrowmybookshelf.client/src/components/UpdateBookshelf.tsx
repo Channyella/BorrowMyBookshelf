@@ -49,7 +49,7 @@ export default function AddBookshelf() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            await refreshBookshelf();
+            await refreshBookshelf(userId);
             navigate(`/bookshelf-books/${bookshelfId}`);
         } catch (error) {
             console.error('Error updating bookshelf:', error);

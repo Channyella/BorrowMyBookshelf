@@ -35,5 +35,9 @@ namespace BorrowMyBookshelf.Server.Models.Bookshelves
             List<string> NullableColumns = updateBookshelves.ColumnsToNullify.Split(',').ToList();
             Update(columnsWithValues, id, NullableColumns);
         }
+        public List<Bookshelves> BookshelfByUserId(int userId)
+        {
+            return GetByForeignKey("user_id", userId);
+        }
     }
 }
