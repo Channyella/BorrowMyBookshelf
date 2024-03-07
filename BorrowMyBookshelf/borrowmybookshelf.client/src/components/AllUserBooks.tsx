@@ -70,6 +70,7 @@ export default function Home() {
     const onClickSort = () => {
         setShowSortModal(true);
     };
+
     const refreshShelf = () => populateUserBookData();
 
     const search = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,7 +138,7 @@ export default function Home() {
                             onChange={search}
                         />
                         <button className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter"/> </button>
-                        <button onClick={onClickSort} className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /></button>
+                        <button onClick={ onClickSort } className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /></button>
                     </div>
                 </div>
             </nav>

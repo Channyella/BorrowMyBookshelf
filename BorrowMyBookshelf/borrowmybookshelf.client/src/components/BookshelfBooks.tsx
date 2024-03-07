@@ -9,6 +9,7 @@ import { BooksOnBookshelf } from '../models/BooksOnBookshelf';
 import { Genre } from '../models/Genre';
 import BookDropDownMenu from './BookDropDownMenu';
 import { getAuthorFullName } from '../models/Author';
+import SortModal, { SortFunction } from './SortModal';
 
 export default function BookshelfBooks() {
     const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
@@ -19,6 +20,8 @@ export default function BookshelfBooks() {
     const [booksOnBookshelf, setBooksOnBookshelf] = useState<BooksOnBookshelf[] | undefined>();
     const [openDropDown, setDropDown] = useState(-1);
     const [searchFilter, setSearchFilter] = useState<(booksOnBookshelf: BooksOnBookshelf) => boolean>(() => () => true);
+    const [showSortModal, setShowSortModal] = useState(false);
+    const [sortMethod, setSortMethod] = useState<SortFunction>(() => () => 0)
 
     const fetchBookshelf = async (id: string) => {
         try {
@@ -74,6 +77,18 @@ export default function BookshelfBooks() {
 
     const confirmDelete = () => {
         setShowModal(true);
+    };
+
+    const handleCancelSort = () => {
+        setShowSortModal(false);
+    };
+
+    const handleConfirmSort = () => {
+        setShowSortModal(false);
+    };
+
+    const onClickSort = () => {
+        setShowSortModal(true);
     };
 
     const makeBookDropDownFunction = (bookId: number) => {
@@ -143,7 +158,7 @@ export default function BookshelfBooks() {
                 </tr>
             </thead>
             <tbody>
-                {booksOnBookshelf.filter(searchFilter).map(booksOnBookshelf =>
+                {booksOnBookshelf.filter(searchFilter).sort((booksOnBookshelf: BooksOnBookshelf, booksOnBookshelf2: BooksOnBookshelf) => sortMethod(booksOnBookshelf.userBook.book, booksOnBookshelf2.userBook.book)).map(booksOnBookshelf =>
                     <tr key={booksOnBookshelf.bookshelfBookId}>
                         <td>{booksOnBookshelf.userBook.book.title}</td>
                         <td>{getAuthorFullName(booksOnBookshelf.userBook.book.author)}</td>
@@ -185,10 +200,18 @@ export default function BookshelfBooks() {
                             onChange={search}
                             />
                             <button className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
-                            <button className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /> </button>
+                        <button onClick={onClickSort} className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /> </button>
                         </div>
                 </div>
             </nav>
+            {showSortModal && (
+                <SortModal
+                    message="What would you like to sort?"
+                    onConfirm={handleConfirmSort}
+                    onCancel={handleCancelSort}
+                    setSort={setSortMethod}
+                />
+            )}
             <main className="bookshelf-main">
                 {contents}
             </main>

@@ -6,11 +6,15 @@ import axios, { AxiosResponse } from 'axios';
 import { GetAuthHeader } from '../helpers/AuthHelper';
 import BookDropDownMenu from './BookDropDownMenu';
 import { getAuthorFullName } from '../models/Author';
+import SortModal, { SortFunction } from './SortModal';
 
 export default function Home() {
     const [books, setBooks] = useState<Book[] | undefined>();
     const [searchFilter, setSearchFilter] = useState<(book: Book) => boolean>(() => () => true);
     const [openDropDown, setDropDown] = useState(-1);
+    const [showSortModal, setShowSortModal] = useState(false);
+    const [sortMethod, setSortMethod] = useState<SortFunction>(() => () => 0)
+
     useEffect(() => {
         populateBookData();
     }, []);
@@ -37,6 +41,18 @@ export default function Home() {
         })
     }
 
+    const handleCancelSort = () => {
+        setShowSortModal(false);
+    };
+
+    const handleConfirmSort = () => {
+        setShowSortModal(false);
+    };
+
+    const onClickSort = () => {
+        setShowSortModal(true);
+    };
+
     const contents = books === undefined
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
         : <table className="table table-striped" aria-labelledby="tableLabel">
@@ -51,7 +67,7 @@ export default function Home() {
                 </tr>
             </thead>
             <tbody>
-                {books.filter(searchFilter).map(book =>
+                {books.filter(searchFilter).sort((book: Book, book2: Book) => sortMethod(book, book2)).map(book =>
                     <tr key={book.title}>
                         <td>{book.title}</td>
                         <td>{`${book.author.firstName} ${book.author.middleName ?? ""} ${book.author.lastName}`}</td>
@@ -84,11 +100,19 @@ export default function Home() {
                             onChange={search}
                         />
                         <button className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
-                        <button className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /></button>
+                        <button onClick={onClickSort} className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /></button>
                     </div>
                 </div>
             </nav>
             {contents}
+            {showSortModal && (
+                <SortModal
+                    message="What would you like to sort?"
+                    onConfirm={handleConfirmSort}
+                    onCancel={handleCancelSort}
+                    setSort={setSortMethod}
+                />
+            )}
         </div>
     );
     async function populateBookData() {

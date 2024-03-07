@@ -34,3 +34,64 @@ div .modal-content {
         background-color: #385354;
         color: white;
     }
+
+.sort-modal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+div .sort-modal-content {
+    background-color: #d1c2e2;
+    padding: 20px;
+    border-radius: 5px;
+    width: 30%;
+    text-align: center;
+}
+.radio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    border-block: 5px dotted #84b09f;
+    padding: 25px;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+ .input-value {
+    margin-right: 2px;
+}
+
+.btn.btn-danger {
+    background-color: #385354;
+    border-color: #385354;
+}
+
+button.btn.btn-danger:hover, button.btn.btn-danger:active {
+    background-color: #323d34;
+    border-color: #323d34;
+}
+
+div .radio-item .form-check-input:checked {
+    background-color: #E7958D;
+    border-color: #E7958D;
+}
+
+div .radio-item .form-check-input:focus {
+    border-color: #edb0ab;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem #edb0ab;
+}

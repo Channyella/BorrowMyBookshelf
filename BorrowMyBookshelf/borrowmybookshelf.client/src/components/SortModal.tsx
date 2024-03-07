@@ -76,47 +76,76 @@ const SortModal: React.FC<SortModalProps> = ({ message, onConfirm, onCancel, set
     }
 
     return (
-        <div className='confirm-modal'>
-            <div className="modal-content">
-                <p>{message}</p>
-                <div className="radio-button-container">
-                    <input type="radio"
-                        id="Title"
-                        name="format"
-                        value={SortOption.Title}
-                        onChange={handleSortOptionChange} />
-                    <label htmlFor="Title">Title</label>
-                    <input type="radio"
-                        id="Author"
-                        name="format"
-                        value={SortOption.Author}
-                        onChange={handleSortOptionChange} />
-                    <label htmlFor="Author">Author First Name</label>
-                    <input type="radio"
-                        id="PageCount"
-                        name="format"
-                        value={SortOption.PageCount}
-                        onChange={handleSortOptionChange} />
-                    <label htmlFor="PageCount">Page Count</label>
-                    <input type="radio"
-                        id="AudioLength"
-                        name="format"
-                        value={SortOption.AudioLength}
-                        onChange={handleSortOptionChange} />
-                    <label htmlFor="AudioLength">Audio Length</label>
-                    <input type="radio"
-                        id="AuthorLastName"
-                        name="format"
-                        value={SortOption.AuthorLastName}
-                        onChange={handleSortOptionChange} />
-                    <label htmlFor="AuthorLastName">Author Last Name</label>
-                </div>
-                <div className="buttons">
-                    <div>
-                        <button onClick={ascending}>Sort Ascending</button>
-                        <button onClick={descending}>Sort Descending</button>
+        <div className='sort-modal'>
+            <div className="sort-modal-content">
+                <h5>{message}</h5>
+                <div className="radio-button-container radio-grid">
+
+                <div className="radio-item">
+                        <input type="radio"
+                            className="input-value form-check-input"
+                            id="Title"
+                            name="format"
+                            value={SortOption.Title}
+                            onChange={handleSortOptionChange} />
+                        <label htmlFor="Title">Title</label>
                     </div>
-                    <button onClick={onCancel}>Cancel</button>
+
+                    <div className="radio-item">
+                        <input type="radio"
+                            className="input-value form-check-input"
+                            id="PageCount"
+                            name="format"
+                            value={SortOption.PageCount}
+                            onChange={handleSortOptionChange} />
+                        <label htmlFor="PageCount">Page Count</label>
+                    </div>
+
+                    <div className="radio-item">
+                        <input type="radio"
+                            className="input-value form-check-input"
+                            id="Author"
+                            name="format"
+                            value={SortOption.Author}
+                            onChange={handleSortOptionChange} />
+                        <label htmlFor="Author">Author First Name</label>
+                    </div>
+
+                    <div className="radio-item">
+                         <input type="radio"
+                            className="input-value form-check-input"
+                            id="AudioLength"
+                            name="format"
+                            value={SortOption.AudioLength}
+                            onChange={handleSortOptionChange} />
+                        <label htmlFor="AudioLength">Audio Length</label>
+                    </div>
+                    
+                    <div className="radio-item">
+                    <input type="radio"
+                            id="AuthorLastName"
+                            className="input-value form-check-input"
+                            name="format"
+                            value={SortOption.AuthorLastName}
+                            onChange={handleSortOptionChange} />
+                        <label htmlFor="AuthorLastName">Author Last Name</label>
+                    </div>
+
+                </div>
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-md-6">
+                            <button className="btn btn-danger mr-2" onClick={ascending}>Sort Ascending</button>
+                        </div>
+                        <div className="col-md-6">
+                            <button className="btn btn-danger ml-2" onClick={descending}>Sort Descending</button>
+                        </div>
+                    </div>
+                        <div className="row justify-content-center mt-3">
+                            <div className="col-md-6">
+                                <button className="btn btn-danger ml-1" onClick={onCancel}>Cancel</button>
+                            </div>
+                       </div> 
                 </div>
             </div>
         </div>
