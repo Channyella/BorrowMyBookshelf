@@ -14,7 +14,7 @@ export default function Sidebar() {
         : (
             <ul className="bookshelvesList" aria-labelledby="sideNavLabel">
                 <li className="bullet-style">
-                    <Link className="sidebar-link" to={`/all-user-books`}> All {GetCurrentUser()?.firstName ?? ""}'s Books </Link>
+                    <Link className="sidebar-link" to={`/all-user-books`}> All {GetCurrentUser()?.firstName ?? ""}&apos;s Books </Link>
                 </li>
                 {bookshelves?.map(bookshelf =>
                     <li key={bookshelf.bookshelfId} className="bullet-style">
@@ -25,7 +25,7 @@ export default function Sidebar() {
 
     return (
         <div className="sidebar green-bg">
-            <h2 className="row justify-content-center text-center mt-3"> {userFirstName}'s Bookshelves</h2>
+            <h2 className="row justify-content-center text-center mt-3"> {userFirstName}&apos;s Bookshelves</h2>
                 {contents}
             <div className="text-center">
                 <Link to="/add-bookshelf">

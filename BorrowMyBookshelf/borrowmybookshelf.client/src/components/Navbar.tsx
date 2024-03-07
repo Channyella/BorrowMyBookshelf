@@ -41,7 +41,7 @@ export default function TopNavbar() {
                         <Link className="nav-link" to="/all-books"><img src="/open_book.png" alt="All Books" /> All Books</Link>
                     </li>
                     <li className="nav-item ms-2">
-                        <button className="btn btn-success" onClick={deleteCookieOnClick}>Logout</button>
+                        <button className="btn btn-danger" onClick={deleteCookieOnClick}>Logout</button>
                     </li>
                 </ul>
             </div>

@@ -7,6 +7,8 @@ import BookshelfContext from '../context/BookshelfContext';
 import ConfirmModal from './ConfirmModal';
 import { BooksOnBookshelf } from '../models/BooksOnBookshelf';
 import { Genre } from '../models/Genre';
+import BookDropDownMenu from './BookDropDownMenu';
+import { getAuthorFullName } from '../models/Author';
 
 export default function BookshelfBooks() {
     const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
@@ -15,6 +17,8 @@ export default function BookshelfBooks() {
     const { refreshBookshelf } = useContext(BookshelfContext);
     const navigate = useNavigate();
     const [booksOnBookshelf, setBooksOnBookshelf] = useState<BooksOnBookshelf[] | undefined>();
+    const [openDropDown, setDropDown] = useState(-1);
+    const [searchFilter, setSearchFilter] = useState<(booksOnBookshelf: BooksOnBookshelf) => boolean>(() => () => true);
 
     const fetchBookshelf = async (id: string) => {
         try {
@@ -71,6 +75,15 @@ export default function BookshelfBooks() {
     const confirmDelete = () => {
         setShowModal(true);
     };
+
+    const makeBookDropDownFunction = (bookId: number) => {
+        return () => {
+            if (bookId == openDropDown) {
+                return setDropDown(-1);
+            }
+            setDropDown(bookId);
+        }
+    }
     enum BookFormat {
         Hardcover = 1,
         Paperback = 2,
@@ -93,11 +106,26 @@ export default function BookshelfBooks() {
         }
     }
 
+    const refreshShelf = () => populateBooksOnBookshelvesData(bookshelfId);
+
     const maybeShortenGenresListDisplay = (genres: Genre[]): string => {
         if (genres.length <= 3) {
             return genres.map(genre => genre.genreType).join(", ");
         }
         return genres.slice(0, 3).map(genre => genre.genreType).join(", ") + ", ...";
+    }
+
+    const search = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const searchValue = event.target.value.toLowerCase();
+        if (!searchValue) {
+            return setSearchFilter(() => () => true);
+        }
+        setSearchFilter(() => (booksOnBookshelf: BooksOnBookshelf) => {
+            return booksOnBookshelf.userBook.book.title.toLowerCase().includes(searchValue) ||
+                getAuthorFullName(booksOnBookshelf.userBook.book.author).toLowerCase().includes(searchValue) ||
+                booksOnBookshelf.userBook.book.genres.some(x => x.genreType.toLowerCase().includes(searchValue)) ||
+                getBookFormatString(booksOnBookshelf.userBook.bookFormat).toLowerCase().includes(searchValue);
+        })
     }
 
     const contents = booksOnBookshelf === undefined
@@ -115,17 +143,24 @@ export default function BookshelfBooks() {
                 </tr>
             </thead>
             <tbody>
-                {booksOnBookshelf.map(booksOnBookshelf =>
+                {booksOnBookshelf.filter(searchFilter).map(booksOnBookshelf =>
                     <tr key={booksOnBookshelf.bookshelfBookId}>
                         <td>{booksOnBookshelf.userBook.book.title}</td>
-                        <td>{`${booksOnBookshelf.userBook.book.author.firstName} ${booksOnBookshelf.userBook.book.author.middleName ?? ""} ${booksOnBookshelf.userBook.book.author.lastName}`}</td>
+                        <td>{getAuthorFullName(booksOnBookshelf.userBook.book.author)}</td>
                         <td>{booksOnBookshelf.userBook.book.pageCount}</td>
                         <td>{booksOnBookshelf.userBook.book.audioLength}</td>
                         <td>{maybeShortenGenresListDisplay(booksOnBookshelf.userBook.book.genres)}</td>
                         <td>{booksOnBookshelf.userBook.borrowable ? "Yes" : "No"}</td>
                         <td>{getBookFormatString(booksOnBookshelf.userBook.bookFormat)}</td>
                         <td>
-                            <button className="btn btn-success"><img src="/vert_dropdown.png" alt="Details"></img></button>
+                            <button onClick={makeBookDropDownFunction(booksOnBookshelf.userBook.userBookId)} className="btn btn-warning"><img src="/vert_dropdown.png" alt="Details"></img></button>
+                            {openDropDown == booksOnBookshelf.userBook.userBookId && (
+                                <BookDropDownMenu bookId={booksOnBookshelf.userBook.book.bookId}
+                                    userBookId={booksOnBookshelf.userBook.userBookId}
+                                    bookshelfBookId={booksOnBookshelf.bookshelfBookId}
+                                    refreshShelf={refreshShelf }
+                                />
+                            )}
                         </td>
                     </tr>
                 )}
@@ -137,16 +172,17 @@ export default function BookshelfBooks() {
             <nav className="navbar navbar-expand orange-bg navbar-fixed-top mini-nav">
                 <div className="container-fluid">
                     <h2 className="navbar-header ms-3">{bookshelf?.bookshelfName}</h2>
-                    <div className="nav navbar-nav navbar-left">
+                    <div className="nav navbar-nav left-align-btns">
                         <Link to={`/update-bookshelf/${bookshelfId}`}>
                             <button className="btn btn-success nav- ms-3"> <img src="/edit.png" alt="Edit Name" /> </button>
                         </Link>
                         <button onClick={confirmDelete} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Bookshelf" /></button>
                     </div>
                         <div className="nav navbar-nav navbar-right">
-                            <input className="nav-item custom-input"
-                                type="text"
-                                placeholder="Search"
+                        <input className="nav-item custom-input"
+                            type="text"
+                            placeholder="Search"
+                            onChange={search}
                             />
                             <button className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
                             <button className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /> </button>
@@ -158,7 +194,7 @@ export default function BookshelfBooks() {
             </main>
             <footer className="footer teal-bg text-light">
                 <Link to={`/add-book/${bookshelfId}`}>
-                    <button className="btn btn-success mr-3">Add Book</button>
+                    <button className="btn btn-warning mr-3">Add Book</button>
                 </Link>
             </footer>
             {showModal && (

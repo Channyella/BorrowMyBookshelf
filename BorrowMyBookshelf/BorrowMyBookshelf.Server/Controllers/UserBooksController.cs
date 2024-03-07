@@ -51,9 +51,17 @@ namespace BorrowMyBookshelf.Server.Controllers
 
         // DELETE api/<UserBooksController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-            dbConnector.DeleteById(id);
+           bool res = dbConnector.DeleteById(id);
+            if (res)
+            {
+                return Ok(res);
+            }
+            else
+            {
+                return BadRequest("Failed to delete");
+            }
         }
     }
 }

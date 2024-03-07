@@ -5,10 +5,18 @@ import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import { UserBook } from '../models/UserBook';
 import { Genre } from '../models/Genre';
 import { Link } from 'react-router-dom';
+import BookDropDownMenu from './BookDropDownMenu';
+import { getAuthorFullName } from '../models/Author';
+import SortModal, { SortFunction } from './SortModal';
 
 export default function Home() {
     const [userBooks, setUserBooks] = useState<UserBook[] | undefined>();
+    const [searchFilter, setSearchFilter] = useState<(userBook: UserBook) => boolean>(() => () => true);
     const userId = GetCurrentUser()?.userId;
+    const [openDropDown, setDropDown] = useState(-1);
+    const [showSortModal, setShowSortModal] = useState(false);
+    const [sortMethod, setSortMethod] = useState<SortFunction>(() => () => 0)
+
     useEffect(() => {
         populateUserBookData();
     }, []);
@@ -42,6 +50,41 @@ export default function Home() {
         return genres.slice(0,3).map(genre => genre.genreType).join(", ") + ", ...";
     }
 
+    const makeBookDropDownFunction = (bookId: number) => {
+        return () => {
+            if (bookId == openDropDown) {
+                return setDropDown(-1);
+            }
+            setDropDown(bookId);
+        }
+    }
+
+    const handleCancelSort = () => {
+        setShowSortModal(false);
+    };
+
+    const handleConfirmSort = () => {
+        setShowSortModal(false);
+    };
+
+    const onClickSort = () => {
+        setShowSortModal(true);
+    };
+    const refreshShelf = () => populateUserBookData();
+
+    const search = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const searchValue = event.target.value.toLowerCase();
+        if (!searchValue) {
+            return setSearchFilter(() => () => true);
+        }
+        setSearchFilter(() => (userBook: UserBook) => {
+            return userBook.book.title.toLowerCase().includes(searchValue) ||
+                getAuthorFullName(userBook.book.author).toLowerCase().includes(searchValue) ||
+                userBook.book.genres.some(x => x.genreType.toLowerCase().includes(searchValue)) ||
+                getBookFormatString(userBook.bookFormat).toLowerCase().includes(searchValue);
+        })
+    }
+
     const contents = userBooks === undefined
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
         : <table className="table table-striped" aria-labelledby="tableLabel">
@@ -57,17 +100,25 @@ export default function Home() {
                 </tr>
             </thead>
             <tbody>
-                {userBooks.map(userBook =>
-                    <tr key={userBook.userId}>
+                {userBooks.filter(searchFilter).sort((userBook: UserBook, userBook2: UserBook) => sortMethod(userBook.book, userBook2.book)).map(userBook =>
+                    <tr key={userBook.userBookId}>
                         <td>{userBook.book.title}</td>
-                        <td>{`${userBook.book.author.firstName} ${userBook.book.author.middleName ?? ""} ${userBook.book.author.lastName}`}</td>
+                        <td>{getAuthorFullName(userBook.book.author)}</td>
                         <td>{userBook.book.pageCount}</td>
                         <td>{userBook.book.audioLength}</td>
                         <td>{maybeShortenGenresListDisplay(userBook.book.genres)}</td>
                         <td>{userBook.borrowable ? "Yes" : "No"}</td>
                         <td>{getBookFormatString(userBook.bookFormat)}</td>
                         <td>
-                            <button className="btn btn-success"><img src="/vert_dropdown.png" alt="Details"></img></button>
+                            <button onClick={makeBookDropDownFunction(userBook.userBookId)} className="btn btn-warning"><img src="/vert_dropdown.png" alt="Details"></img></button>
+                            {openDropDown == userBook.userBookId && (
+                                <BookDropDownMenu bookId={userBook.book.bookId}
+                                    userBookId={userBook.userBookId}
+                                    hideDeleteOption={true}
+                                    showUserBooksDeleteOption={true}
+                                    refreshShelf={ refreshShelf }
+                                />
+                            )}
                         </td>
                     </tr>
                 )}
@@ -78,18 +129,27 @@ export default function Home() {
         <div className="wrapper">
             <nav className="navbar navbar-expand orange-bg navbar-fixed-top mini-nav">
                 <div className="container-fluid">
-                    <h2 className="navbar-header ms-3">All {GetCurrentUser()?.firstName ?? ""}'s Books</h2>
+                    <h2 className="navbar-header ms-3">All {GetCurrentUser()?.firstName ?? ""}&apos;s Books</h2>
                     <div className="nav navbar-nav navbar-right">
                         <input className="nav-item custom-input"
                             type="text"
                             placeholder="Search"
+                            onChange={search}
                         />
                         <button className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter"/> </button>
-                        <button className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /></button>
+                        <button onClick={onClickSort} className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /></button>
                     </div>
                 </div>
             </nav>
             {contents}
+            {showSortModal && (
+                <SortModal
+                    message="What would you like to sort?"
+                    onConfirm={handleConfirmSort}
+                    onCancel={handleCancelSort}
+                    setSort={ setSortMethod }
+                />
+            )}
         </div>
     );
     async function populateUserBookData() {

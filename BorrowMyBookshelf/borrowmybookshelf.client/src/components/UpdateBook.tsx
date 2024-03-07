@@ -7,7 +7,7 @@ import { Bookshelf } from '../models/Bookshelf';
 import { BookFormat } from '../models/UserBook';
 import { AddBookToBookshelf } from '../helpers/BookHelper';
 
-export default function CreateBook() {
+export default function UpdateBook() {
     const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
     const [bookshelf, setBookshelf] = useState<Bookshelf | null>(null);
     const userInfo = GetCurrentUser();
@@ -155,7 +155,7 @@ export default function CreateBook() {
                         <input type="radio"
                             id="hardcover"
                             name="format"
-                            value={ BookFormat.Hardcover }
+                            value={BookFormat.Hardcover}
                             onChange={handleFormatChange} />
                         <label htmlFor="hardcover">Hardcover</label>
                         <input type="radio"
@@ -167,7 +167,7 @@ export default function CreateBook() {
                         <input type="radio"
                             id="eBook"
                             name="format"
-                            value={ BookFormat.eBook}
+                            value={BookFormat.eBook}
                             onChange={handleFormatChange} />
                         <label htmlFor="eBook">eBook</label>
                         <input type="radio"
@@ -178,23 +178,23 @@ export default function CreateBook() {
                         <label htmlFor="audioBook">Audio Book</label>
                     </div>
                     <div className="">
-                            <div className='mb-2'>
-                                <label htmlFor="pageCount">Page Count</label>
-                                <input type="number"
-                                    value={pageCount}
-                                    placeholder="Enter Page Count"
-                                    className='form-control'
-                                    name="page_count"
-                                    onChange={handlePageCountChange}                                />
-                            </div>
+                        <div className='mb-2'>
+                            <label htmlFor="pageCount">Page Count</label>
+                            <input type="number"
+                                value={pageCount}
+                                placeholder="Enter Page Count"
+                                className='form-control'
+                                name="page_count"
+                                onChange={handlePageCountChange} />
+                        </div>
                         <div className='mb-2'>
                             <label htmlFor="audioLength">Audio Length</label>
-                                <input type="text"
-                                    value={length}
-                                    placeholder="Enter Audio Length"
-                                    className='form-control'
-                                    name="audio_length"
-                                    onChange={handleLengthChange} />
+                            <input type="text"
+                                value={length}
+                                placeholder="Enter Audio Length"
+                                className='form-control'
+                                name="audio_length"
+                                onChange={handleLengthChange} />
                         </div>
                     </div>
 
@@ -214,8 +214,8 @@ export default function CreateBook() {
                             name="borrowable"
                             value={borrowable ? 'true' : 'false'}
                             onChange={handleBorrowableChange}>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>   
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
                         </select>
                     </div>
                     <div className='mb-2'>

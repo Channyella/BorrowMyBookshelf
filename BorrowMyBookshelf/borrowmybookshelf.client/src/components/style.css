@@ -1,20 +1,51 @@
 @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
 
+.book-dropdown {
+    position: absolute;
+    border: 1px solid grey;
+    background-color: #d68153;
+    border-color: #d68153;
+    border-radius: 3px;
+    width: 125px;
+}
+
+    .book-dropdown button {
+        width: 100%;
+        background-color: #d68153;
+        border-color: #d68153;
+        border-radius: 0px;
+        margin: 0px;
+        padding: 5px;
+    }
+
+div .drop-down-btn-container {
+    border-radius: 5px;
+}
+
 .table {
     --bs-table-striped-bg: #ddb159 !important;
 }
-.table-striped > tbody > tr:nth-of-type(odd), .table-striped > tbody > tr:nth-of-type(even) {
+.table-striped > tbody > tr:nth-of-type(odd), .table-striped > tbody > tr:nth-of-type(even), .table-striped > thead > tr {
     border-color: #9d86b7;
     border-bottom-width: 2px;
     border-top-width: 2px;
 }
 
+.table-striped > thead > tr {
+    border-top-width: 0px;
+}
+
+
 a:hover, Link:hover {
     cursor: pointer;
 }
 
+.left-align-btns {
+    flex-grow: 1;
+}
+
 .bullet-style {
-    list-style-image: url('./public/closed_book.png');
+    list-style-image: url('/closed_book.png');
 }
 
 .sidebar-link {
@@ -109,12 +140,33 @@ a:hover, Link:hover {
 .dark-orange-bg {
     background-color: #c15f33;
 }
+
+.btn.btn-warning {
+    background-color: #d68153;
+    border-color: #d68153;
+}
+
+button.btn.btn-warning:hover, button.btn.btn-warning:active {
+    background-color: #c15f33;
+    border-color: #c15f33;
+} 
+
 .teal-bg {
     background-color: #385354;
 }
 
 .dark-teal-bg {
     background-color: #323d34;
+}
+
+.btn.btn-danger {
+    background-color: #385354;
+    border-color: #385354;
+}
+
+button.btn.btn-danger:hover, button.btn.btn-danger:active {
+    background-color: #323d34;
+    border-color: #323d34;
 }
 
 .light-purple-bg {
@@ -146,7 +198,7 @@ a:hover, Link:hover {
 
 .outlet-wrapper {
     height: 100%;
-    width: calc(100vw - 250px);
+    width: 100%;
     overflow-y: auto;
 }
 
@@ -165,10 +217,10 @@ a:hover, Link:hover {
     border-color: #84b09f;
 }
 
-.btn.btn-primary:hover {
-    background-color: #778262;
-    border-color: #778262;
-}
+    .btn.btn-primary:hover, button.btn.btn-primary:active {
+        background-color: #778262;
+        border-color: #778262;
+    }
 
 .btn.btn-primary:disabled {
     background-color: #84b09f;
@@ -195,7 +247,6 @@ button.btn.btn-success:hover, button.btn.btn-success:active {
     padding-left: 5px;
     margin-left: 10px;
 }
-
 
 .form_container {
     width: 30%;

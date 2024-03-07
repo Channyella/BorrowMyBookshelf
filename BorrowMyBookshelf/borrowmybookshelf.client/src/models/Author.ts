@@ -16,3 +16,7 @@ export class Author {
         this.lastName = lastName;
     }
 }
+
+export const getAuthorFullName = (author: Author) => {
+    return `${author.firstName} ${author.middleName ?? ""} ${author.lastName}`;
+}

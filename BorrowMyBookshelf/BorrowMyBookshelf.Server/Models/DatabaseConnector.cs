@@ -203,7 +203,7 @@ namespace BorrowMyBookshelf.Server.Models
             connection.Close();
             return ResultList;
         }
-        public void DeleteById(int id)
+        public bool DeleteById(int id)
         {
             MySqlConnection connection = GetConnection();
             try
@@ -215,8 +215,10 @@ namespace BorrowMyBookshelf.Server.Models
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                return false;
             }
             connection.Close();
+            return true;
         }
         protected DateTime? SafeGetDateTime(string column, MySqlDataReader reader)
         {
