@@ -47,7 +47,7 @@ function App() {
                             <Route path='add-bookshelf' element={<AddBookshelf />} />
                             <Route path='add-book/:bookshelfId' element={<CreateBook />} />
                             <Route path='update-bookshelf/:bookshelfId' element={<UpdateBookshelf />} />
-                            <Route path='update-book/:bookId' element={<UpdateBook /> } />
+                            <Route path='update-book/:userBookId' element={<UpdateBook /> } />
                         </Route>
                         <Route path='profile' element={<Profile/>} />
                         <Route path='friends' element={<Friends />} />

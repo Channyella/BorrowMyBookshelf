@@ -39,6 +39,17 @@ namespace BorrowMyBookshelf.Server.Models.BookGenres
             List<string> NullableColumns = updateBookGenres.ColumnsToNullify.Split(',').ToList();
             Update(columnsWithValues, id, NullableColumns);
         }
+
+        public void DeleteBookGenres(int bookId, int genreId) 
+        {
+            List<(string, object?)> columnsWithValues =
+                [
+                    ("book_id", bookId),
+                    ("genre_id", genreId)
+                ];
+            DeleteByColumns(columnsWithValues);
+        }
+
         public List<Genres.Genres> GetGenresByBookId(int bookId)
         {
             List<BookGenres> bookGenres = GetByForeignKey("book_id", bookId);

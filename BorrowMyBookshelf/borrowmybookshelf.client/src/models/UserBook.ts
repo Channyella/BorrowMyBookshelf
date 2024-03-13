@@ -8,7 +8,7 @@ export enum BookFormat {
 }
 export class UserBook {
     public userBookId: number;
-    public book: Book;
+    public book: Book; // Book has itself, Author, and Genre[] 
     public borrowable: boolean;
     public bookFormat: BookFormat;
     public userId: number;

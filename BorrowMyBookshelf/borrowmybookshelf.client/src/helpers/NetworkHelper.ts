@@ -19,3 +19,25 @@ export async function Post<T>(url: string, data: MyObject): Promise<T> {
         });
     return response.data;
 }
+
+export async function Put(url: string, data: MyObject): Promise<T> {
+    const formData = new FormData();
+
+    for (const pair of Object.entries(data)) {
+        if (pair[1] === undefined) continue;
+        formData.append(pair[0], pair[1].toString());
+    }
+    await axios.put(url, formData,
+        {
+            withCredentials: true,
+            headers: GetAuthHeader(),
+        });
+}
+
+export async function Delete(url: string) {
+    await axios.delete(url,
+        {
+            withCredentials: true,
+            headers: GetAuthHeader(),
+        });
+}

@@ -3,16 +3,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './style.css';
 import axios from 'axios';
 import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
-import { Bookshelf } from '../models/Bookshelf';
-import { BookFormat } from '../models/UserBook';
-import { AddBookToBookshelf } from '../helpers/BookHelper';
+import { BookFormat, UserBook } from '../models/UserBook';
+import { UpdateBookOnBookshelf } from '../helpers/UpdateBookHelper';
 
 export default function UpdateBook() {
-    const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
-    const [bookshelf, setBookshelf] = useState<Bookshelf | null>(null);
+    const userBookId = useParams<{ userBookId: string }>().userBookId ?? "";
     const userInfo = GetCurrentUser();
+    const [userBook, setUserBook] = useState<UserBook| null>(null);
+
     const userId = userInfo?.userId ?? -1;
     const navigate = useNavigate();
+
+    // Form fields
     const [title, setTitle] = useState<string>('');
     const [firstName, setFirstName] = useState<string>('');
     const [middleName, setMiddleName] = useState<string>('');
@@ -24,6 +26,7 @@ export default function UpdateBook() {
     const [description, setDescription] = useState<string>('');
     const [genreList, setGenreList] = useState<string[]>([]);
 
+    // Form field Change Event Functions
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
     };
@@ -66,27 +69,47 @@ export default function UpdateBook() {
         setGenreList(genreList);
     };
 
-    const fetchBookshelf = async (id: string) => {
+    // Get bookshelfBook passed from the BookDropDownMenu
+    const fetchBook = async (id: string) => {
         try {
-            const response = await axios.get<Bookshelf>(`/api/bookshelves/${id}`,
+            const response = await axios.get<UserBook>(`/api/userBooks/${id}/detailed`,
                 {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            setBookshelf(response.data);
+            const userBook = response.data;
+            setUserBook(userBook);
+            setTitle(userBook.book.title);
+            setFirstName(userBook.book.author.firstName);
+            setMiddleName(userBook.book.author.middleName ?? "");
+            setLastName(userBook.book.author.lastName);
+            setFormat(userBook.bookFormat);
+            userBook.book.pageCount && setPageCount(userBook.book.pageCount.toString());
+            userBook.book.audioLength && setLength(userBook.book.audioLength.toString());
+            setBorrowable(userBook.borrowable);
+            setDescription(userBook.book.description ?? "");
+            const genreList = userBook.book.genres.map(x => x.genreType);
+            setGenreList(genreList);
+            (document.getElementById("genre-input") as HTMLInputElement).value = genreList.join(", ");
+            const formatRadioButtons = Array.from(document.getElementsByName("format") as NodeList) as HTMLInputElement[];
+            const radioButtonToSelect = formatRadioButtons.find(input => parseInt(input.value) === userBook.bookFormat);
+            radioButtonToSelect && (radioButtonToSelect.checked = true);
         } catch (error) {
-            console.error('Error fetching bookshelf data:', error);
+            console.error('Error fetching books data:', error);
         }
     }
 
     useEffect(() => {
-        if (bookshelfId) {
-            fetchBookshelf(bookshelfId);
+        if (userBookId) {
+            fetchBook(userBookId);
         }
-    }, [bookshelfId]);
+    }, [userBookId]);
 
-    async function createBook() {
-        await AddBookToBookshelf({
+    // Change this to update the bookshelf-book using the id of the book
+    async function updateBook() {
+        await UpdateBookOnBookshelf({
+            userBookId: parseInt(userBookId),
+            bookId: userBook?.book.bookId ?? -1,
             firstName,
             middleName,
             lastName,
@@ -97,10 +120,10 @@ export default function UpdateBook() {
             borrowable,
             bookFormat: format,
             userId,
-            bookshelfId: parseInt(bookshelfId),
-            genreTypes: genreList
+            updatedGenres: genreList,
+            originalGenres: userBook?.book.genres ?? [],
         });
-        navigate(`/bookshelf-books/${bookshelfId}`);
+        navigate(`/`);
     }
 
     return (
@@ -221,6 +244,7 @@ export default function UpdateBook() {
                     <div className='mb-2'>
                         <label htmlFor="genre">Genre</label>
                         <input type="text"
+                            id="genre-input"
                             placeholder="Enter Genres (ex: horror, sci-fi)"
                             className='form-control'
                             name="genre"
@@ -229,7 +253,7 @@ export default function UpdateBook() {
                     </div>
                 </form>
                 <div className='d-grid'>
-                    <button className='btn btn-primary' onClick={createBook}>Create Book</button>
+                    <button className='btn btn-primary' onClick={updateBook}>Update Book</button>
                 </div>
             </div>
         </div>

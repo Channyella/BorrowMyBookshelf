@@ -1,4 +1,5 @@
-﻿using static BorrowMyBookshelf.Server.Models.Reviews.Reviews;
+﻿
+using static BorrowMyBookshelf.Server.Models.UserBooks.UserBooks;
 
 namespace BorrowMyBookshelf.Server.Models.UserBooks
 {

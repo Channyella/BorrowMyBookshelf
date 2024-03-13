@@ -14,7 +14,7 @@ export const createBook = async (title: string, authorId: number, description: s
     const book = {
         'title': title,
         'authorId': authorId,
-        'decription': description,
+        'description': description,
         'pageCount': pageCount,
         'audioLength': audioLength,
     };

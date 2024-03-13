@@ -35,6 +35,13 @@ namespace BorrowMyBookshelf.Server.Controllers
             return detailedDbConnector.GetUserBooksByUserId(id);
         }
 
+        //Get api/<UserBooksController>/detailed/5
+        [HttpGet("{id}/detailed")]
+        public DetailedUserBooks? GetDetailedBookById(int id)
+        {
+            return detailedDbConnector.GetById(id);
+        }
+
         // POST api/<UserBooksController>
         [HttpPost]
         public long Post([FromForm] CreateUserBooks createUserBooks)

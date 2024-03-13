@@ -40,11 +40,11 @@ namespace BorrowMyBookshelf.Server.Controllers
             dbConnector.UpdateBookGenres(updateBookGenres, id);
         }
 
-        // DELETE api/<BookGenresController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // DELETE api/<BookGenresController>/books/5/genres/2
+        [HttpDelete("books/{bookId}/genres/{genreId}")]
+        public void Delete(int bookId, int genreId)
         {
-            dbConnector.DeleteById(id);
+            dbConnector.DeleteBookGenres(bookId, genreId);
         }
     }
 }

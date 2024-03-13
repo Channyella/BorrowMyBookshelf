@@ -3,6 +3,7 @@ import ConfirmModal from './ConfirmModal';
 import axios from 'axios';
 import { GetAuthHeader } from '../helpers/AuthHelper';
 import BookDeleteCustomAlert from './BookDeleteCustomAlert';
+import { useNavigate } from 'react-router-dom';
 
 interface BookDropDownMenuProps {
     bookId?: number;
@@ -16,6 +17,8 @@ interface BookDropDownMenuProps {
 const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId, bookshelfBookId, hideDeleteOption, showUserBooksDeleteOption, refreshShelf }) => {
     const [showModal, setShowModal] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const navigate = useNavigate();
+
 
     const deleteBook = async (bookshelfBookId: number) => {
         try {
@@ -72,6 +75,12 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
         }
     };
 
+    const updateUserBook = async () => {
+        if (userBookId) {
+            navigate(`/update-book/${userBookId}`);
+        }
+    };
+
     const handleConfirmUserBook = async () => {
         setShowModal(false);
         if (userBookId) {
@@ -89,7 +98,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                     <button className="btn btn-warning">View Details</button>
                 </div>
                 <div>
-                    <button className="btn btn-warning">Edit Book</button>
+                    <button onClick={updateUserBook} className="btn btn-warning">Edit Book</button>
                 </div>
                 {bookshelfBookId && !hideDeleteOption &&
                     (<div>

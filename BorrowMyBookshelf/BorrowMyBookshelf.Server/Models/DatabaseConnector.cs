@@ -220,6 +220,37 @@ namespace BorrowMyBookshelf.Server.Models
             connection.Close();
             return true;
         }
+
+        public bool DeleteByColumns(List<(string, object?)> columnsWithValues)
+        {
+            List<(string, object)> safeColumnsWithValues = Safe(columnsWithValues).ToList();
+            MySqlConnection connection = GetConnection();
+            StringBuilder condition = new();
+            bool isFirst = true;
+            safeColumnsWithValues.ForEach(columnWithValue => {
+                if (!isFirst)
+                {
+                    condition.Append(" AND ");
+                }
+                condition.Append(columnWithValue.Item1 + " = @" + columnWithValue.Item1);
+                isFirst = false;
+            });
+            try
+            {
+                connection.Open();
+                string InsertQuery = ($"DELETE FROM {TableName} WHERE ({condition});");
+                MySqlCommand cmd = new MySqlCommand(InsertQuery, connection);
+                safeColumnsWithValues.ForEach(columnWithValue => cmd.Parameters.AddWithValue("@" + columnWithValue.Item1, columnWithValue.Item2));
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return false;
+            }
+            connection.Close();
+            return true;
+        }
         protected DateTime? SafeGetDateTime(string column, MySqlDataReader reader)
         {
             int columnIndex = reader.GetOrdinal(column);
