@@ -20,6 +20,11 @@ namespace BorrowMyBookshelf.Server.Models.FavGenres
             List<(string, object?)> columnsWithValues = new();
             columnsWithValues.Add(("user_id", createFavGenres.UserId));
             columnsWithValues.Add(("genre_id", createFavGenres.GenreId));
+            List<FavGenres> exisitngFavGenres = GetByColumns(columnsWithValues);
+            if (exisitngFavGenres.Count() > 0)
+            {
+                return exisitngFavGenres[0].FavGenreId;
+            }
             return Insert(columnsWithValues);
         }
         public void UpdateFavGenre(UpdateFavGenres updateFavGenres, int id)

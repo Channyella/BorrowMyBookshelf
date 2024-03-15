@@ -20,6 +20,11 @@ namespace BorrowMyBookshelf.Server.Models.FavBooks
             List<(string, object?)> columnsWithValues = new();
             columnsWithValues.Add(("user_id", createFavBooks.UserId));
             columnsWithValues.Add(("book_id", createFavBooks.BookId));
+            List<FavBooks> existingFavBooks = GetByColumns(columnsWithValues);
+            if (existingFavBooks.Count() > 0)
+            {
+                return existingFavBooks[0].FavBookId;
+            }
             return Insert(columnsWithValues);
         }
         public void UpdateFavBook(UpdateFavBooks updateFavBooks, int id)

@@ -22,6 +22,8 @@ export default function CreateBook() {
     const [borrowable, setBorrowable] = useState<boolean>(false);
     const [pageCount, setPageCount] = useState<string>('');
     const [description, setDescription] = useState<string>('');
+    const charCount: number = description.length;
+    const maxLength: number = 2500;
     const [genreList, setGenreList] = useState<string[]>([]);
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +59,10 @@ export default function CreateBook() {
     };
 
     const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDescription(event.target.value);
+        const newText: string = event.target.value;
+        if (newText.length <= maxLength) {
+            setDescription(newText);
+        }
     };
 
     const handleGenreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,7 +114,7 @@ export default function CreateBook() {
                 <form id="new-book">
                     <h3 className="text-center">Create New Book</h3>
                     <div className='mb-2'>
-                        <label htmlFor="title">Title</label>
+                        <label htmlFor="title">Title:</label>
                         <input type="text"
                             value={title}
                             placeholder="Enter Title"
@@ -121,7 +126,7 @@ export default function CreateBook() {
                         <h5 className="text-center">Author&apos;s Name:</h5>
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor="firstName">First Name</label>
+                        <label htmlFor="firstName">First Name:</label>
                         <input type="text"
                             value={firstName}
                             placeholder="Enter First Name"
@@ -131,7 +136,7 @@ export default function CreateBook() {
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor="authorMiddleName">Middle Name</label>
+                        <label htmlFor="authorMiddleName">Middle Name:</label>
                         <input type="text"
                             value={middleName}
                             placeholder="Enter Middle Name"
@@ -141,7 +146,7 @@ export default function CreateBook() {
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor="authorLastName">Last Name</label>
+                        <label htmlFor="authorLastName">Last Name:</label>
                         <input type="text"
                             value={lastName}
                             placeholder="Enter Last Name"
@@ -151,7 +156,9 @@ export default function CreateBook() {
                         />
                     </div>
 
+                    
                     <div className="radio-button-container">
+                        <p className="format-margin">Format:</p>
                         <input type="radio"
                             id="hardcover"
                             name="format"
@@ -179,7 +186,7 @@ export default function CreateBook() {
                     </div>
                     <div className="">
                             <div className='mb-2'>
-                                <label htmlFor="pageCount">Page Count</label>
+                                <label htmlFor="pageCount">Page Count:</label>
                                 <input type="number"
                                     value={pageCount}
                                     placeholder="Enter Page Count"
@@ -188,10 +195,10 @@ export default function CreateBook() {
                                     onChange={handlePageCountChange}                                />
                             </div>
                         <div className='mb-2'>
-                            <label htmlFor="audioLength">Audio Length</label>
+                            <label htmlFor="audioLength">Audio Length:</label>
                                 <input type="text"
                                     value={length}
-                                    placeholder="Enter Audio Length"
+                                    placeholder="Enter Audio Length in Minutes"
                                     className='form-control'
                                     name="audio_length"
                                     onChange={handleLengthChange} />
@@ -199,16 +206,18 @@ export default function CreateBook() {
                     </div>
 
                     <div className='mb-2'>
-                        <label htmlFor="description">Summary</label>
+                        <label htmlFor="description">Summary:</label>
                         <input type="text"
                             placeholder="Enter Summary"
                             className='form-control'
                             name="description"
                             value={description}
                             onChange={handleDescriptionChange} />
+                        <p className="text-end"> Character Count: {charCount}/{maxLength}</p>
                     </div>
+
                     <div className='mb-2'>
-                        <label htmlFor="borrowable">Borrowable?</label>
+                        <label htmlFor="borrowable">Borrowable?:</label>
                         <select id="borrowable"
                             className='form-control'
                             name="borrowable"
@@ -219,7 +228,7 @@ export default function CreateBook() {
                         </select>
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor="genre">Genre</label>
+                        <label htmlFor="genre">Genres:</label>
                         <input type="text"
                             placeholder="Enter Genres (ex: horror, sci-fi)"
                             className='form-control'

@@ -61,7 +61,6 @@ export default function Home() {
                     <th>Title</th>
                     <th>Author</th>
                     <th>Page Count</th>
-                    <th>Description</th>
                     <th>Audio Length</th>
                     <th>Genres</th>
                 </tr>
@@ -72,7 +71,6 @@ export default function Home() {
                         <td>{book.title}</td>
                         <td>{`${book.author.firstName} ${book.author.middleName ?? ""} ${book.author.lastName}`}</td>
                         <td>{book.pageCount}</td>
-                        <td>{book.description}</td>
                         <td>{book.audioLength}</td>
                         <td>{book.genres.map(genre => genre.genreType).join(", ")}</td>
                         <td> <button onClick={makeBookDropDownFunction(book.bookId)} className="btn btn-warning"><img src="/vert_dropdown.png" alt="Details"></img></button> 
@@ -80,6 +78,8 @@ export default function Home() {
                                 <BookDropDownMenu bookId={book.bookId}
                                     hideDeleteOption={true}
                                     refreshShelf={refreshShelf}
+                                    hideEditOption={true}
+                                    onlyBookId={true}
                                 />
                             )}
                         </td>

@@ -20,7 +20,7 @@ export async function Post<T>(url: string, data: MyObject): Promise<T> {
     return response.data;
 }
 
-export async function Put(url: string, data: MyObject): Promise<T> {
+export async function Put(url: string, data: MyObject) {
     const formData = new FormData();
 
     for (const pair of Object.entries(data)) {

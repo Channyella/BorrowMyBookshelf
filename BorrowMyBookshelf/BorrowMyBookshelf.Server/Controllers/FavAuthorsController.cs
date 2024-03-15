@@ -12,6 +12,7 @@ namespace BorrowMyBookshelf.Server.Controllers
     public class FavAuthorsController : ControllerBase
     {
         private readonly FavAuthorsDatabaseConnector dbConnector = new FavAuthorsDatabaseConnector();
+        private readonly FavDetailedAuthorDatabaseConnector authorsDbConnector = new FavDetailedAuthorDatabaseConnector();
         // GET: api/<FavAuthorsController>
         [HttpGet]
         public IEnumerable<FavAuthors> Get()
@@ -24,6 +25,13 @@ namespace BorrowMyBookshelf.Server.Controllers
         public FavAuthors? Get(int id)
         {
             return dbConnector.GetById(id);
+        }
+
+        // GET: api/<FavAuthorsController>/users/5
+        [HttpGet("users/{id}")]
+        public IEnumerable<FavDetailedAuthor> GetByUserId(int id)
+        {
+            return authorsDbConnector.GetByForeignKey("user_id", id);
         }
 
         // POST api/<FavAuthorsController>

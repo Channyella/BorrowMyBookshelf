@@ -24,6 +24,11 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                     ("bookshelf_id", createBookshelfBooks.BookshelfId),
                     ("user_book_id", createBookshelfBooks.UserBookId)
                 ];
+            List<BookshelfBooks> existingBookshelfBooks = GetByColumns(columnWithValues);
+            if (existingBookshelfBooks.Count() > 0)
+            {
+                return existingBookshelfBooks[0].BookshelfBookId;
+            }
             return Insert(columnWithValues);
         }
 

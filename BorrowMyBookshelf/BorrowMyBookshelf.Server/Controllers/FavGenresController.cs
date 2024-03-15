@@ -1,4 +1,5 @@
-﻿using BorrowMyBookshelf.Server.Models.FavGenres;
+﻿using BorrowMyBookshelf.Server.Models.FavAuthors;
+using BorrowMyBookshelf.Server.Models.FavGenres;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace BorrowMyBookshelf.Server.Controllers
     public class FavGenresController : ControllerBase
     {
         private readonly FavGenresDatabaseConnector dbConnector = new FavGenresDatabaseConnector();
+        private readonly FavDetailedGenreDatabaseConnector genreDbConnector = new FavDetailedGenreDatabaseConnector();
         // GET: api/<FavGenresController>
         [HttpGet]
         public IEnumerable<FavGenres> Get()
@@ -24,6 +26,13 @@ namespace BorrowMyBookshelf.Server.Controllers
         public FavGenres? Get(int id)
         {
             return dbConnector.GetById(id);
+        }
+
+        // GET: api/<FavGenresController>/users/5
+        [HttpGet("users/{id}")]
+        public IEnumerable<FavDetailedGenre> GetByUserId(int id)
+        {
+            return genreDbConnector.GetByForeignKey("user_id", id);
         }
 
         // POST api/<FavGenresController>

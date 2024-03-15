@@ -102,7 +102,9 @@ export async function AddBookToBookshelf(
         bookId = await createBook(title, authorId, description, pageCount, audioLength);
     }
     const guaranteedBookId = bookId;
-    userBookId = await createUserBook(bookId, borrowable, bookFormat, userId);
+    if (!userBookId) {
+        userBookId = await createUserBook(bookId, borrowable, bookFormat, userId);
+    }
     await createBookshelfBook(bookshelfId, userBookId);
     genreIds = await Promise.all(genreTypes.map(genreType => createGenre(genreType)));
     await Promise.all(genreIds.map(genreId => createBookGenre(guaranteedBookId, genreId)));

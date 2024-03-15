@@ -1,5 +1,98 @@
 @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
 
+.create-book {
+    margin: 15px 0px 15px 0px;
+}
+
+div .card-body {
+    background: #d1c2e2;
+}
+
+div .container {
+    max-width: 80%;
+    height: 100%;
+}
+
+td.weird-width {
+    width: 0px;
+}
+
+.table.profile-table {
+    --bs-table-striped-bg: #f2c4c0 !important;
+}
+
+.table-striped.profile-table > tbody > tr:nth-of-type(odd),
+.table-striped.profile-table > tbody > tr:nth-of-type(even),
+.table-striped.profile-table > thead > tr {
+    border-color: #9d86b7;
+    border-bottom-width: 2px;
+    border-top-width: 2px;
+}
+
+.table-striped.profile-table > thead > tr {
+    border-top-width: 0px;
+}
+
+textarea#user-notes.user-notes {
+    width: 87%;
+    margin-bottom: 20px;
+    background-color: #f8f8f8;
+    box-sizing: border-box;
+    padding: 12px 20px;
+    border-radius: 4px;
+    border: 2px solid #385354;
+    font-size: 16px;
+    resize: none;
+}
+
+label.fav-labels {
+    display: block;
+    font-size: large;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+button.fav-buttons {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.book-title {
+    margin-top: 20px;
+}
+
+.view-book-container {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    gap: 10px;
+    align-items: baseline;
+}
+
+.p-5 {
+    padding: 3rem 3rem 1rem 3rem !important;
+}
+
+h2.fav-title {
+    margin-bottom: 20px;
+}
+
+label.notes {
+    display:block;
+    margin: 10px 0px 10px 100px;
+    font-size: larger;
+    font-weight: 500;
+}
+
+.save-btn {
+    margin-right: 100px;
+    margin-bottom: 20px;
+}
+
+.profile-btn {
+    margin-top: 10px;
+}
+
 .book-dropdown {
     position: absolute;
     border: 1px solid grey;
@@ -34,7 +127,6 @@ div .drop-down-btn-container {
 .table-striped > thead > tr {
     border-top-width: 0px;
 }
-
 
 a:hover, Link:hover {
     cursor: pointer;
@@ -172,6 +264,7 @@ button.btn.btn-danger:hover, button.btn.btn-danger:active {
 .light-purple-bg {
     background-color: #d1c2e2;
 }
+
 .purple-bg {
     background-color: #9d86b7;
 }
@@ -182,6 +275,15 @@ button.btn.btn-danger:hover, button.btn.btn-danger:active {
 
 .grey-background {
     background-color: #cecece;
+}
+
+.description-bg {
+    background: #ddb159;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 40px;
+    border: solid;
+    border-color: #84b09f;
 }
 
 .sidebar {
@@ -200,6 +302,7 @@ button.btn.btn-danger:hover, button.btn.btn-danger:active {
     height: 100%;
     width: 100%;
     overflow-y: auto;
+    background-color: #f5f092;
 }
 
 .outlet-content {
@@ -264,9 +367,16 @@ a.linkColor:visited {
     color: seagreen;
 }
 
+p.format-margin {
+    margin: 0px 10px 0px 0px;
+    align-items:center;
+}
+
 .radio-button-container {
     display: flex;
     gap:2px;
+    margin: 20px 0px 10px 0px;
+    align-items: center;
 }
 
 .radio-button-container label {
@@ -281,6 +391,7 @@ html,body {
     flex-direction: column;
     height: 100%;
     background-color: #f5f092;
+    overflow-y: auto;
 }
 
 
@@ -298,8 +409,11 @@ html,body {
     overflow-y: auto;
 }
 
-.main {
+
+main {
     flex-grow: 1;
+    height: 100%;
+    overflow-y: auto;
 }
 
 @media screen and (max-width: 1000px) {

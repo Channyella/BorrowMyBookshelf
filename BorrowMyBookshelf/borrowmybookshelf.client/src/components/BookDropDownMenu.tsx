@@ -3,7 +3,8 @@ import ConfirmModal from './ConfirmModal';
 import axios from 'axios';
 import { GetAuthHeader } from '../helpers/AuthHelper';
 import BookDeleteCustomAlert from './BookDeleteCustomAlert';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserBook } from '../models/UserBook';
 
 interface BookDropDownMenuProps {
     bookId?: number;
@@ -12,14 +13,16 @@ interface BookDropDownMenuProps {
     hideDeleteOption?: boolean;
     showUserBooksDeleteOption?: boolean;
     refreshShelf: () => Promise<void>;
+    hideEditOption?: boolean;
+    onlyBookId?: boolean;
 }
 
-const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId, bookshelfBookId, hideDeleteOption, showUserBooksDeleteOption, refreshShelf }) => {
+const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId, bookshelfBookId, hideDeleteOption, showUserBooksDeleteOption, refreshShelf, hideEditOption, onlyBookId }) => {
     const [showModal, setShowModal] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
 
-
+    // Delete book from BookshelfBooks (delete from specific shelf)
     const deleteBook = async (bookshelfBookId: number) => {
         try {
             await axios.delete(`/api/bookshelfBooks/${bookshelfBookId}`,
@@ -56,10 +59,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
         setShowAlert(false);
     };
 
-    const handleButtonClick = () => {
-        setShowAlert(true);
-    };
-
+    // Delete book from userBooks (not on user anymore)
     const deleteUserBook = async (userBookId: number) => {
         try {
             await axios.delete(`/api/userBooks/${userBookId}`,
@@ -74,6 +74,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
             return false;
         }
     };
+
 
     const updateUserBook = async () => {
         if (userBookId) {
@@ -95,24 +96,37 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
         <div className="flex flex-col book-dropdown">
             <div className="flex flex-col gap-4 drop-down-btn-container">
                 <div>
+                    <Link to={`/view-books/${bookId}`}>
                     <button className="btn btn-warning">View Details</button>
+                    </Link>
                 </div>
-                <div>
-                    <button onClick={updateUserBook} className="btn btn-warning">Edit Book</button>
-                </div>
+                {bookId && onlyBookId &&
+                    (<div>
+                    <Link to={`/add-to-bookshelf/books/${bookId}`}>
+
+                        <button className="btn btn-warning">Add to Bookshelf</button>
+                        </Link>
+                    </div>)}
+                {bookId && userBookId &&
+                    (<div>
+                    <Link to={`/add-to-bookshelf/user-books/${userBookId}`}>
+                        <button className="btn btn-warning">Add to Bookshelf</button>
+                    </Link>
+                </div>)}
+                {!hideEditOption &&
+                    (<div>
+                        <button onClick={updateUserBook} className="btn btn-warning">Edit Book</button>
+                    </div>)}
                 {bookshelfBookId && !hideDeleteOption &&
                     (<div>
-                    <button onClick={confirmDelete} className="btn btn-warning" >Delete Book</button>
+                    <button onClick={confirmDelete} className="btn btn-warning" >Remove Book From Bookshelf</button>
                         {showModal && (
                             <ConfirmModal
                                 message="Are you sure you want to delete this book?"
                                 onConfirm={handleConfirm}
-                                onCancel={handleCancel}
-                            />
+                                onCancel={handleCancel}/>
                     )}
-
-                    </div>)
-                }
+                    </div>)}
                 {showUserBooksDeleteOption && userBookId &&
                     (<div>
                         <button onClick={confirmDelete} className="btn btn-warning" >Delete Book</button>
@@ -120,8 +134,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                             <ConfirmModal
                                 message="Are you sure you want to delete this book?"
                                 onConfirm={handleConfirmUserBook}
-                                onCancel={handleCancel}
-                            />
+                                onCancel={handleCancel}/>
                     )}
                     </div>)
                 }

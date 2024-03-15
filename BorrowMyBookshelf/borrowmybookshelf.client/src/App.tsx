@@ -17,8 +17,15 @@ import AddBookshelf from './components/AddBookshelf';
 import UpdateBookshelf from './components/UpdateBookshelf';
 import AllBooks from './components/AllBooks';
 import AllUserBooks from './components/AllUserBooks';
-import LayoutWithSidebar from './components/LayoutWIthSidebar';
+import LayoutWithSidebar from './components/LayoutWithSidebar';
 import UpdateBook from './components/UpdateBook';
+import EditUserProfile from './components/EditUserProfile';
+import AddFavAuthor from './components/AddFavAuthor';
+import AddFavBook from './components/AddFavBook';
+import AddFavGenre from './components/AddFavGenre';
+import CopyToUserBookshelf from './components/CopyToUserBookshelf';
+import CopyToAnotherBookshelf from './components/CopyToAnotherBookshelf';
+import ViewBook from './components/ViewBook';
 function App() {
 
     const { auth } = useContext(AuthContext);
@@ -42,14 +49,21 @@ function App() {
                         <Route path='/' element={<LayoutWithSidebar /> } >
                             <Route index element={<AllUserBooks />} />
                             <Route path='all-books' element={<AllBooks />} />
+                            <Route path='add-to-bookshelf/books/:bookId' element={<CopyToUserBookshelf/> } />
                             <Route path='all-user-books' element={<AllUserBooks />} />
                             <Route path='bookshelf-books/:bookshelfId' element={<BookshelfBooks />} />
+                            <Route path='add-to-bookshelf/user-books/:userBookId' element={<CopyToAnotherBookshelf />} />
                             <Route path='add-bookshelf' element={<AddBookshelf />} />
                             <Route path='add-book/:bookshelfId' element={<CreateBook />} />
                             <Route path='update-bookshelf/:bookshelfId' element={<UpdateBookshelf />} />
-                            <Route path='update-book/:userBookId' element={<UpdateBook /> } />
+                            <Route path='update-book/:userBookId' element={<UpdateBook />} />
+                            <Route path='view-books/:bookId' element={<ViewBook /> } />
                         </Route>
-                        <Route path='profile' element={<Profile/>} />
+                        <Route path='profile' element={<Profile />} />
+                        <Route path='profile/edit/:userId' element={<EditUserProfile />} />
+                        <Route path='profile/add-fav-authors' element={<AddFavAuthor />} />
+                        <Route path='profile/add-fav-books' element={<AddFavBook />} />
+                        <Route path='profile/add-fav-genres' element={<AddFavGenre />} />
                         <Route path='friends' element={<Friends />} />
                         <Route path='borrowed' element={<Borrowed />} />                  
                     </Route>

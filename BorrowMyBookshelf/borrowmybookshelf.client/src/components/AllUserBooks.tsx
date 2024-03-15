@@ -117,7 +117,7 @@ export default function Home() {
                                     userBookId={userBook.userBookId}
                                     hideDeleteOption={true}
                                     showUserBooksDeleteOption={true}
-                                    refreshShelf={ refreshShelf }
+                                    refreshShelf={refreshShelf}
                                 />
                             )}
                         </td>

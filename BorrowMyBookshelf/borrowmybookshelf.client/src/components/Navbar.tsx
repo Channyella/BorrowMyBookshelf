@@ -21,7 +21,7 @@ export default function TopNavbar() {
         <nav className="navbar navbar-expand pink-bg navbar-fixed-top">
             <div className="container-fluid">
                 <div className="navbar-header">
-                    <img src= "/public/Site_Logo.png" alt="Logo" width="65" height="65" className="d-inline-block align-middle"></img>
+                    <img src= "/Site_Logo.png" alt="Logo" width="65" height="65" className="d-inline-block align-middle"></img>
                     <Link to="/" className="siteTitle navbar-brand d-inline-block sacramento-regular align-middle fs-2 ms-3">Borrow My Bookshelf</Link>
                 </div>
                 <ul className="nav navbar-nav navbar-right">
