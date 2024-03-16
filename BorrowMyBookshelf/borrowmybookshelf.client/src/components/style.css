@@ -284,6 +284,7 @@ button.btn.btn-danger:hover, button.btn.btn-danger:active {
     margin-bottom: 40px;
     border: solid;
     border-color: #84b09f;
+    width: 100%;
 }
 
 .sidebar {

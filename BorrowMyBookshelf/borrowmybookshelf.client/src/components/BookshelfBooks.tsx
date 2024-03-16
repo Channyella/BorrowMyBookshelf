@@ -10,6 +10,7 @@ import { Genre } from '../models/Genre';
 import BookDropDownMenu from './BookDropDownMenu';
 import { getAuthorFullName } from '../models/Author';
 import SortModal, { SortFunction } from './SortModal';
+import FilterModal, { FilterFunction } from './FilterModal';
 
 export default function BookshelfBooks() {
     const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
@@ -22,6 +23,8 @@ export default function BookshelfBooks() {
     const [searchFilter, setSearchFilter] = useState<(booksOnBookshelf: BooksOnBookshelf) => boolean>(() => () => true);
     const [showSortModal, setShowSortModal] = useState(false);
     const [sortMethod, setSortMethod] = useState<SortFunction>(() => () => 0)
+    const [showFilterModal, setShowFilterModal] = useState(false);
+    const [filterMethod, setFilterMethod] = useState<FilterFunction>(() => () => true)
 
     const fetchBookshelf = async (id: string) => {
         try {
@@ -91,6 +94,19 @@ export default function BookshelfBooks() {
         setShowSortModal(true);
     };
 
+    // Filter Modal Functions
+    const handleCancelFilter = () => {
+        setShowFilterModal(false);
+    };
+
+    const handleConfirmFilter = () => {
+        setShowFilterModal(false);
+    };
+
+    const onClickFilter = () => {
+        setShowFilterModal(true);
+    };
+
     const makeBookDropDownFunction = (bookId: number) => {
         return () => {
             if (bookId == openDropDown) {
@@ -158,7 +174,7 @@ export default function BookshelfBooks() {
                 </tr>
             </thead>
             <tbody>
-                {booksOnBookshelf.filter(searchFilter).sort((booksOnBookshelf: BooksOnBookshelf, booksOnBookshelf2: BooksOnBookshelf) => sortMethod(booksOnBookshelf.userBook.book, booksOnBookshelf2.userBook.book)).map(booksOnBookshelf =>
+                {booksOnBookshelf.filter((booksOnBookshelf) => filterMethod(booksOnBookshelf.userBook.book, booksOnBookshelf.userBook)).filter(searchFilter).sort((booksOnBookshelf: BooksOnBookshelf, booksOnBookshelf2: BooksOnBookshelf) => sortMethod(booksOnBookshelf.userBook.book, booksOnBookshelf2.userBook.book)).map(booksOnBookshelf =>
                     <tr key={booksOnBookshelf.bookshelfBookId}>
                         <td>{booksOnBookshelf.userBook.book.title}</td>
                         <td>{getAuthorFullName(booksOnBookshelf.userBook.book.author)}</td>
@@ -199,7 +215,17 @@ export default function BookshelfBooks() {
                             placeholder="Search"
                             onChange={search}
                             />
-                            <button className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
+                        <button onClick={onClickFilter} className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
+                        {showFilterModal && (
+                            <FilterModal
+                                message="Select what you'd like to filter:"
+                                onConfirm={handleConfirmFilter}
+                                onCancel={handleCancelFilter}
+                                setFilter={setFilterMethod}
+                                authors={booksOnBookshelf?.map(booksOnBookshelf => booksOnBookshelf.userBook.book.author) ?? []}
+                                genres={booksOnBookshelf?.flatMap(booksOnBookshelf => booksOnBookshelf.userBook.book.genres) ?? []}
+                            />
+                        )}
                         <button onClick={onClickSort} className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /> </button>
                         </div>
                 </div>

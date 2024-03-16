@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import BookDropDownMenu from './BookDropDownMenu';
 import { getAuthorFullName } from '../models/Author';
 import SortModal, { SortFunction } from './SortModal';
+import FilterModal, { FilterFunction } from './FilterModal';
 
 export default function Home() {
     const [userBooks, setUserBooks] = useState<UserBook[] | undefined>();
@@ -16,6 +17,8 @@ export default function Home() {
     const [openDropDown, setDropDown] = useState(-1);
     const [showSortModal, setShowSortModal] = useState(false);
     const [sortMethod, setSortMethod] = useState<SortFunction>(() => () => 0)
+    const [showFilterModal, setShowFilterModal] = useState(false);
+    const [filterMethod, setFilterMethod] = useState<FilterFunction>(() => () => true)
 
     useEffect(() => {
         populateUserBookData();
@@ -59,6 +62,7 @@ export default function Home() {
         }
     }
 
+    // Sort Modal Functions
     const handleCancelSort = () => {
         setShowSortModal(false);
     };
@@ -71,8 +75,22 @@ export default function Home() {
         setShowSortModal(true);
     };
 
+    // Filter Modal Functions
+    const handleCancelFilter = () => {
+        setShowFilterModal(false);
+    };
+
+    const handleConfirmFilter = () => {
+        setShowFilterModal(false);
+    };
+
+    const onClickFilter = () => {
+        setShowFilterModal(true);
+    };
+
     const refreshShelf = () => populateUserBookData();
 
+    // Search Function 
     const search = (event: React.ChangeEvent<HTMLInputElement>) => {
         const searchValue = event.target.value.toLowerCase();
         if (!searchValue) {
@@ -101,7 +119,7 @@ export default function Home() {
                 </tr>
             </thead>
             <tbody>
-                {userBooks.filter(searchFilter).sort((userBook: UserBook, userBook2: UserBook) => sortMethod(userBook.book, userBook2.book)).map(userBook =>
+                {userBooks.filter((userBook) => filterMethod(userBook.book, userBook)).filter(searchFilter).sort((userBook: UserBook, userBook2: UserBook) => sortMethod(userBook.book, userBook2.book)).map(userBook =>
                     <tr key={userBook.userBookId}>
                         <td>{userBook.book.title}</td>
                         <td>{getAuthorFullName(userBook.book.author)}</td>
@@ -137,7 +155,17 @@ export default function Home() {
                             placeholder="Search"
                             onChange={search}
                         />
-                        <button className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter"/> </button>
+                        <button onClick={onClickFilter} className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
+                        {showFilterModal && (
+                            <FilterModal
+                                message="Select what you'd like to filter:"
+                                onConfirm={handleConfirmFilter}
+                                onCancel={handleCancelFilter}
+                                setFilter={setFilterMethod}
+                                authors={userBooks?.map(userBook => userBook.book.author) ?? []}
+                                genres={userBooks?.flatMap(userBook => userBook.book.genres) ?? [] }
+                                />
+                        ) }
                         <button onClick={ onClickSort } className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /></button>
                     </div>
                 </div>

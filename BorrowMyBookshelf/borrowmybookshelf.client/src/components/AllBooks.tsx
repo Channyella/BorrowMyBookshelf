@@ -7,6 +7,7 @@ import { GetAuthHeader } from '../helpers/AuthHelper';
 import BookDropDownMenu from './BookDropDownMenu';
 import { getAuthorFullName } from '../models/Author';
 import SortModal, { SortFunction } from './SortModal';
+import FilterModal from './FilterModal';
 
 export default function Home() {
     const [books, setBooks] = useState<Book[] | undefined>();
@@ -14,6 +15,9 @@ export default function Home() {
     const [openDropDown, setDropDown] = useState(-1);
     const [showSortModal, setShowSortModal] = useState(false);
     const [sortMethod, setSortMethod] = useState<SortFunction>(() => () => 0)
+    const [showFilterModal, setShowFilterModal] = useState(false);
+    const [filterMethod, setFilterMethod] = useState<FilterFunction>(() => () => true)
+
 
     useEffect(() => {
         populateBookData();
@@ -41,6 +45,7 @@ export default function Home() {
         })
     }
 
+    // Sort Modal Functions
     const handleCancelSort = () => {
         setShowSortModal(false);
     };
@@ -51,6 +56,19 @@ export default function Home() {
 
     const onClickSort = () => {
         setShowSortModal(true);
+    };
+
+    // Filter Modal Functions
+    const handleCancelFilter = () => {
+        setShowFilterModal(false);
+    };
+
+    const handleConfirmFilter = () => {
+        setShowFilterModal(false);
+    };
+
+    const onClickFilter = () => {
+        setShowFilterModal(true);
     };
 
     const contents = books === undefined
@@ -66,7 +84,7 @@ export default function Home() {
                 </tr>
             </thead>
             <tbody>
-                {books.filter(searchFilter).sort((book: Book, book2: Book) => sortMethod(book, book2)).map(book =>
+                {books.filter((book) => filterMethod(book)).filter(searchFilter).sort((book: Book, book2: Book) => sortMethod(book, book2)).map(book =>
                     <tr key={book.title}>
                         <td>{book.title}</td>
                         <td>{`${book.author.firstName} ${book.author.middleName ?? ""} ${book.author.lastName}`}</td>
@@ -99,7 +117,18 @@ export default function Home() {
                             placeholder="Search"
                             onChange={search}
                         />
-                        <button className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
+                        <button onClick={onClickFilter } className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
+                        {showFilterModal && (
+                            <FilterModal
+                                message="Select what you'd like to filter:"
+                                onConfirm={handleConfirmFilter}
+                                onCancel={handleCancelFilter}
+                                setFilter={setFilterMethod}
+                                authors={books?.map(book => book.author) ?? []}
+                                genres={books?.flatMap(book => book.genres) ?? []}
+                                hideOnAllBooks={true }
+                            />
+                        )}
                         <button onClick={onClickSort} className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /></button>
                     </div>
                 </div>
