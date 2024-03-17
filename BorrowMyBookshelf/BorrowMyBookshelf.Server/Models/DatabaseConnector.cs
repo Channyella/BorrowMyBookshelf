@@ -45,7 +45,7 @@ namespace BorrowMyBookshelf.Server.Models
             return ResultList;
         }
 
-        public List<T> GetByColumns(List<(string, object?)> columnsWithValues)
+        public List<T> GetByColumns(List<(string, object?)> columnsWithValues, string conditionConjunction = "AND")
         {
             List<(string, object)> safeColumnsWithValues = Safe(columnsWithValues).ToList();
             List<T> ResultList = new List<T>();
@@ -55,7 +55,7 @@ namespace BorrowMyBookshelf.Server.Models
             safeColumnsWithValues.ForEach(columnWithValue => {
                 if (!isFirst)
                 {
-                    condition.Append(" AND ");
+                    condition.Append($" {conditionConjunction} ");
                 }
                 condition.Append(columnWithValue.Item1 + " = @" + columnWithValue.Item1);
                 isFirst = false;

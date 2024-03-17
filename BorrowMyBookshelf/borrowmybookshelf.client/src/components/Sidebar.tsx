@@ -1,20 +1,41 @@
-import React, { useContext} from 'react';
+import React, { useContext, useEffect, useState} from 'react';
 import './style.css';
-import { Link } from 'react-router-dom';
-import { GetCurrentUser } from '../helpers/AuthHelper';
+import { Link, useParams } from 'react-router-dom';
+import { GetAuthHeader, GetCurrentUser, UserInfo } from '../helpers/AuthHelper';
 import BookshelfContext from '../context/BookshelfContext';
+import axios, { AxiosResponse } from 'axios';
+import { User } from '../models/User';
 
 export default function Sidebar() {
+    const { userId } = useParams<{ userId?: string }>();
     const { bookshelves } = useContext(BookshelfContext);
     const userInfo = GetCurrentUser();
-    const userFirstName = userInfo?.firstName;
+    const [user, setUser] = useState<User | null | UserInfo>(null);
+
+    const userFirstName = user?.firstName;
+    async function populateUserData(userId: number) {
+        const response: AxiosResponse<User> = await axios.get(`/api/users/${userId}`, {
+            withCredentials: true,
+            headers: GetAuthHeader(),
+        });
+        setUser(response.data);
+    }
+
+    useEffect(() => {
+        if (userId) {
+            populateUserData(parseInt(userId));
+        }
+        else {
+            setUser(userInfo);
+        }
+    }, [userId]);
 
     const contents = bookshelves === undefined
         ? <p>Boo.</p>
         : (
             <ul className="bookshelvesList" aria-labelledby="sideNavLabel">
                 <li className="bullet-style">
-                    <Link className="sidebar-link" to={`/all-user-books`}> All {GetCurrentUser()?.firstName ?? ""}&apos;s Books </Link>
+                    <Link className="sidebar-link" to={`/all-user-books`}> All {user?.firstName ?? ""}&apos;s Books </Link>
                 </li>
                 {bookshelves?.map(bookshelf =>
                     <li key={bookshelf.bookshelfId} className="bullet-style">

@@ -7,7 +7,7 @@ import { GetAuthHeader } from '../helpers/AuthHelper';
 import BookDropDownMenu from './BookDropDownMenu';
 import { getAuthorFullName } from '../models/Author';
 import SortModal, { SortFunction } from './SortModal';
-import FilterModal from './FilterModal';
+import FilterModal, { FilterFunction } from './FilterModal';
 
 export default function Home() {
     const [books, setBooks] = useState<Book[] | undefined>();

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import { Bookshelf } from '../models/Bookshelf';
 import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
+import { useParams } from 'react-router-dom';
 
 interface BookshelfContextType {
     bookshelves: Bookshelf[],
@@ -23,6 +24,8 @@ interface BookshelfProviderProps {
 
 export const BookshelfProvider: React.FC<BookshelfProviderProps> = ({ children }) => {
     const [bookshelves, setBookshelf] = useState<Bookshelf[]>(initialBookshelfContext.bookshelves);
+    const { userId } = useParams<{ userId?: string }>();
+
 
     const fetchBookshelfData = async (userId: number) => {
         try {
@@ -38,8 +41,9 @@ export const BookshelfProvider: React.FC<BookshelfProviderProps> = ({ children }
     };
 
     useEffect(() => {
-        const userId = GetCurrentUser()?.userId ?? -1;
-        fetchBookshelfData(userId);
+        const currentUserId = GetCurrentUser()?.userId ?? -1;
+        const maybeUserId = userId ? parseInt(userId) : undefined;
+        fetchBookshelfData(maybeUserId ?? currentUserId);
     }, []);
 
     const refreshBookshelf = (userId: number) => {

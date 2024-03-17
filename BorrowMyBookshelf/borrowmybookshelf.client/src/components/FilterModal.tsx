@@ -199,7 +199,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ message, onConfirm, onCancel,
                                 <option value={"true"}> Borrowable </option>
                                 <option value={"false"}> Not Borrowable </option>        
                             </select>
-                        </div>
+                    </div>
+
                 </div>)}
 
                 <div className="container">

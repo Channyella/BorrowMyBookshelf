@@ -23,23 +23,39 @@ namespace BorrowMyBookshelf.Server.Models.Friends
             List<(string, object?)> columnsWithValues =
                 [
                     ("requester_user_id", createFriends.RequesterUserId),
-                    ("reciever_user_id", createFriends.RecieverUserId),
+                    ("reciever_user_id", createFriends.ReceiverUserId),
                     ("accepted", createFriends.Accepted),
                     ("create_date", createFriends.CreateDate)
                 ];
+            List<(string, object?)> requesterColumnsWithValues =
+                [
+                    ("requester_user_id", createFriends.RequesterUserId),
+                    ("reciever_user_id", createFriends.ReceiverUserId),
+                ];
+            List<(string, object?)> receiverColumnsWithValues =
+                [
+                    ("reciever_user_id", createFriends.RequesterUserId),
+                    ("requester_user_id", createFriends.ReceiverUserId),
+                ];
+            List<Friends> requesterColumns = GetByColumns(requesterColumnsWithValues);
+            List<Friends> receiverColumns = GetByColumns(receiverColumnsWithValues);
+            if (requesterColumns.Count() > 0)
+            {
+                return requesterColumns[0].FriendId;
+            }
+            else if (receiverColumns.Count() > 0)
+            {
+                return receiverColumns[0].FriendId;
+            }
             return Insert(columnsWithValues);
         }
-        public void UpdateFriends (UpdateFriends updateFriends, int id)
+        public void UpdateFriends (int id)
         {
             List<(string, object?)> columnsWithValues =
                 [
-                    ("requester_user_id", updateFriends.RequesterUserId),
-                    ("reciever_user_id", updateFriends.RecieverUserId),
-                    ("accepted", updateFriends.Accepted),
-                    ("create_date", updateFriends.CreateDate)
+                    ("accepted", true)
                 ];
-            List<string> NullableCollums = updateFriends.ColumnsToNullify.Split(',').ToList();
-            Update(columnsWithValues, id, NullableCollums);
+            Update(columnsWithValues, id, []);
         }
     }
 }

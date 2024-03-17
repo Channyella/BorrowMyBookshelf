@@ -5,12 +5,15 @@ import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import { Link } from 'react-router-dom';
 import { Friend } from '../models/Friend';
 import ConfirmModal from './ConfirmModal';
+import { Put } from '../helpers/NetworkHelper';
+import OKModal from './OKModal';
 
-export default function Friends() {
+export default function FriendRequests() {
     const [friends, setFriends] = useState<Friend[] | undefined>();
     const [searchFilter, setSearchFilter] = useState<(friend: Friend) => boolean>(() => () => true);
     const currentUser = GetCurrentUser();
     const [showModal, setShowModal] = useState(-1);
+    const [showOkModal, setShowOkModal] = useState(-1);
 
     useEffect(() => {
         populateFriendData();
@@ -58,6 +61,17 @@ export default function Friends() {
         setShowModal(friendId);
     };
 
+    // Accept function & Model functions
+    const acceptFriend = async (friendId: number) => {
+        await Put(`/api/friends/${friendId}`, {});
+        setShowOkModal(friendId);
+    }
+
+    const handleOkConfirm = () => {
+        setShowOkModal(-1);
+        populateFriendData();
+    };
+
     const contents = friends === undefined
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
         : <table className="table table-striped" aria-labelledby="tableLabel">
@@ -75,15 +89,18 @@ export default function Friends() {
                         <td> {friend.friendUserInfo.lastName} </td>
                         <td> {friend.friendUserInfo.email} </td>
                         <td>
-                            <Link to={`/friends/friend-profile/${friend.friendUserInfo.userId}`}>
-                                <button className="btn btn-success nav-item ms-3"><img src="/closed_book.png" alt="View Friend Page" /> View Profile</button>
-                            </Link>
+                            {friend.isRequester ? < button onClick={() => acceptFriend(friend.friendId)} className="btn btn-warning">Accept Friend Request?</button> : < button className="btn btn-warning" disabled>Pending...</button> }
                         </td>
-
-                        <td><button onClick={() => confirmDelete(friend.friendId)} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Friend" /></button></td>
+                        {showOkModal == friend.friendId && (
+                            <OKModal
+                                message={`You are now friends with ${friend.friendUserInfo.firstName} ${friend.friendUserInfo.lastName}!`}
+                                onConfirm={handleOkConfirm}
+                                />
+                        )}
+                        <td><button onClick={() => confirmDelete(friend.friendId)} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Request" /></button></td>
                         {showModal == friend.friendId && (
                             <ConfirmModal
-                                message={`Are you sure you want to remove ${friend.friendUserInfo.firstName} ${friend.friendUserInfo.lastName} from your friends?`}
+                                message={`Are you sure you want to delete your friend request from ${friend.friendUserInfo.firstName} ${friend.friendUserInfo.lastName}?`}
                                 onConfirm={() => handleConfirm(friend.friendId)}
                                 onCancel={handleCancel}
                             />
@@ -97,30 +114,30 @@ export default function Friends() {
         <div className="wrapper">
             <nav className="navbar navbar-expand orange-bg navbar-fixed-top mini-nav">
                 <div className="container-fluid">
-                    <h2 className="navbar-header ms-3">{GetCurrentUser()?.firstName ?? ""}&apos;s Friends</h2>
+                    <h2 className="navbar-header ms-3">Friend Requests</h2>
                     <div className="nav navbar-nav left-align-btns">
-                        <Link to={`/friends/all-users` }>
-                        <button  className="btn btn-success nav-item ms-3"><img src="/view_users.png" alt="View All Users" /> View All Users</button>
+                        <Link to={`/friends`}>
+                            <button className="btn btn-success nav-item ms-3"><img src="/friends.png" alt="View Friends" /> View Friends</button>
                         </Link>
-                        <Link to={`/friends/friend-requests`}>
-                            <button className="btn btn-success nav- ms-3"> <img src="/Add_Friends.png" alt="Friend Requests" /> Friend Requests </button>
+                        <Link to={`/friends/all-users`}>
+                            <button className="btn btn-success nav-item ms-3"><img src="/view_users.png" alt="View All Users" /> View All Users</button>
                         </Link>
                     </div>
                     <div className="nav navbar-nav navbar-right">
                         <input className="nav-item custom-input"
                             type="text"
                             placeholder="Search"
-                            onChange={search }
+                            onChange={search}
                         />
                     </div>
                 </div>
             </nav>
-            {contents} 
+            {contents}
         </div>
     );
 
     async function populateFriendData() {
-        const response: AxiosResponse<Friend[]> = await axios.get(`/api/friends/friend-info/${currentUser?.userId}`, {
+        const response: AxiosResponse<Friend[]> = await axios.get(`/api/friends/friend-requests/${currentUser?.userId}`, {
             withCredentials: true,
             headers: GetAuthHeader(),
         });

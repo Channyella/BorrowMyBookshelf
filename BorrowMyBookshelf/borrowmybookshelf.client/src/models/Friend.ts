@@ -1,18 +1,20 @@
+import { User } from "./User";
+
 export class Friend {
     public friendId: number;
-    public requesterUserId: number;
-    public recieverUserId: number;
+    public friendUserInfo: User;
+    public isRequester: boolean;
     public accepted: boolean;
 
     constructor(
         friendId: number,
-        requesterUserId: number,
-        recieverUserId: number,
+        friendUserInfo: User,
+        isRequester: boolean,
         accepted: boolean,
     ) {
         this.friendId = friendId;
-        this.requesterUserId = requesterUserId;
-        this.recieverUserId = recieverUserId;
+        this.friendUserInfo = friendUserInfo;
+        this.isRequester = isRequester;
         this.accepted = accepted;
     }
 }
