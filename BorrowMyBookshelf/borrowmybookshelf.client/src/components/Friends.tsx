@@ -78,9 +78,8 @@ export default function Friends() {
                             <Link to={`/friends/friend-profile/${friend.friendUserInfo.userId}`}>
                                 <button className="btn btn-success nav-item ms-3"><img src="/closed_book.png" alt="View Friend Page" /> View Profile</button>
                             </Link>
+                            <button onClick={() => confirmDelete(friend.friendId)} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Friend" /></button>
                         </td>
-
-                        <td><button onClick={() => confirmDelete(friend.friendId)} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Friend" /></button></td>
                         {showModal == friend.friendId && (
                             <ConfirmModal
                                 message={`Are you sure you want to remove ${friend.friendUserInfo.firstName} ${friend.friendUserInfo.lastName} from your friends?`}

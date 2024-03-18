@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './style.css';
 import { useEffect, useState } from 'react';
 import { Book } from '../models/Book';
 import axios, { AxiosResponse } from 'axios';
-import { GetAuthHeader } from '../helpers/AuthHelper';
+import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import BookDropDownMenu from './BookDropDownMenu';
 import { getAuthorFullName } from '../models/Author';
 import SortModal, { SortFunction } from './SortModal';
 import FilterModal, { FilterFunction } from './FilterModal';
+import BookshelfContext from '../context/BookshelfContext';
 
 export default function Home() {
     const [books, setBooks] = useState<Book[] | undefined>();
@@ -17,10 +18,13 @@ export default function Home() {
     const [sortMethod, setSortMethod] = useState<SortFunction>(() => () => 0)
     const [showFilterModal, setShowFilterModal] = useState(false);
     const [filterMethod, setFilterMethod] = useState<FilterFunction>(() => () => true)
+    const useBookshelfContext = useContext(BookshelfContext);
+    const userId = GetCurrentUser()?.userId;
 
 
     useEffect(() => {
         populateBookData();
+        useBookshelfContext.refreshBookshelf(userId ?? -1);
     }, []);
 
     const makeBookDropDownFunction = (bookId: number) => {
@@ -98,6 +102,7 @@ export default function Home() {
                                     refreshShelf={refreshShelf}
                                     hideEditOption={true}
                                     onlyBookId={true}
+                                    showDropDown={setDropDown}
                                 />
                             )}
                         </td>

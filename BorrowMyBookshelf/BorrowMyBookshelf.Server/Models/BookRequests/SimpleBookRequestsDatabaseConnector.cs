@@ -1,57 +1,49 @@
 ﻿using MySql.Data.MySqlClient;
+using static BorrowMyBookshelf.Server.Models.BookRequests.BookRequests;
+
 
 namespace BorrowMyBookshelf.Server.Models.BookRequests
 {
-    public class BookRequestsDatabaseConnector : DatabaseConnector<BookRequests>
+    public class SimpleBookRequestsDatabaseConnector : DatabaseConnector<SimpleBookRequests>
     {
-        protected override string TableName => "book_requests JOIN users ON book_requests.borrower_user_id = users.user_id";
+        protected override string TableName => "book_requests";
         protected override string Id => "book_request_id";
         protected override List<string> NullableColumns => ["due_date", "return_date"];
-        protected override BookRequests MakeRow(MySqlDataReader reader)
+        protected override SimpleBookRequests MakeRow(MySqlDataReader reader)
         {
-            Users.Users user = new(reader.GetInt32("user_id"),
-                reader.GetString("first_name"),
-                reader.GetString("last_name"),
-                reader.GetString("email"),
-                reader.GetString("password_hash"),
-                SafeGetString("notes", reader),
-                SafeGetString("image_file_name", reader),
-                reader.GetDateTime("create_date"),
-                SafeGetDateTime("updated_date", reader)
-            );
 
-            return new BookRequests(
+            return new SimpleBookRequests(
                 reader.GetInt32("book_request_id"),
                 reader.GetInt32("user_book_id"),
                 reader.GetDateTime("request_date"),
                 ParseStatusEnum(reader.GetString("book_request_status")),
                 SafeGetDateTime("due_date", reader),
                 SafeGetDateTime("return_date", reader),
-                user
+                reader.GetInt32("borrower_user_id")
                 );
         }
 
-        private BookRequests.StatusEnum ParseStatusEnum(string status)
+        private StatusEnum ParseStatusEnum(string status)
         {
             if (status == "pending")
             {
-                return BookRequests.StatusEnum.Pending;
+                return StatusEnum.Pending;
             }
             else if (status == "accepted")
             {
-                return BookRequests.StatusEnum.Accepted;
+                return StatusEnum.Accepted;
             }
             else if (status == "denied")
             {
-                return BookRequests.StatusEnum.Denied;
+                return StatusEnum.Denied;
             }
             else if (status == "borrowed")
             {
-                return BookRequests.StatusEnum.Borrowed;
+                return StatusEnum.Borrowed;
             }
             else
             {
-                return BookRequests.StatusEnum.Returned;
+                return StatusEnum.Returned;
             }
         }
         public long CreateBookRequests(CreateBookRequests createBookRequests)

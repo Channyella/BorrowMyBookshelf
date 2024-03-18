@@ -12,6 +12,7 @@ namespace BorrowMyBookshelf.Server.Controllers
     public class BookRequestsController : ControllerBase
     {
         private readonly BookRequestsDatabaseConnector dbConnector = new BookRequestsDatabaseConnector();
+        private readonly SimpleBookRequestsDatabaseConnector simpleDbConnector = new SimpleBookRequestsDatabaseConnector();
         // GET: api/<BookRequestsController>
         [HttpGet]
         public IEnumerable<BookRequests> Get()
@@ -30,21 +31,21 @@ namespace BorrowMyBookshelf.Server.Controllers
         [HttpPost]
         public long Post([FromForm] CreateBookRequests createBookRequests)
         {
-            return dbConnector.CreateBookRequests(createBookRequests);
+            return simpleDbConnector.CreateBookRequests(createBookRequests);
         }
 
         // PUT api/<BookRequestsController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromForm] UpdateBookRequests updateBookRequests)
         {
-            dbConnector.UpdateBookRequests(updateBookRequests, id);
+            simpleDbConnector.UpdateBookRequests(updateBookRequests, id);
         }
 
         // DELETE api/<BookRequestsController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            dbConnector.DeleteById(id);
+            simpleDbConnector.DeleteById(id);
         }
     }
 }

@@ -1,3 +1,4 @@
+import { User } from "./User";
 import { UserBook } from "./UserBook";
 
 export enum BookRequestStatus {
@@ -14,7 +15,7 @@ export class BookRequest {
     public requestDate: Date;
     public bookRequestStatus: BookRequestStatus;
     public dueDate: Date;
-    public borrowerUserId: number;
+    public borrowerUser: User;
 
     constructor(
         bookRequestId: number,
@@ -22,13 +23,13 @@ export class BookRequest {
         requestDate: Date,
         bookRequestStatus: BookRequestStatus,
         dueDate: Date,
-        borrowerUserId: number
+        borrowerUser: User
     ) {
         this.bookRequestId = bookRequestId;
         this.userBook = userBook;
         this.requestDate = requestDate;
         this.bookRequestStatus = bookRequestStatus;
         this.dueDate = dueDate;
-        this.borrowerUserId = borrowerUserId;
+        this.borrowerUser = borrowerUser;
     }
 }

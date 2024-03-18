@@ -60,18 +60,21 @@ function App() {
                             <Route path='add-book/:bookshelfId' element={<CreateBook />} />
                             <Route path='update-bookshelf/:bookshelfId' element={<UpdateBookshelf />} />
                             <Route path='update-book/:userBookId' element={<UpdateBook />} />
-                            <Route path='view-books/:bookId' element={<ViewBook /> } />
+                            
                         </Route>
                         <Route path='profile' element={<Profile />} />
                         <Route path='profile/edit/:userId' element={<EditUserProfile />} />
                         <Route path='profile/add-fav-authors' element={<AddFavAuthor />} />
                         <Route path='profile/add-fav-books' element={<AddFavBook />} />
                         <Route path='profile/add-fav-genres' element={<AddFavGenre />} />
+                        <Route path='view-books/:bookId' element={<ViewBook />} />
                         <Route path='friends' element={<Friends />} />
                         <Route path='friends/all-users' element={<AllUsers />} />
                         <Route path='friends/friend-requests' element={<FriendRequests />} />
-                        <Route path='friends/friend-profile/:userId' element={<LayoutWithSidebar /> }>
+                        <Route path='friends/friend-profile/:userId/' element={<LayoutWithSidebar /> }>
                             <Route index element={<FriendProfile />} />
+                            <Route path='bookshelf-books/:bookshelfId' element={<BookshelfBooks />} />
+                            <Route path='all-user-books' element={<AllUserBooks />} />
                         </Route>
                         <Route path='borrowed' element={<Borrowed />} />                  
                     </Route>

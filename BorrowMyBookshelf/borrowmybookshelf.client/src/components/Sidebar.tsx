@@ -11,6 +11,8 @@ export default function Sidebar() {
     const { bookshelves } = useContext(BookshelfContext);
     const userInfo = GetCurrentUser();
     const [user, setUser] = useState<User | null | UserInfo>(null);
+    const linkPrefix = userId ? `/friends/friend-profile/${userId}` : '';
+    const isCurrentUser = userInfo?.userId === user?.userId;
 
     const userFirstName = user?.firstName;
     async function populateUserData(userId: number) {
@@ -35,11 +37,11 @@ export default function Sidebar() {
         : (
             <ul className="bookshelvesList" aria-labelledby="sideNavLabel">
                 <li className="bullet-style">
-                    <Link className="sidebar-link" to={`/all-user-books`}> All {user?.firstName ?? ""}&apos;s Books </Link>
+                    <Link className="sidebar-link" to={`${linkPrefix}/all-user-books`}> All {user?.firstName ?? ""}&apos;s Books </Link>
                 </li>
                 {bookshelves?.map(bookshelf =>
                     <li key={bookshelf.bookshelfId} className="bullet-style">
-                        <Link className="sidebar-link" to={`/bookshelf-books/${bookshelf.bookshelfId}`}> {bookshelf.bookshelfName} </Link>
+                        <Link className="sidebar-link" to={`${linkPrefix}/bookshelf-books/${bookshelf.bookshelfId}`}> {bookshelf.bookshelfName} </Link>
                     </li>
                 )}
             </ul>);
@@ -49,9 +51,10 @@ export default function Sidebar() {
             <h2 className="row justify-content-center text-center mt-3"> {userFirstName}&apos;s Bookshelves</h2>
                 {contents}
             <div className="text-center">
-                <Link to="/add-bookshelf">
-                    <button className="btn btn-success" >Add Bookshelf</button>
-                </Link>
+                {isCurrentUser && (
+                    <Link to="/add-bookshelf">
+                        <button className="btn btn-success" >Add Bookshelf</button>
+                    </Link>)}
             </div>
         </div>
     );

@@ -1,28 +1,55 @@
 import './style.css';
-import React, { useEffect, useState, } from 'react';
+import React, { useContext, useEffect, useState, } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
-import { UserBook } from '../models/UserBook';
+import { GetAuthHeader, GetCurrentUser, UserInfo } from '../helpers/AuthHelper';
+import { UserBook, getBorrowableStatus } from '../models/UserBook';
 import { Genre } from '../models/Genre';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import BookDropDownMenu from './BookDropDownMenu';
 import { getAuthorFullName } from '../models/Author';
 import SortModal, { SortFunction } from './SortModal';
 import FilterModal, { FilterFunction } from './FilterModal';
+import BookshelfContext from '../context/BookshelfContext';
+import { User } from '../models/User';
 
 export default function Home() {
     const [userBooks, setUserBooks] = useState<UserBook[] | undefined>();
     const [searchFilter, setSearchFilter] = useState<(userBook: UserBook) => boolean>(() => () => true);
-    const userId = GetCurrentUser()?.userId;
+    const params = useParams<{ userId?: string }>();
+    const maybeFriendUserId = params.userId ? parseInt(params.userId) : undefined;
+    const userId = maybeFriendUserId ?? GetCurrentUser()?.userId;
     const [openDropDown, setDropDown] = useState(-1);
     const [showSortModal, setShowSortModal] = useState(false);
     const [sortMethod, setSortMethod] = useState<SortFunction>(() => () => 0)
     const [showFilterModal, setShowFilterModal] = useState(false);
     const [filterMethod, setFilterMethod] = useState<FilterFunction>(() => () => true)
+    const useBookshelfContext = useContext(BookshelfContext);
+    const [user, setUser] = useState<User | null | UserInfo>(null);
+    const isCurrentUser = userId === GetCurrentUser()?.userId;
+
 
     useEffect(() => {
-        populateUserBookData();
+        populateUserBookData(userId ?? -1);
+        useBookshelfContext.refreshBookshelf(userId ?? -1);
     }, []);
+
+    async function populateUserData(userId: number) {
+        const response: AxiosResponse<User> = await axios.get(`/api/users/${userId}`, {
+            withCredentials: true,
+            headers: GetAuthHeader(),
+        });
+        setUser(response.data);
+    }
+
+    useEffect(() => {
+        if (maybeFriendUserId) {
+            populateUserData(maybeFriendUserId);
+        }
+        else {
+            setUser(GetCurrentUser);
+        }
+    }, [maybeFriendUserId]);
+
 
     enum BookFormat {
         Hardcover = 1,
@@ -88,7 +115,7 @@ export default function Home() {
         setShowFilterModal(true);
     };
 
-    const refreshShelf = () => populateUserBookData();
+    const refreshShelf = () => populateUserBookData(userId ?? -1);
 
     // Search Function 
     const search = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,7 +153,7 @@ export default function Home() {
                         <td>{userBook.book.pageCount}</td>
                         <td>{userBook.book.audioLength}</td>
                         <td>{maybeShortenGenresListDisplay(userBook.book.genres)}</td>
-                        <td>{userBook.borrowable ? "Yes" : "No"}</td>
+                        <td>{getBorrowableStatus(userBook)}</td>
                         <td>{getBookFormatString(userBook.bookFormat)}</td>
                         <td>
                             <button onClick={makeBookDropDownFunction(userBook.userBookId)} className="btn btn-warning"><img src="/vert_dropdown.png" alt="Details"></img></button>
@@ -134,8 +161,12 @@ export default function Home() {
                                 <BookDropDownMenu bookId={userBook.book.bookId}
                                     userBookId={userBook.userBookId}
                                     hideDeleteOption={true}
-                                    showUserBooksDeleteOption={true}
+                                    showUserBooksDeleteOption={isCurrentUser}
                                     refreshShelf={refreshShelf}
+                                    hideEditOption={!isCurrentUser}
+                                    hideAddToBookshelf={!isCurrentUser}
+                                    userBook={userBook}
+                                    showDropDown={setDropDown}
                                 />
                             )}
                         </td>
@@ -148,7 +179,7 @@ export default function Home() {
         <div className="wrapper">
             <nav className="navbar navbar-expand orange-bg navbar-fixed-top mini-nav">
                 <div className="container-fluid">
-                    <h2 className="navbar-header ms-3">All {GetCurrentUser()?.firstName ?? ""}&apos;s Books</h2>
+                    <h2 className="navbar-header ms-3">All {user?.firstName ?? ""}&apos;s Books</h2>
                     <div className="nav navbar-nav navbar-right">
                         <input className="nav-item custom-input"
                             type="text"
@@ -181,8 +212,8 @@ export default function Home() {
             )}
         </div>
     );
-    async function populateUserBookData() {
-        const response: AxiosResponse<UserBook[]> = await axios.get(`api/userBooks/user-id/${userId}`, {
+    async function populateUserBookData(userId: number) {
+        const response: AxiosResponse<UserBook[]> = await axios.get(`/api/userBooks/user-id/${userId}`, {
             withCredentials: true,
             headers: GetAuthHeader(),
         });

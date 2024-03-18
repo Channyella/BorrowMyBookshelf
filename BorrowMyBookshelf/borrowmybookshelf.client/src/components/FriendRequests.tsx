@@ -89,22 +89,24 @@ export default function FriendRequests() {
                         <td> {friend.friendUserInfo.lastName} </td>
                         <td> {friend.friendUserInfo.email} </td>
                         <td>
-                            {friend.isRequester ? < button onClick={() => acceptFriend(friend.friendId)} className="btn btn-warning">Accept Friend Request?</button> : < button className="btn btn-warning" disabled>Pending...</button> }
-                        </td>
-                        {showOkModal == friend.friendId && (
-                            <OKModal
-                                message={`You are now friends with ${friend.friendUserInfo.firstName} ${friend.friendUserInfo.lastName}!`}
-                                onConfirm={handleOkConfirm}
+                            {friend.isRequester ? < button onClick={() => acceptFriend(friend.friendId)} className="btn btn-warning">Accept Friend Request</button> : < button className="btn btn-warning" disabled>Pending...</button> }
+                            {showOkModal == friend.friendId && (
+                                <OKModal
+                                    message={`You are now friends with ${friend.friendUserInfo.firstName} ${friend.friendUserInfo.lastName}!`}
+                                    onConfirm={handleOkConfirm}
                                 />
-                        )}
-                        <td><button onClick={() => confirmDelete(friend.friendId)} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Request" /></button></td>
-                        {showModal == friend.friendId && (
-                            <ConfirmModal
-                                message={`Are you sure you want to delete your friend request from ${friend.friendUserInfo.firstName} ${friend.friendUserInfo.lastName}?`}
-                                onConfirm={() => handleConfirm(friend.friendId)}
-                                onCancel={handleCancel}
-                            />
-                        )}
+                            )}
+                        </td>
+                        <td>
+                            <button onClick={() => confirmDelete(friend.friendId)} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Request" /></button>
+                            {showModal == friend.friendId && (
+                                <ConfirmModal
+                                    message={`Are you sure you want to delete your friend request from ${friend.friendUserInfo.firstName} ${friend.friendUserInfo.lastName}?`}
+                                    onConfirm={() => handleConfirm(friend.friendId)}
+                                    onCancel={handleCancel}
+                                />
+                            )}
+                        </td>
                     </tr>
                 )}
             </tbody>

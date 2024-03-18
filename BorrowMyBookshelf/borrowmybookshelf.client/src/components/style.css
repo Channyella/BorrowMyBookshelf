@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
 
 .create-book {
-    margin: 15px 0px 15px 0px;
+    padding: 15px 0px 15px 0px;
 }
 
 div .card-body {
@@ -307,7 +307,7 @@ button.btn.btn-danger:hover, button.btn.btn-danger:active {
 }
 
 .outlet-content {
-    min-height: 100%;
+    height: 100%;
 }
 
 .sacramento-regular {

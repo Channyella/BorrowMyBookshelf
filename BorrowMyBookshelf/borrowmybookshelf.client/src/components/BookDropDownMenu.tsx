@@ -1,13 +1,18 @@
 import React, { useContext, useState } from 'react';
 import ConfirmModal from './ConfirmModal';
 import axios from 'axios';
-import { GetAuthHeader } from '../helpers/AuthHelper';
+import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import BookDeleteCustomAlert from './BookDeleteCustomAlert';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserBook } from '../models/UserBook';
+import OKModal from './OKModal';
+import ModalButton, { ModalType } from './ModalButton';
+import { Post, Put } from '../helpers/NetworkHelper';
+import { BookRequestStatus } from '../models/BookRequest';
 
 interface BookDropDownMenuProps {
     bookId?: number;
+    userBook?: UserBook;
     userBookId?: number;
     bookshelfBookId?: number;
     hideDeleteOption?: boolean;
@@ -15,12 +20,15 @@ interface BookDropDownMenuProps {
     refreshShelf: () => Promise<void>;
     hideEditOption?: boolean;
     onlyBookId?: boolean;
+    hideAddToBookshelf?: boolean;
+    showDropDown: ((id: number) => void);
 }
 
-const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId, bookshelfBookId, hideDeleteOption, showUserBooksDeleteOption, refreshShelf, hideEditOption, onlyBookId }) => {
+const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId, bookshelfBookId, hideDeleteOption, showUserBooksDeleteOption, refreshShelf, hideEditOption, onlyBookId, hideAddToBookshelf, userBook, showDropDown }) => {
     const [showModal, setShowModal] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
+    const isCurrentUser = !!userBook && userBook.userId === GetCurrentUser()?.userId;
 
     // Delete book from BookshelfBooks (delete from specific shelf)
     const deleteBook = async (bookshelfBookId: number) => {
@@ -30,6 +38,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
+            showDropDown(-1);
             return true;
         } catch (error) {
             console.error('Error deleting book from bookshelf:', error);
@@ -44,11 +53,13 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
             if (isDeleted) {
                 await refreshShelf();
             }
+            showDropDown(-1);
         }
     };
 
     const handleCancel = () => {
         setShowModal(false);
+        showDropDown(-1);
     };
 
     const confirmDelete = () => {
@@ -57,6 +68,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
 
     const handleAlertClose = () => {
         setShowAlert(false);
+        showDropDown(-1);
     };
 
     // Delete book from userBooks (not on user anymore)
@@ -67,6 +79,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
+            showDropDown(-1);
             return true;
         } catch (error) {
             console.error('Error deleting book from bookshelf:', error);
@@ -78,6 +91,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
 
     const updateUserBook = async () => {
         if (userBookId) {
+            showDropDown(-1);
             navigate(`/update-book/${userBookId}`);
         }
     };
@@ -89,6 +103,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
             if (isDeleted) {
                 await refreshShelf();
             }
+            showDropDown(-1);
         }
     };
 
@@ -107,7 +122,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                         <button className="btn btn-warning">Add to Bookshelf</button>
                         </Link>
                     </div>)}
-                {bookId && userBookId &&
+                {bookId && userBookId && !hideAddToBookshelf &&
                     (<div>
                     <Link to={`/add-to-bookshelf/user-books/${userBookId}`}>
                         <button className="btn btn-warning">Add to Bookshelf</button>
@@ -127,6 +142,66 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                                 onCancel={handleCancel}/>
                     )}
                     </div>)}
+                {!isCurrentUser && userBook && userBook.bookRequest?.borrowerUser.userId != GetCurrentUser()?.userId && userBook.borrowable &&
+                    (<ModalButton buttonText="Request Book"
+                        modalType={ModalType.ConfirmModal}
+                        message={`Are you sure you want to borrow ${userBook.book.title}?`}
+                    onConfirm={async () => {
+                        await Post(`/api/bookRequests`, {
+                            userBookId: userBook.userBookId,
+                            borrowerUserId: GetCurrentUser()?.userId
+                        });
+                        await refreshShelf();
+                        showDropDown(-1);
+                    } }
+                    ></ModalButton>)}
+                {isCurrentUser && userBook && userBook.userId === GetCurrentUser()?.userId && userBook.bookRequest?.bookRequestStatus === BookRequestStatus.Pending &&
+                    (<ModalButton buttonText="Handle Request"
+                    modalType={ModalType.ConfirmModal}
+                    message={`Accept borrow request for ${userBook.book.title} from ${userBook.bookRequest.borrowerUser.firstName} ${userBook.bookRequest.borrowerUser.lastName}?`}
+                    onConfirm={async () => {
+                        await Put(`/api/bookRequests/${userBook.bookRequest?.bookRequestId}`, {
+                            bookRequestStatus: BookRequestStatus.Accepted
+                        });
+                        await refreshShelf();
+                        showDropDown(-1);
+                    }}
+                    onCancel={async () => {
+                        await Put(`/api/bookRequests/${userBook.bookRequest?.bookRequestId}`, {
+                            bookRequestStatus: BookRequestStatus.Denied
+                        });
+                        await refreshShelf();
+                        showDropDown(-1);
+                    }}
+                        cancelText="Deny"
+                        confirmText="Accept"
+                    ></ModalButton>)}
+
+                {isCurrentUser && userBook && userBook.userId === GetCurrentUser()?.userId && userBook.bookRequest?.bookRequestStatus === BookRequestStatus.Accepted &&
+                    (<ModalButton buttonText="Lend Book"
+                        modalType={ModalType.ConfirmModal}
+                        message={`Have you given ${userBook.book.title} to ${userBook.bookRequest.borrowerUser.firstName} ${userBook.bookRequest.borrowerUser.lastName}?`}
+                        onConfirm={async () => {
+                            await Put(`/api/bookRequests/${userBook.bookRequest?.bookRequestId}`, {
+                                bookRequestStatus: BookRequestStatus.Borrowed
+                            });
+                            await refreshShelf();
+                            showDropDown(-1);
+                        }}
+                    ></ModalButton>)}
+
+                {isCurrentUser && userBook && userBook.userId === GetCurrentUser()?.userId && userBook.bookRequest?.bookRequestStatus === BookRequestStatus.Borrowed &&
+                    (<ModalButton buttonText="Mark as Returned"
+                        modalType={ModalType.ConfirmModal}
+                        message={`Have you gotten ${userBook.book.title} back from ${userBook.bookRequest.borrowerUser.firstName} ${userBook.bookRequest.borrowerUser.lastName}?`}
+                        onConfirm={async () => {
+                            await Put(`/api/bookRequests/${userBook.bookRequest?.bookRequestId}`, {
+                                bookRequestStatus: BookRequestStatus.Returned
+                            });
+                            await refreshShelf();
+                            showDropDown(-1);
+                        }}
+                    ></ModalButton>)}
                 {showUserBooksDeleteOption && userBookId &&
                     (<div>
                         <button onClick={confirmDelete} className="btn btn-warning" >Delete Book</button>

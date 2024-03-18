@@ -11,9 +11,14 @@ import BookDropDownMenu from './BookDropDownMenu';
 import { getAuthorFullName } from '../models/Author';
 import SortModal, { SortFunction } from './SortModal';
 import FilterModal, { FilterFunction } from './FilterModal';
+import { getBorrowableStatus } from '../models/UserBook';
 
 export default function BookshelfBooks() {
     const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
+    const currentUserId = GetCurrentUser()?.userId;
+    const maybeFriendIdString = useParams<{ userId?: string }>().userId;
+    const userId = maybeFriendIdString ? parseInt(maybeFriendIdString) : currentUserId;
+    const isCurrentUser = userId === currentUserId;
     const [bookshelf, setBookshelf] = useState<Bookshelf | null>(null);
     const [showModal, setShowModal] = useState(false);
     const { refreshBookshelf } = useContext(BookshelfContext);
@@ -26,6 +31,7 @@ export default function BookshelfBooks() {
     const [showFilterModal, setShowFilterModal] = useState(false);
     const [filterMethod, setFilterMethod] = useState<FilterFunction>(() => () => true)
 
+
     const fetchBookshelf = async (id: string) => {
         try {
             const response = await axios.get<Bookshelf>(`/api/bookshelves/${id}`,
@@ -34,6 +40,8 @@ export default function BookshelfBooks() {
                     headers: GetAuthHeader(),
                 });
             setBookshelf(response.data);
+            console.log(response.data);
+            console.log(new Bookshelf(response.data.bookshelfId, response.data.bookshelfName, response.data.userId));
         } catch (error) {
             console.error('Error fetching bookshelf data:', error);
         }
@@ -43,6 +51,7 @@ export default function BookshelfBooks() {
         if (bookshelfId) {
             fetchBookshelf(bookshelfId);
         }
+        setDropDown(-1);
     }, [bookshelfId]);
 
     useEffect(() => {
@@ -181,7 +190,7 @@ export default function BookshelfBooks() {
                         <td>{booksOnBookshelf.userBook.book.pageCount}</td>
                         <td>{booksOnBookshelf.userBook.book.audioLength}</td>
                         <td>{maybeShortenGenresListDisplay(booksOnBookshelf.userBook.book.genres)}</td>
-                        <td>{booksOnBookshelf.userBook.borrowable ? "Yes" : "No"}</td>
+                        <td>{getBorrowableStatus(booksOnBookshelf.userBook)}</td>
                         <td>{getBookFormatString(booksOnBookshelf.userBook.bookFormat)}</td>
                         <td>
                             <button onClick={makeBookDropDownFunction(booksOnBookshelf.userBook.userBookId)} className="btn btn-warning"><img src="/vert_dropdown.png" alt="Details"></img></button>
@@ -189,7 +198,12 @@ export default function BookshelfBooks() {
                                 <BookDropDownMenu bookId={booksOnBookshelf.userBook.book.bookId}
                                     userBookId={booksOnBookshelf.userBook.userBookId}
                                     bookshelfBookId={booksOnBookshelf.bookshelfBookId}
-                                    refreshShelf={refreshShelf }
+                                    refreshShelf={refreshShelf}
+                                    hideEditOption={!isCurrentUser}
+                                    hideAddToBookshelf={!isCurrentUser}
+                                    hideDeleteOption={!isCurrentUser}
+                                    userBook={booksOnBookshelf.userBook}
+                                    showDropDown={setDropDown}
                                 />
                             )}
                         </td>
@@ -203,12 +217,13 @@ export default function BookshelfBooks() {
             <nav className="navbar navbar-expand orange-bg navbar-fixed-top mini-nav">
                 <div className="container-fluid">
                     <h2 className="navbar-header ms-3">{bookshelf?.bookshelfName}</h2>
-                    <div className="nav navbar-nav left-align-btns">
-                        <Link to={`/update-bookshelf/${bookshelfId}`}>
-                            <button className="btn btn-success nav- ms-3"> <img src="/edit.png" alt="Edit Name" /> </button>
-                        </Link>
-                        <button onClick={confirmDelete} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Bookshelf" /></button>
-                    </div>
+                    {isCurrentUser && (
+                        <div className="nav navbar-nav left-align-btns">
+                            <Link to={`/update-bookshelf/${bookshelfId}`}>
+                                <button className="btn btn-success nav- ms-3"> <img src="/edit.png" alt="Edit Name" /> </button>
+                            </Link>
+                            <button onClick={confirmDelete} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Bookshelf" /></button>
+                        </div>)}
                         <div className="nav navbar-nav navbar-right">
                         <input className="nav-item custom-input"
                             type="text"

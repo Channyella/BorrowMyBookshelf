@@ -5,16 +5,18 @@ interface ConfirmModalProps {
     message: string;
     onConfirm: () => void;
     onCancel: () => void;
+    confirmText?: string;
+    cancelText?: string;
 }
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ message, onConfirm, onCancel }) => {
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ message, onConfirm, onCancel, confirmText, cancelText }) => {
     return (
         <div className={`confirm-modal`}>
             <div className="modal-content">
                 <p>{message}</p>
                 <div className="buttons">
-                    <button onClick={onConfirm}>Yes</button>
-                    <button onClick={onCancel}>No</button>
+                    <button onClick={onConfirm}>{confirmText ?? "Yes"}</button>
+                    <button onClick={onCancel}>{cancelText ?? "No"}</button>
                 </div>
             </div>
         </div>
