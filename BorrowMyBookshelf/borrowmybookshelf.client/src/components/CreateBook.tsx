@@ -6,6 +6,7 @@ import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import { Bookshelf } from '../models/Bookshelf';
 import { BookFormat } from '../models/UserBook';
 import { AddBookToBookshelf } from '../helpers/BookHelper';
+import OKModal from './OKModal';
 
 export default function CreateBook() {
     const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
@@ -25,6 +26,7 @@ export default function CreateBook() {
     const charCount: number = description.length;
     const maxLength: number = 2500;
     const [genreList, setGenreList] = useState<string[]>([]);
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
@@ -58,9 +60,12 @@ export default function CreateBook() {
         setBorrowable(event.target.value === 'true');
     };
 
-    const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newText: string = event.target.value;
         if (newText.length <= maxLength) {
+            setDescription(newText);
+        } else {
+            setShowModal(true);
             setDescription(newText);
         }
     };
@@ -78,7 +83,7 @@ export default function CreateBook() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            setBookshelf(response.data);
+            setBookshelf(new Bookshelf(response.data));
         } catch (error) {
             console.error('Error fetching bookshelf data:', error);
         }
@@ -89,6 +94,9 @@ export default function CreateBook() {
             fetchBookshelf(bookshelfId);
         }
     }, [bookshelfId]);
+    async function goBack() {
+        navigate(-1);
+    }
 
     async function createBook() {
         await AddBookToBookshelf({
@@ -109,8 +117,17 @@ export default function CreateBook() {
     }
 
     return (
-        <div className="create-book outlet-content template d-flex justify-content-center align-items-center yellow-bg">
-            <div className='form-container-forms p-5 rounded bg-white'>
+        <div className="create-book outlet-content template yellow-bg ">
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-12">
+                        <button onClick={goBack} className="btn btn-success mt-3 ms-3"> <img src="/back_arrow.png" alt="Go Back" /> </button>
+                    </div>
+                </div>
+                <div className="row d-flex justify-content-center align-items-center">
+                    <div className="col-lg-12 ">
+                        <div className="d-flex justify-content-center align-items-center">
+                            <div className='form-container-forms p-5 rounded bg-white'>
                 <form id="new-book">
                     <h3 className="text-center">Create New Book</h3>
                     <div className='mb-2'>
@@ -207,14 +224,18 @@ export default function CreateBook() {
 
                     <div className='mb-2'>
                         <label htmlFor="description">Summary:</label>
-                        <input type="text"
+                        <textarea 
                             placeholder="Enter Summary"
                             className='form-control'
                             name="description"
                             value={description}
                             onChange={handleDescriptionChange} />
                         <p className="text-end"> Character Count: {charCount}/{maxLength}</p>
-                    </div>
+                                    </div>
+                                    {showModal && (
+                                        <OKModal message="Character count exceeds allowed amount."
+                                            onConfirm={() => setShowModal(false)} />
+                                    )}
 
                     <div className='mb-2'>
                         <label htmlFor="borrowable">Borrowable?:</label>
@@ -238,7 +259,11 @@ export default function CreateBook() {
                     </div>
                 </form>
                 <div className='d-grid'>
-                    <button className='btn btn-primary' onClick={createBook}>Create Book</button>
+                                    <button className='btn btn-primary' onClick={createBook} disabled={charCount > maxLength}>Create Book</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

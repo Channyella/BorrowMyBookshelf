@@ -23,8 +23,11 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
                     WHEN ""pending"" THEN 3
                     WHEN ""returned"" THEN 4
                     WHEN ""denied"" THEN 5 END)
-                AS row_num FROM book_requests 
-                    JOIN users ON book_requests.borrower_user_id = users.user_id) 
+                AS row_num FROM book_requests
+                    JOIN users ON book_requests.borrower_user_id = users.user_id
+                    WHERE book_requests.book_request_status IN (""borrowed"", ""accepted"",
+                    ""pending"")
+                ) 
                 as most_recent_book_request
                 ON user_books.user_book_id = most_recent_book_request.user_book_id 
                 AND row_num = 1";
@@ -80,7 +83,7 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
                 ParseStatusEnum(reader.GetString("book_request_status")),
                 SafeGetDateTime("due_date", reader),
                 SafeGetDateTime("return_date", reader),
-                new Users.Users(reader.GetInt32("user_id"),
+                new Users.Users(reader.GetInt32("borrower_user_id"),
                     reader.GetString("user_first_name"),
                     reader.GetString("user_last_name"),
                     reader.GetString("email"),
@@ -130,6 +133,11 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
         public List<DetailedUserBooks> GetUserBooksByUserId(int userId)
         {
             return GetByForeignKey("user_books.user_id", userId);
+        }
+
+        public List<DetailedUserBooks> GetBookRequestsByBorrowerUserId(int borrowerUserId)
+        {
+            return GetByForeignKey("borrower_user_id", borrowerUserId);
         }
     }
 }

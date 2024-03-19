@@ -22,10 +22,13 @@ export default function AddBookshelf() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            setBookshelf(response.data);
+            setBookshelf( new Bookshelf(response.data));
         } catch (error) {
             console.error('Error fetching bookshelf data:', error);
         }
+    }
+    async function goBack() {
+        navigate(-1);
     }
 
     useEffect(() => {
@@ -57,17 +60,30 @@ export default function AddBookshelf() {
     };
 
     return (
-        <div className="create-book outlet-content template d-flex justify-content-center align-items-center yellow-bg">
-            <div className='form-container-forms p-5 rounded bg-white'>
-                <form id="new-book">
-                    <h3 className="text-center">Update Bookshelf</h3>
-                    <div className='mb-2'>
-                        <label htmlFor="name">Name</label>
-                        <input type="text" value={name} placeholder={bookshelf?.bookshelfName} className='form-control' name="name" onChange={handleNameChange} />
+        <div className="create-book outlet-content template yellow-bg ">
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-12">
+                        <button onClick={goBack} className="btn btn-success mt-3 ms-3"> <img src="/back_arrow.png" alt="Go Back" /> </button>
                     </div>
-                </form>
-                <div className='d-grid'>
-                    <button className='btn btn-primary' onClick={updateBookshelf}>Create Bookshelf</button>
+                </div>
+                <div className="row d-flex justify-content-center align-items-center">
+                    <div className="col-lg-12 ">
+                        <div className="d-flex justify-content-center align-items-center">
+                            <div className='form-container-forms p-5 rounded bg-white'>
+                                <form id="new-book" >
+                                    <h3 className="text-center">Update Bookshelf</h3>
+                                    <div className='mb-2'>
+                                        <label className="text-align-start" htmlFor="name">Name</label>
+                                        <input type="text" value={name} placeholder={bookshelf?.bookshelfName} className='form-control' name="name" onChange={handleNameChange} />
+                                    </div>
+                            </form>
+                            <div className='d-grid'>
+                                <button className='btn btn-primary' onClick={updateBookshelf}>Create Bookshelf</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

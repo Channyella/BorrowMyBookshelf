@@ -3,13 +3,9 @@ export class Tags {
     public userId: number;
     public title: string;
 
-    constructor(
-        tagId: number,
-        userId: number,
-        title: string,
-    ) {
-        this.tagId = tagId;
-        this.userId = userId;
-        this.title = title;
+    constructor(tag: Tags) {
+        this.tagId = tag.tagId;
+        this.userId = tag.userId;
+        this.title = tag.title;
     }
 }

@@ -51,11 +51,11 @@ export default function AddBookshelf() {
                 <div className="row d-flex justify-content-center align-items-center">
                     <div className="col-lg-12 ">
                         <div className="d-flex justify-content-center align-items-center">
-                         <div className='form-container-forms p-5 rounded bg-white text-center'>
-                            <form id="new-book" className="text-center">
-                                <h3>Create New Bookshelf</h3>
+                         <div className='form-container-forms p-5 rounded bg-white'>
+                            <form id="new-book">
+                                    <h3 className="text-center">Create New Bookshelf</h3>
                                 <div className='mb-2'>
-                                    <label htmlFor="name">Name</label>
+                                        <label className="text-align-start" htmlFor="name">Name</label>
                                     <input type="text" value={name} placeholder="Enter Name" className='form-control' name="name" onChange={handleNameChange} />
                                 </div>
                                 <div className='d-grid'>

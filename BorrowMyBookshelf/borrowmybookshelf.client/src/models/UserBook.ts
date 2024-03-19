@@ -15,20 +15,25 @@ export class UserBook {
     public bookFormat: BookFormat;
     public userId: number;
 
-    constructor(
-        userBookId: number,
-        book: Book,
-        borrowable: boolean,
-        bookRequest: BookRequest,
-        bookFormat: BookFormat,
-        userId: number
-    ) {
-        this.userBookId = userBookId;
-        this.book = book;
-        this.borrowable = borrowable;
-        this.bookRequest = bookRequest;
-        this.bookFormat = bookFormat;
-        this.userId = userId;
+    constructor(userBook: UserBook) {
+        this.userBookId = userBook.userBookId;
+        this.book = new Book(userBook.book);
+        this.borrowable = userBook.borrowable;
+        this.bookRequest = userBook.bookRequest ? new BookRequest(userBook.bookRequest) : undefined;
+        this.bookFormat = userBook.bookFormat;
+        this.userId = userBook.userId;
+    }
+
+    public getBorrowableStatus() {
+        if (!this.borrowable) {
+            return BorrowableStatus.NotBorrowable;
+        }
+        switch (this.bookRequest?.bookRequestStatus) {
+            case BookRequestStatus.Pending: return BorrowableStatus.Pending;
+            case BookRequestStatus.Accepted: return BorrowableStatus.Accepted;
+            case BookRequestStatus.Borrowed: return BorrowableStatus.Borrowed;
+            default: return BorrowableStatus.Available;
+        }
     }
 }
 

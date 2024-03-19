@@ -5,6 +5,7 @@ import axios from 'axios';
 import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import { BookFormat, UserBook } from '../models/UserBook';
 import { UpdateBookOnBookshelf } from '../helpers/UpdateBookHelper';
+import OKModal from './OKModal';
 
 export default function UpdateBook() {
     const userBookId = useParams<{ userBookId: string }>().userBookId ?? "";
@@ -26,6 +27,7 @@ export default function UpdateBook() {
     const charCount: number = description.length;
     const maxLength: number = 2500;
     const [genreList, setGenreList] = useState<string[]>([]);
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     // Form field Change Event Functions
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,11 +62,14 @@ export default function UpdateBook() {
         setBorrowable(event.target.value === 'true');
     };
 
-    const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newText: string = event.target.value;
         if (newText.length <= maxLength) {
             setDescription(newText);
-        }
+        } else {
+            setShowModal(true);
+            setDescription(newText);
+        }        
     };
 
     const handleGenreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +86,7 @@ export default function UpdateBook() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            const userBook = response.data;
+            const userBook = new UserBook(response.data);
             setUserBook(userBook);
             setTitle(userBook.book.title);
             setFirstName(userBook.book.author.firstName);
@@ -109,7 +114,10 @@ export default function UpdateBook() {
         }
     }, [userBookId]);
 
-    // Change this to update the bookshelf-book using the id of the book
+    async function goBack() {
+        navigate(-1);
+    }
+
     async function updateBook() {
         await UpdateBookOnBookshelf({
             userBookId: parseInt(userBookId),
@@ -131,8 +139,17 @@ export default function UpdateBook() {
     }
 
     return (
-        <div className="create-book outlet-content template d-flex justify-content-center align-items-center yellow-bg">
-            <div className='form-container-forms p-5 rounded bg-white'>
+        <div className="create-book outlet-content template yellow-bg ">
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-12">
+                        <button onClick={goBack} className="btn btn-success mt-3 ms-3"> <img src="/back_arrow.png" alt="Go Back" /> </button>
+                    </div>
+                </div>
+                <div className="row d-flex justify-content-center align-items-center">
+                    <div className="col-lg-12 ">
+                        <div className="d-flex justify-content-center align-items-center">
+                            <div className='form-container-forms p-5 rounded bg-white'>
                 <form id="new-book">
                     <h3 className="text-center">Create New Book</h3>
                     <div className='mb-2'>
@@ -228,14 +245,18 @@ export default function UpdateBook() {
 
                     <div className='mb-2'>
                         <label htmlFor="description">Summary:</label>
-                        <input type="text"
+                        <textarea type="text"
                             placeholder="Enter Summary"
                             className='form-control'
                             name="description"
                             value={description}
                             onChange={handleDescriptionChange} />
                         <p className="text-end"> Character Count: {charCount}/{maxLength}</p>
-                    </div>
+                                    </div>
+                                    {showModal && (
+                                        <OKModal message="Character count exceeds allowed amount."
+                                            onConfirm={() => setShowModal(false) } />
+                                    )}
                     
                     <div className='mb-2'>
                         <label htmlFor="borrowable">Borrowable?:</label>
@@ -260,7 +281,11 @@ export default function UpdateBook() {
                     </div>
                 </form>
                 <div className='d-grid'>
-                    <button className='btn btn-primary' onClick={updateBook}>Edit Book</button>
+                                    <button className='btn btn-primary' onClick={updateBook} disabled={charCount > maxLength}>Edit Book</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -180,6 +180,12 @@ export default function Home() {
             <nav className="navbar navbar-expand orange-bg navbar-fixed-top mini-nav">
                 <div className="container-fluid">
                     <h2 className="navbar-header ms-3">All {user?.firstName ?? ""}&apos;s Books</h2>
+                    {!isCurrentUser && (
+                        <div className="nav navbar-nav left-align-btns">
+                            <Link to={`/friends/friend-profile/${userId}`}>
+                                <button className="btn btn-success nav- ms-3"> <img src="/user.png" alt="View Friend Profile" /> View Profile </button>
+                            </Link>
+                        </div>)}
                     <div className="nav navbar-nav navbar-right">
                         <input className="nav-item custom-input"
                             type="text"

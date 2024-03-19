@@ -5,13 +5,9 @@ export class BooksOnBookshelf {
     public bookshelfId: number;
     public userBook: UserBook;
 
-    constructor(
-        bookshelfBookId: number,
-        bookshelfId: number,
-        userBook: UserBook,
-    ) {
-        this.bookshelfBookId = bookshelfBookId;
-        this.bookshelfId = bookshelfId;
-        this.userBook = userBook;
+    constructor(booksOnBookshelf: BooksOnBookshelf) {
+        this.bookshelfBookId = booksOnBookshelf.bookshelfBookId;
+        this.bookshelfId = booksOnBookshelf.bookshelfId;
+        this.userBook = new UserBook(booksOnBookshelf.userBook);
     }
 }

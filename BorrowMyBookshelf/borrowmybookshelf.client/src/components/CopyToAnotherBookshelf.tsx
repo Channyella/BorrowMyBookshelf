@@ -28,7 +28,7 @@ export default function CopyToAnotherBookshelf() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            const userBook = response.data
+            const userBook = new UserBook(response.data);
             setTitle(userBook.book.title);
             setUserBook(userBook);
             setName(getAuthorFullName(userBook.book.author));

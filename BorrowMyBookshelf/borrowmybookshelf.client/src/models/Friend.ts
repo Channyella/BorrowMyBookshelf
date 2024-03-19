@@ -6,15 +6,10 @@ export class Friend {
     public isRequester: boolean;
     public accepted: boolean;
 
-    constructor(
-        friendId: number,
-        friendUserInfo: User,
-        isRequester: boolean,
-        accepted: boolean,
-    ) {
-        this.friendId = friendId;
-        this.friendUserInfo = friendUserInfo;
-        this.isRequester = isRequester;
-        this.accepted = accepted;
+    constructor(friend: Friend) {
+        this.friendId = friend.friendId;
+        this.friendUserInfo = friend.friendUserInfo;
+        this.isRequester = friend.isRequester;
+        this.accepted = friend.accepted;
     }
 }

@@ -76,7 +76,8 @@ function App() {
                             <Route path='bookshelf-books/:bookshelfId' element={<BookshelfBooks />} />
                             <Route path='all-user-books' element={<AllUserBooks />} />
                         </Route>
-                        <Route path='borrowed' element={<Borrowed />} />                  
+                        <Route path='borrowed' element={<Borrowed isBorrowing={true} />} /> 
+                        <Route path='lending' element={<Borrowed isBorrowing={false} />} /> 
                     </Route>
                     <Route path='*' element={<Navigate to="/" />} />
                 </Routes>

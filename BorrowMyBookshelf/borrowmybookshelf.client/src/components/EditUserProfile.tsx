@@ -141,7 +141,7 @@ export default function EditUserProfile() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            const user = response.data;
+            const user = new User(response.data);
             setNotes(user.notes ?? "");
         } catch (error) {
             console.error("Error fetching user notes:", error);

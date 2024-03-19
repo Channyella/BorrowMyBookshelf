@@ -12,25 +12,15 @@ export class Book {
     public audioLength: number | undefined;
     public genres: Genre[];
 
-    constructor(
-        bookId: number,
-        title: string,
-        author: Author,
-        pageCount: number | undefined,
-        createDate: Date,
-        image_file_name: string | undefined,
-        description: string | undefined,
-        audioLength: number | undefined,
-        genres: Genre[]
-    ) {
-        this.bookId = bookId;
-        this.title = title;
-        this.author = author;
-        this.pageCount = pageCount;
-        this.createDate = createDate;
-        this.image_file_name = image_file_name;
-        this.description = description;
-        this.audioLength = audioLength;
-        this.genres = genres;
+    constructor(book: Book) {
+        this.bookId = book.bookId;
+        this.title = book.title;
+        this.author = new Author(book.author);
+        this.pageCount = book.pageCount;
+        this.createDate = book.createDate;
+        this.image_file_name = book.image_file_name;
+        this.description = book.description;
+        this.audioLength = book.audioLength;
+        this.genres = book.genres.map(genre => new Genre(genre));
     }
 }

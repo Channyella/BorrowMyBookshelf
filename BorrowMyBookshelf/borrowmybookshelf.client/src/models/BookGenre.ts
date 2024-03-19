@@ -3,13 +3,9 @@ export class BookGenre {
     public bookId: number;
     public genreId: number;
 
-    constructor(
-        bookGenreId: number,
-        bookId: number,
-        genreId: number
-    ) {
-        this.bookGenreId= bookGenreId;
-        this.bookId = bookId;
-        this.genreId = genreId;
+    constructor(bookGenre: BookGenre) {
+        this.bookGenreId= bookGenre.bookGenreId;
+        this.bookId = bookGenre.bookId;
+        this.genreId = bookGenre.genreId;
     }
 }

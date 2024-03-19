@@ -79,14 +79,14 @@ export default function Friends() {
                                 <button className="btn btn-success nav-item ms-3"><img src="/closed_book.png" alt="View Friend Page" /> View Profile</button>
                             </Link>
                             <button onClick={() => confirmDelete(friend.friendId)} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Friend" /></button>
+                            {showModal == friend.friendId && (
+                                <ConfirmModal
+                                    message={`Are you sure you want to remove ${friend.friendUserInfo.firstName} ${friend.friendUserInfo.lastName} from your friends?`}
+                                    onConfirm={() => handleConfirm(friend.friendId)}
+                                    onCancel={handleCancel}
+                                />
+                            )}
                         </td>
-                        {showModal == friend.friendId && (
-                            <ConfirmModal
-                                message={`Are you sure you want to remove ${friend.friendUserInfo.firstName} ${friend.friendUserInfo.lastName} from your friends?`}
-                                onConfirm={() => handleConfirm(friend.friendId)}
-                                onCancel={handleCancel}
-                            />
-                        )}
                     </tr>
                 )}
             </tbody>
@@ -98,8 +98,11 @@ export default function Friends() {
                 <div className="container-fluid">
                     <h2 className="navbar-header ms-3">{GetCurrentUser()?.firstName ?? ""}&apos;s Friends</h2>
                     <div className="nav navbar-nav left-align-btns">
-                        <Link to={`/friends/all-users` }>
-                        <button  className="btn btn-success nav-item ms-3"><img src="/view_users.png" alt="View All Users" /> View All Users</button>
+                        <Link to={`/friends`}>
+                            <button className="btn btn-success nav-item ms-3"><img src="/friends.png" alt="View Friends" /> View Friends</button>
+                        </Link>
+                        <Link to={`/friends/all-users`}>
+                            <button className="btn btn-success nav-item ms-3"><img src="/view_users.png" alt="View All Users" /> View All Users</button>
                         </Link>
                         <Link to={`/friends/friend-requests`}>
                             <button className="btn btn-success nav- ms-3"> <img src="/Add_Friends.png" alt="Friend Requests" /> Friend Requests </button>

@@ -28,7 +28,7 @@ namespace BorrowMyBookshelf.Server.Controllers
             return dbConnector.GetById(id);
         }
 
-        //Get api/<UserBooksController>/user-id/5
+        //Get api/<UserBooksController>/bookshelf/5
         [HttpGet("bookshelf/{id}")]
         public IEnumerable<UserBooksOnBookshelf> GetAllByUserId(int id)
         {

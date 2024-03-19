@@ -5,13 +5,9 @@ export class FavBook {
     public userId: number;
     public book: Book;
 
-    constructor(
-        favBookId: number,
-        userId: number,
-        book: Book,
-    ) {
-        this.favBookId = favBookId;
-        this.userId = userId;
-        this.book = book;
+    constructor(favBook: FavBook) {
+        this.favBookId = favBook.favBookId;
+        this.userId = favBook.userId;
+        this.book = new Book(favBook.book);
     }
 }

@@ -86,6 +86,11 @@ export default function FriendProfile() {
             <nav className="navbar navbar-expand orange-bg navbar-fixed-top mini-nav">
                 <div className="container-fluid">
                     <h2 className="navbar-header ms-3">{user?.firstName ?? ""} {user?.lastName ?? ""}&apos;s Profile</h2>
+                    <div className="nav navbar-nav left-align-btns">
+                    <Link to="/friends">
+                        <button className="btn btn-success nav- ms-3"> <img src="/back_arrow.png" alt="Go Back" /> Back to Friends </button>
+                        </Link>
+                    </div>
                 </div>
             </nav>
             <main>

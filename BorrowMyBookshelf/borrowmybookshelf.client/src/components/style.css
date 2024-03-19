@@ -307,7 +307,7 @@ button.btn.btn-danger:hover, button.btn.btn-danger:active {
 }
 
 .outlet-content {
-    height: 100%;
+    min-height: 100%;
 }
 
 .sacramento-regular {

@@ -12,6 +12,7 @@ import { getAuthorFullName } from '../models/Author';
 import SortModal, { SortFunction } from './SortModal';
 import FilterModal, { FilterFunction } from './FilterModal';
 import { getBorrowableStatus } from '../models/UserBook';
+import OKModal from './OKModal';
 
 export default function BookshelfBooks() {
     const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
@@ -30,6 +31,7 @@ export default function BookshelfBooks() {
     const [sortMethod, setSortMethod] = useState<SortFunction>(() => () => 0)
     const [showFilterModal, setShowFilterModal] = useState(false);
     const [filterMethod, setFilterMethod] = useState<FilterFunction>(() => () => true)
+    const [showFailedDeleteModal, setShowFailedDeleteModal] = useState(false);
 
 
     const fetchBookshelf = async (id: string) => {
@@ -39,9 +41,7 @@ export default function BookshelfBooks() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            setBookshelf(response.data);
-            console.log(response.data);
-            console.log(new Bookshelf(response.data.bookshelfId, response.data.bookshelfName, response.data.userId));
+            setBookshelf(new Bookshelf(response.data));
         } catch (error) {
             console.error('Error fetching bookshelf data:', error);
         }
@@ -79,6 +79,10 @@ export default function BookshelfBooks() {
             if (isDeleted) {
                 await refreshBookshelf(GetCurrentUser()?.userId ?? -1);
                 navigate(`/`);
+            }
+            else {
+                console.log("Failed To Delete")
+                setShowFailedDeleteModal(true);
             }
         }
     };
@@ -223,7 +227,19 @@ export default function BookshelfBooks() {
                                 <button className="btn btn-success nav- ms-3"> <img src="/edit.png" alt="Edit Name" /> </button>
                             </Link>
                             <button onClick={confirmDelete} className="btn btn-success nav-item ms-3"><img src="/delete.png" alt="Delete Bookshelf" /></button>
-                        </div>)}
+                        </div>
+                    )}
+                    {showFailedDeleteModal && (
+                        <OKModal message="Please delete all books off of bookshelf before deleting bookshelf."
+                            onConfirm={() => setShowFailedDeleteModal(false) }
+                        />
+                        )}
+                    {!isCurrentUser && (
+                        <div className="nav navbar-nav left-align-btns">
+                            <Link to={`/friends/friend-profile/${userId}`}>
+                                <button className="btn btn-success nav- ms-3"> <img src="/user.png" alt="View Friend Profile" /> View Profile </button>
+                            </Link>
+                            </div>)}
                         <div className="nav navbar-nav navbar-right">
                         <input className="nav-item custom-input"
                             type="text"

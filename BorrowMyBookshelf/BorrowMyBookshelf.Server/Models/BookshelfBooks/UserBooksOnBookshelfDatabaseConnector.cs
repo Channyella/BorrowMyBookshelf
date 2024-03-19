@@ -26,7 +26,10 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                     WHEN ""returned"" THEN 4
                     WHEN ""denied"" THEN 5 END)
                 AS row_num FROM book_requests 
-                    JOIN users ON book_requests.borrower_user_id = users.user_id) 
+                    JOIN users ON book_requests.borrower_user_id = users.user_id
+                    WHERE book_requests.book_request_status IN (""borrowed"", ""accepted"",
+                    ""pending"")
+                ) 
                 as most_recent_book_request
                 ON user_books.user_book_id = most_recent_book_request.user_book_id 
                 AND row_num = 1";
@@ -60,7 +63,7 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                 ParseStatusEnum(reader.GetString("book_request_status")),
                 SafeGetDateTime("due_date", reader),
                 SafeGetDateTime("return_date", reader),
-                new Users.Users(reader.GetInt32("user_id"),
+                new Users.Users(reader.GetInt32("borrower_user_id"),
                     reader.GetString("user_first_name"),
                     reader.GetString("user_last_name"),
                     reader.GetString("email"),
@@ -138,5 +141,7 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
         {
             return GetByForeignKey("bookshelf_id", bookshelfId);
         }
+
+
     }
 }

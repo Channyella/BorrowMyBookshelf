@@ -4,16 +4,11 @@ export class Author {
     public middleName: string | undefined;
     public lastName: string;
 
-    constructor(
-        authorId: number,
-        firstName: string,
-        middleName: string | undefined,
-        lastName: string
-    ) {
-        this.authorId = authorId;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
+    constructor(author: Author) {
+        this.authorId = author.authorId;
+        this.firstName = author.firstName;
+        this.middleName = author.middleName;
+        this.lastName = author.lastName;
     }
 }
 

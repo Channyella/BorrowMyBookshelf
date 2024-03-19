@@ -9,28 +9,19 @@ export class User {
     public createDate: Date;
     public updatedDate: Date | undefined;
 
-    constructor(
-        userId: number,
-        firstName: string,
-        lastName: string,
-        email: string,
-        passwordHash: string,
-        notes: string | undefined,
-        imageFileName: string | undefined,
-        createDate: Date,
-        updatedDate: Date | undefined
-    ) {
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.passwordHash = passwordHash;
-        this.notes = notes;
-        this.imageFileName = imageFileName;
-        this.createDate = createDate;
-        this.updatedDate = updatedDate;
-
-
+    constructor(user: User) {
+        this.userId = user.userId;
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.email = user.email;
+        this.passwordHash = user.passwordHash;
+        this.notes = user.notes;
+        this.imageFileName = user.imageFileName;
+        this.createDate = user.createDate;
+        this.updatedDate = user.updatedDate;
     }
 
+    public getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
 }

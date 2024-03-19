@@ -37,7 +37,7 @@ export const BookshelfBooksProvider: React.FC<BookshelfBooksProviderProps> = ({ 
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            setBookshelf(response.data);
+            setBookshelf(new Bookshelf(response.data));
         } catch (error) {
             console.error('Error fetching bookshelf data:', error);
         }

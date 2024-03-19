@@ -3,15 +3,11 @@ export class Bookshelf {
     public bookshelfName: string;
     public userId: number;
 
-    constructor(
-        bookshelfId: number,
-        bookshelfName: string,
-        userId: number,
-    ) {
-        this.bookshelfId = bookshelfId;
-        this.bookshelfName = bookshelfName;
-        this.userId = userId;
+    // take essentially an interface pretending to be a Bookshelf, and turn it into 
+    // an actual Bookshelf object
+    constructor(bookshelf: Bookshelf) {
+        this.bookshelfId = bookshelf.bookshelfId;
+        this.bookshelfName = bookshelf.bookshelfName;
+        this.userId = bookshelf.userId;
     }
-
-
 }

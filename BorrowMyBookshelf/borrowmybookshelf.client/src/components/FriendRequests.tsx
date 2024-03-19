@@ -124,6 +124,9 @@ export default function FriendRequests() {
                         <Link to={`/friends/all-users`}>
                             <button className="btn btn-success nav-item ms-3"><img src="/view_users.png" alt="View All Users" /> View All Users</button>
                         </Link>
+                        <Link to={`/friends/friend-requests`}>
+                            <button className="btn btn-success nav- ms-3"> <img src="/Add_Friends.png" alt="Friend Requests" /> Friend Requests </button>
+                        </Link>
                     </div>
                     <div className="nav navbar-nav navbar-right">
                         <input className="nav-item custom-input"

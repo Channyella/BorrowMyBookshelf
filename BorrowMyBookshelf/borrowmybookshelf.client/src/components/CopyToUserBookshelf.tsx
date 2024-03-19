@@ -37,7 +37,7 @@ export default function CopyToUserBookshelf() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            const detailedBook = response.data
+            const detailedBook = new Book(response.data);
             setTitle(detailedBook.title);
             setName(getAuthorFullName(detailedBook.author));
         } catch (error) {

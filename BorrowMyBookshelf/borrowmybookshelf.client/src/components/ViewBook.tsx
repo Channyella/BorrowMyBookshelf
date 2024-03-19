@@ -23,7 +23,7 @@ export default function ViewBook() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            const bookInfo = response.data;
+            const bookInfo = new Book(response.data);
             setBook(bookInfo);
             setTitle(bookInfo.title);
             setAuthor(getAuthorFullName(bookInfo.author));

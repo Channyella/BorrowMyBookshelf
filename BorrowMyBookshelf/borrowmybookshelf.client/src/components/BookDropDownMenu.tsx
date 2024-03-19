@@ -17,7 +17,7 @@ interface BookDropDownMenuProps {
     bookshelfBookId?: number;
     hideDeleteOption?: boolean;
     showUserBooksDeleteOption?: boolean;
-    refreshShelf: () => Promise<void>;
+    refreshShelf: () => Promise<unknown>;
     hideEditOption?: boolean;
     onlyBookId?: boolean;
     hideAddToBookshelf?: boolean;

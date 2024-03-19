@@ -81,5 +81,6 @@ namespace BorrowMyBookshelf.Server.Models.BookRequests
             List<string> NullableColumns = updateBookRequests.ColumnsToNulllify.Split(',').ToList();
             Update(columnsWithValues, id, NullableColumns);
         }
+
     }
 }
