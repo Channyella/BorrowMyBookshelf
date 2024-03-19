@@ -1,11 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import ConfirmModal from './ConfirmModal';
 import axios from 'axios';
 import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import BookDeleteCustomAlert from './BookDeleteCustomAlert';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserBook } from '../models/UserBook';
-import OKModal from './OKModal';
 import ModalButton, { ModalType } from './ModalButton';
 import { Post, Put } from '../helpers/NetworkHelper';
 import { BookRequestStatus } from '../models/BookRequest';

@@ -24,12 +24,12 @@ namespace BorrowMyBookshelf.Server.Models
         }
         public List<T> GetAllFromTable()
         {
-            List<T> ResultList = new List<T>();
+            List<T> ResultList = [];
             MySqlConnection connection = GetConnection();
             try
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand($"SELECT {SelectColumns} FROM {TableName} {GroupBy};", connection);
+                MySqlCommand command = new($"SELECT {SelectColumns} FROM {TableName} {GroupBy};", connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -48,7 +48,7 @@ namespace BorrowMyBookshelf.Server.Models
         public List<T> GetByColumns(List<(string, object?)> columnsWithValues, string conditionConjunction = "AND")
         {
             List<(string, object)> safeColumnsWithValues = Safe(columnsWithValues).ToList();
-            List<T> ResultList = new List<T>();
+            List<T> ResultList = [];
             MySqlConnection connection = GetConnection();
             StringBuilder condition = new();
             bool isFirst = true;
@@ -64,7 +64,7 @@ namespace BorrowMyBookshelf.Server.Models
             {
                 connection.Open();
                 string InsertQuery = ($"SELECT {SelectColumns} FROM {TableName} WHERE ({condition}) {GroupBy};");
-                MySqlCommand cmd = new MySqlCommand(InsertQuery, connection);
+                MySqlCommand cmd = new (InsertQuery, connection);
                 safeColumnsWithValues.ForEach(columnWithValue => cmd.Parameters.AddWithValue("@" + columnWithValue.Item1, columnWithValue.Item2));
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -103,7 +103,7 @@ namespace BorrowMyBookshelf.Server.Models
             {
                 connection.Open();
                 string InsertQuery = ($"INSERT INTO {TableName} ({columns}) VALUES ({values});");
-                MySqlCommand cmd = new MySqlCommand(InsertQuery, connection);
+                MySqlCommand cmd = new(InsertQuery, connection);
                 safeColumnsWithValues.ForEach(columnWithValue => cmd.Parameters.AddWithValue("@" + columnWithValue.Item1, columnWithValue.Item2));
                 cmd.ExecuteNonQuery();
                 id = cmd.LastInsertedId;
@@ -147,7 +147,7 @@ namespace BorrowMyBookshelf.Server.Models
             {
                 connection.Open();
                 string InsertQuery = ($"UPDATE {TableName} SET {formattedEntry}{maybeCommaSeparator}{setColumnsNullQuery} WHERE {Id} = @id;");
-                MySqlCommand cmd = new MySqlCommand(InsertQuery, connection);
+                MySqlCommand cmd = new(InsertQuery, connection);
                 safeColumnsWithValues.ForEach(columnWithValue => cmd.Parameters.AddWithValue("@" + columnWithValue.Item1, columnWithValue.Item2));
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
@@ -166,7 +166,7 @@ namespace BorrowMyBookshelf.Server.Models
             try
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand($"SELECT {SelectColumns} FROM {TableName} WHERE {Id} = {id} {GroupBy};", connection);
+                MySqlCommand command = new($"SELECT {SelectColumns} FROM {TableName} WHERE {Id} = {id} {GroupBy};", connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -183,12 +183,12 @@ namespace BorrowMyBookshelf.Server.Models
         }
         public List<T> GetByForeignKey(string columnName, int id)
         {
-            List<T> ResultList = new List<T>();
+            List<T> ResultList = [];
             MySqlConnection connection = GetConnection();
             try
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand($"SELECT {SelectColumns} FROM {TableName} WHERE {columnName} = {id} {GroupBy};", connection);
+                MySqlCommand command = new($"SELECT {SelectColumns} FROM {TableName} WHERE {columnName} = {id} {GroupBy};", connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -209,7 +209,7 @@ namespace BorrowMyBookshelf.Server.Models
             try
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand($"DELETE FROM {TableName} WHERE {Id} = {id};", connection);
+                MySqlCommand command = new($"DELETE FROM {TableName} WHERE {Id} = {id};", connection);
                 command.ExecuteNonQuery();
             }
             catch (Exception e)
@@ -239,7 +239,7 @@ namespace BorrowMyBookshelf.Server.Models
             {
                 connection.Open();
                 string InsertQuery = ($"DELETE FROM {TableName} WHERE ({condition});");
-                MySqlCommand cmd = new MySqlCommand(InsertQuery, connection);
+                MySqlCommand cmd = new(InsertQuery, connection);
                 safeColumnsWithValues.ForEach(columnWithValue => cmd.Parameters.AddWithValue("@" + columnWithValue.Item1, columnWithValue.Item2));
                 cmd.ExecuteNonQuery();
             }

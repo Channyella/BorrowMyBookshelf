@@ -1,20 +1,13 @@
 ﻿namespace BorrowMyBookshelf.Server.Models.UserBooks
 {
-    public class UserBooks
+    public class UserBooks(int userBookId, int bookId, bool borrowable, UserBooks.BookFormatEnum bookFormat, int userId)
     {
-        public int UserBookId { get; set; }
-        public int BookId { get; set; }
-        public bool Borrowable { get; set; }
-        public BookFormatEnum BookFormat { get; set; }
-        public int UserId { get; set; }
-        public UserBooks(int userBookId, int bookId, bool borrowable, BookFormatEnum bookFormat, int userId)
-        {
-            UserBookId = userBookId;
-            BookId = bookId;
-            Borrowable = borrowable;
-            BookFormat = bookFormat;
-            UserId = userId;
-        }
+        public int UserBookId { get; set; } = userBookId;
+        public int BookId { get; set; } = bookId;
+        public bool Borrowable { get; set; } = borrowable;
+        public BookFormatEnum BookFormat { get; set; } = bookFormat;
+        public int UserId { get; set; } = userId;
+
         public enum BookFormatEnum
         {
             Hardcover = 1,

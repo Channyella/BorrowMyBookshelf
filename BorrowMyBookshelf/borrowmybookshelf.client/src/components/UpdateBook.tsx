@@ -245,7 +245,7 @@ export default function UpdateBook() {
 
                     <div className='mb-2'>
                         <label htmlFor="description">Summary:</label>
-                        <textarea type="text"
+                        <textarea 
                             placeholder="Enter Summary"
                             className='form-control'
                             name="description"

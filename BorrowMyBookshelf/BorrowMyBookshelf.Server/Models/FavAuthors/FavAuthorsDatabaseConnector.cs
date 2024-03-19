@@ -20,11 +20,9 @@ namespace BorrowMyBookshelf.Server.Models.FavAuthors
 
         public long CreateFavAuthor(CreateFavAuthors createFavAuthors)
         {
-            List<(string, object?)> columnWithValues = new();
-            columnWithValues.Add(("user_id", createFavAuthors.UserId));
-            columnWithValues.Add(("author_id", createFavAuthors.AuthorId));
+            List<(string, object?)> columnWithValues = [("user_id", createFavAuthors.UserId), ("author_id", createFavAuthors.AuthorId)];
             List<FavAuthors> existingFavAuthors = GetByColumns(columnWithValues);
-            if (existingFavAuthors.Count() > 0)
+            if (existingFavAuthors.Count > 0)
             {
                 return existingFavAuthors[0].FavAuthorsId;
             }
@@ -37,7 +35,7 @@ namespace BorrowMyBookshelf.Server.Models.FavAuthors
                     ("user_id", updateFavAuthors.UserId),
                     ("author_id", updateFavAuthors.AuthorId)
                 ];
-            List<string> NullableColumns = updateFavAuthors.ColumnsToNullify.Split(',').ToList();
+            List<string> NullableColumns = [.. updateFavAuthors.ColumnsToNullify.Split(',')];
             Update(columnWithValues, id, NullableColumns);
         }
     }

@@ -7,7 +7,7 @@ import { Bookshelf } from '../models/Bookshelf';
 import { Book } from '../models/Book';
 import { BookFormat } from '../models/UserBook';
 import { getAuthorFullName } from '../models/Author';
-import { AddBookToBookshelf } from '../helpers/BookHelper';;
+import { AddBookToBookshelf } from '../helpers/BookHelper';
 
 export default function CopyToUserBookshelf() {
     const { bookId } = useParams<{ bookId: string }>() ?? "";

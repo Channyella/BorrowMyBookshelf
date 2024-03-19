@@ -42,7 +42,7 @@ namespace BorrowMyBookshelf.Server.Models.Books
                 ("author_id", createBooks.AuthorId),
             ];
             List<Books> existingBook = GetByColumns(uniqueColumnsWithValues);
-            if (existingBook.Count() > 0)
+            if (existingBook.Count > 0)
             {
                 return existingBook[0].BookId;
             }
@@ -61,7 +61,7 @@ namespace BorrowMyBookshelf.Server.Models.Books
                     ("description", updateBooks.Description),
                     ("audio_length", updateBooks.AudioLength),
                 ];
-            List<string> columnsToNullify = updateBooks.ColumnsToNullify.Split(',').ToList();
+            List<string> columnsToNullify = [.. updateBooks.ColumnsToNullify.Split(',')];
             Update(columnsWithValues, id, columnsToNullify);
         }
 
@@ -72,7 +72,7 @@ namespace BorrowMyBookshelf.Server.Models.Books
             if (authorInfo == null) return null;
             BookGenresDatabaseConnector bookGenresDatabaseConnector = new();
             List<Genres.Genres> genres = bookGenresDatabaseConnector.GetGenresByBookId(book.BookId);
-            return new DetailedBook(book, authorInfo, genres.ToArray());
+            return new DetailedBook(book, authorInfo, [.. genres]);
         }
         public DetailedBook? GetDetailedBookById(int id)
         {

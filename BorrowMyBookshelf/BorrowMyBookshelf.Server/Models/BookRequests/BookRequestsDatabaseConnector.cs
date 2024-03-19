@@ -31,7 +31,7 @@ namespace BorrowMyBookshelf.Server.Models.BookRequests
                 );
         }
 
-        private BookRequests.StatusEnum ParseStatusEnum(string status)
+        private static BookRequests.StatusEnum ParseStatusEnum(string status)
         {
             if (status == "pending")
             {
@@ -78,7 +78,7 @@ namespace BorrowMyBookshelf.Server.Models.BookRequests
                     ("return_date", updateBookRequests.ReturnDate),
                     ("borrower_user_id", updateBookRequests.BorrowerUserId)
                 ];
-            List<string> NullableColumns = updateBookRequests.ColumnsToNulllify.Split(',').ToList();
+            List<string> NullableColumns = [.. updateBookRequests.ColumnsToNulllify.Split(',')];
             Update(columnsWithValues, id, NullableColumns);
         }
 

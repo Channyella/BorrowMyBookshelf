@@ -19,7 +19,7 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
                 );
         }
 
-        private UserBooks.BookFormatEnum ParseBookEnum(string bookFormat)
+        private static UserBooks.BookFormatEnum ParseBookEnum(string bookFormat)
         {
             if (bookFormat == "paperback")
             {
@@ -59,7 +59,7 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
                     ("book_format", updateUserBooks.BookFormat),
                     ("user_id", updateUserBooks.UserId),
                 ];
-            List<string> NullableColumns = updateUserBooks.ColumnsToNullify.Split(',').ToList();
+            List<string> NullableColumns = [.. updateUserBooks.ColumnsToNullify.Split(',')];
             Update(columnsWithValues, id, NullableColumns);
         }
     }

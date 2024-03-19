@@ -11,8 +11,8 @@ namespace BorrowMyBookshelf.Server.Controllers
     [ApiController]
     public class FriendsController : ControllerBase
     {
-        private readonly FriendsDatabaseConnector dbConnector = new FriendsDatabaseConnector();
-        private readonly DetailedFriendDatabaseConnector friendDbConnector = new DetailedFriendDatabaseConnector();
+        private readonly FriendsDatabaseConnector dbConnector = new();
+        private readonly DetailedFriendDatabaseConnector friendDbConnector = new();
         // GET: api/<FriendsController>
         [HttpGet]
         public IEnumerable<Friends> Get()

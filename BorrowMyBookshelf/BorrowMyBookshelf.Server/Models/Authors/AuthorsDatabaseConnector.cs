@@ -20,12 +20,14 @@ namespace BorrowMyBookshelf.Server.Models.Authors
 
         public long CreateAuthor(CreateAuthors createAuthors)
         {
-            List<(string, object?)> columnsWithValues = new();
-            columnsWithValues.Add(("first_name", createAuthors.FirstName));
-            columnsWithValues.Add(("middle_name", createAuthors.MiddleName));
-            columnsWithValues.Add(("last_name", createAuthors.LastName));
+            List<(string, object?)> columnsWithValues =
+            [
+                ("first_name", createAuthors.FirstName),
+                ("middle_name", createAuthors.MiddleName),
+                ("last_name", createAuthors.LastName),
+            ];
             List<Authors> existingAuthor = GetByColumns(columnsWithValues);
-            if (existingAuthor.Count() > 0)
+            if (existingAuthor.Count > 0)
             {
                 return existingAuthor[0].AuthorId;
             }
@@ -39,7 +41,7 @@ namespace BorrowMyBookshelf.Server.Models.Authors
                     ("middle_name", updateAuthors.MiddleName),
                     ("last_name", updateAuthors.LastName)
                 ];
-            List<string> columnsToNullify = updateAuthors.ColumnsToNullify.Split(',').ToList();
+            List<string> columnsToNullify = [.. updateAuthors.ColumnsToNullify.Split(',')];
                 Update(columnsWithValues, id, columnsToNullify);
         }
     }

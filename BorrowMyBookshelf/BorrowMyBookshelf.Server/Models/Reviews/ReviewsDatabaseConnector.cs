@@ -14,7 +14,7 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
                 reader.GetInt32("review_id"),
                 reader.GetInt32("user_id"),
                 reader.GetInt32("book_id"),
-                bookFormat == null ? null: ParseBookFormatEnum(bookFormat),
+                bookFormat == null ? null: global::BorrowMyBookshelf.Server.Models.Reviews.ReviewsDatabaseConnector.ParseBookFormatEnum(bookFormat),
                 SafeGetString("summary", reader),
                 reader.GetInt32("rating"),
                 SafeGetDateTime("start_date", reader),
@@ -23,19 +23,19 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
                 SafeGetDateTime("updated_date", reader)
                 );
         }
-        private Reviews.BookFormatEnum ParseBookFormatEnum(string bookFormat)
+        private static Reviews.ReviewBookFormatEnum ParseBookFormatEnum(string bookFormat)
         {
             if (bookFormat == "physical")
             {
-                return Reviews.BookFormatEnum.Physical;
+                return Reviews.ReviewBookFormatEnum.Physical;
             }
             else if (bookFormat == "eBook")
             {
-                return Reviews.BookFormatEnum.eBook;
+                return Reviews.ReviewBookFormatEnum.eBook;
             }
             else
             {
-                return Reviews.BookFormatEnum.AudioBook;
+                return Reviews.ReviewBookFormatEnum.AudioBook;
             }
         }
         public long CreateReviews(CreateReviews createReviews)
@@ -68,7 +68,7 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
                     ("create_date", updateReviews.CreateDate),
                     ("updated_date", updateReviews.UpdatedDate)
                 ];
-            List<string> NullableColumns = updateReviews.ColumnsToNullify.Split(',').ToList();
+            List<string> NullableColumns = [.. updateReviews.ColumnsToNullify.Split(',')];
             Update(columnsWithRows, id, NullableColumns);
         }
     }

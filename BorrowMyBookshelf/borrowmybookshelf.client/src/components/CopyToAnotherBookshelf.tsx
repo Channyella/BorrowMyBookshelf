@@ -4,7 +4,6 @@ import axios from 'axios';
 import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Bookshelf } from '../models/Bookshelf';
-import { Book } from '../models/Book';
 import { UserBook } from '../models/UserBook';
 import { getAuthorFullName } from '../models/Author';
 import { AddBookToBookshelf } from '../helpers/BookHelper';

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
-import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
+import { GetAuthHeader } from '../helpers/AuthHelper';
 import { User } from '../models/User';
 import axios, { AxiosResponse } from 'axios';
 import { FavAuthor } from '../models/FavAuthor';

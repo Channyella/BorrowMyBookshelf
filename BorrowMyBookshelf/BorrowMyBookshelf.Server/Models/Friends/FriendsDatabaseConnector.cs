@@ -39,11 +39,11 @@ namespace BorrowMyBookshelf.Server.Models.Friends
                 ];
             List<Friends> requesterColumns = GetByColumns(requesterColumnsWithValues);
             List<Friends> receiverColumns = GetByColumns(receiverColumnsWithValues);
-            if (requesterColumns.Count() > 0)
+            if (requesterColumns.Count > 0)
             {
                 return requesterColumns[0].FriendId;
             }
-            else if (receiverColumns.Count() > 0)
+            else if (receiverColumns.Count > 0)
             {
                 return receiverColumns[0].FriendId;
             }

@@ -14,7 +14,7 @@ namespace BorrowMyBookshelf.Server.Models.Friends
 
         protected override DetailedFriendRequest MakeRow(MySqlDataReader reader)
         {
-            Users.Users receiver = new Users.Users(reader.GetInt32("receiver_user_id"),
+            Users.Users receiver = new(reader.GetInt32("receiver_user_id"),
                 reader.GetString("receiver_first_name"),
                 reader.GetString("receiver_last_name"),
                 reader.GetString("receiver_email"),
@@ -25,7 +25,7 @@ namespace BorrowMyBookshelf.Server.Models.Friends
                 SafeGetDateTime("receiver_updated_date", reader)
             );
 
-            Users.Users requester = new Users.Users(reader.GetInt32("requester_user_id"),
+            Users.Users requester = new(reader.GetInt32("requester_user_id"),
                 reader.GetString("requester_first_name"),
                 reader.GetString("requester_last_name"),
                 reader.GetString("requester_email"),

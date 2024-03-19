@@ -4,28 +4,16 @@ using System.Drawing;
 
 namespace BorrowMyBookshelf.Server.Models.Users
 {
-    public class Users 
+    public class Users(int userId, string firstName, string lastName, string email, string passwordHash, string? notes, string? imageFileName, DateTime createDate, DateTime? updatedDate)
     {
-        public int UserId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string PasswordHash { get; set; }
-        public string? Notes { get; set; }
-        public string? ImageFileName { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime? UpdatedDate { get; set; }
-        public Users(int userId, string firstName, string lastName, string email, string passwordHash, string? notes, string? imageFileName, DateTime createDate, DateTime? updatedDate)
-        {
-            UserId = userId;
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            PasswordHash = passwordHash;
-            Notes = notes;
-            ImageFileName = imageFileName;
-            CreateDate = createDate;
-            UpdatedDate = updatedDate;
-        }
+        public int UserId { get; set; } = userId;
+        public string FirstName { get; set; } = firstName;
+        public string LastName { get; set; } = lastName;
+        public string Email { get; set; } = email;
+        public string PasswordHash { get; set; } = passwordHash;
+        public string? Notes { get; set; } = notes;
+        public string? ImageFileName { get; set; } = imageFileName;
+        public DateTime CreateDate { get; set; } = createDate;
+        public DateTime? UpdatedDate { get; set; } = updatedDate;
     }
 }

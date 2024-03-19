@@ -25,7 +25,7 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                     ("user_book_id", createBookshelfBooks.UserBookId)
                 ];
             List<BookshelfBooks> existingBookshelfBooks = GetByColumns(columnWithValues);
-            if (existingBookshelfBooks.Count() > 0)
+            if (existingBookshelfBooks.Count > 0)
             {
                 return existingBookshelfBooks[0].BookshelfBookId;
             }
@@ -39,7 +39,7 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                     ("bookshelf_id", updateBookshelfBooks.BookshelfId),
                     ("user_book_id", updateBookshelfBooks.UserBookId)
                 ];
-            List<string> NullableColumns = updateBookshelfBooks.ColumnsToNullify.Split(',').ToList();
+            List<string> NullableColumns = [.. updateBookshelfBooks.ColumnsToNullify.Split(',')];
             Update(columnWithValues, id, NullableColumns);
         }
     }

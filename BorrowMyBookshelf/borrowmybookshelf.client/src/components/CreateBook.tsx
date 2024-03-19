@@ -10,6 +10,7 @@ import OKModal from './OKModal';
 
 export default function CreateBook() {
     const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [bookshelf, setBookshelf] = useState<Bookshelf | null>(null);
     const userInfo = GetCurrentUser();
     const userId = userInfo?.userId ?? -1;

@@ -26,6 +26,7 @@ interface BookshelfBooksProviderProps {
 
 export const BookshelfBooksProvider: React.FC<BookshelfBooksProviderProps> = ({ children }) => {
     const { bookshelfId } = useParams<{ bookshelfId: string }>() ?? "";
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [bookshelf, setBookshelf] = useState<Bookshelf | null>(null);
 
     const [bookshelfBooks, setBookshelfBooks] = useState<BooksOnBookshelf[]>(initialBookshelfBooksContext.bookshelfBooks);

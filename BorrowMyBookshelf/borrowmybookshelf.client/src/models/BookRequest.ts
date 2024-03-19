@@ -1,5 +1,4 @@
 import { User } from "./User";
-import { UserBook } from "./UserBook";
 
 export enum BookRequestStatus {
     Pending = 1,

@@ -12,8 +12,8 @@ namespace BorrowMyBookshelf.Server.Controllers
     [ApiController]
     public class FavGenresController : ControllerBase
     {
-        private readonly FavGenresDatabaseConnector dbConnector = new FavGenresDatabaseConnector();
-        private readonly FavDetailedGenreDatabaseConnector genreDbConnector = new FavDetailedGenreDatabaseConnector();
+        private readonly FavGenresDatabaseConnector dbConnector = new();
+        private readonly FavDetailedGenreDatabaseConnector genreDbConnector = new();
         // GET: api/<FavGenresController>
         [HttpGet]
         public IEnumerable<FavGenres> Get()

@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import SignUp from './components/Signup';
 import Login from './components/Login';
 import Layout from './components/Layout';
-import Home from './components/Home';
 import Friends from './components/Friends';
 import Borrowed from './components/Borrowed';
 import Profile from './components/Profile';

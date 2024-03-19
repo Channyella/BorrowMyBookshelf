@@ -1,22 +1,13 @@
 ﻿namespace BorrowMyBookshelf.Server.Models.Friends
 {
-    public class DetailedFriendRequest
+    public class DetailedFriendRequest(int friendId, Users.Users requesterUserId,
+        Users.Users receiverUserInfo, bool accepeted, DateTime createDate)
     {
-        public int FriendId { get; set; }
-        public Users.Users RequesterUserInfo { get; set; }
-        public Users.Users ReceiverUserInfo { get; set; }
+        public int FriendId { get; set; } = friendId;
+        public Users.Users RequesterUserInfo { get; set; } = requesterUserId;
+        public Users.Users ReceiverUserInfo { get; set; } = receiverUserInfo;
 
-        public bool Accepted { get; set; }
-        public DateTime CreateDate { get; set; }
-
-        public DetailedFriendRequest( int friendId, Users.Users requesterUserId, 
-            Users.Users receiverUserInfo, bool accepeted, DateTime createDate)
-        {
-            FriendId = friendId;
-            RequesterUserInfo = requesterUserId;
-            ReceiverUserInfo = receiverUserInfo;
-            Accepted = accepeted;
-            CreateDate = createDate;
-        }
+        public bool Accepted { get; set; } = accepeted;
+        public DateTime CreateDate { get; set; } = createDate;
     }
 }

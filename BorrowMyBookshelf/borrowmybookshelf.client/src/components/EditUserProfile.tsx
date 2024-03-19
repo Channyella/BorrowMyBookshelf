@@ -13,6 +13,7 @@ import OKModal from './OKModal';
 
 export default function EditUserProfile() {
     const userId = GetCurrentUser()?.userId ?? -1;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [user, setUser] = useState<User | undefined>();
     const [notes, setNotes] = useState<string>('');
     const [favAuthors, setFavAuthors] = useState<FavAuthor[] | undefined>();

@@ -11,7 +11,7 @@ namespace BorrowMyBookshelf.Server.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly UsersDatabaseConnector dbConnector = new UsersDatabaseConnector();
+        private readonly UsersDatabaseConnector dbConnector = new();
         // GET: api/<UserController>
         [HttpGet]
         public IEnumerable<Users> Get()

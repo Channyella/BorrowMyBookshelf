@@ -95,7 +95,7 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                 detailedUserBook
                 );
         }
-        private BookRequests.BookRequests.StatusEnum ParseStatusEnum(string status)
+        private static BookRequests.BookRequests.StatusEnum ParseStatusEnum(string status)
         {
             if (status == "pending")
             {
@@ -118,7 +118,7 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                 return BookRequests.BookRequests.StatusEnum.Returned;
             }
         }
-        private BookFormatEnum ParseBookEnum(string bookFormat)
+        private static BookFormatEnum ParseBookEnum(string bookFormat)
         {
             if (bookFormat == "paperback")
             {

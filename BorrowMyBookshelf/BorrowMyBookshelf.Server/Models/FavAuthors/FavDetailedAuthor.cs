@@ -1,16 +1,9 @@
 ﻿namespace BorrowMyBookshelf.Server.Models.FavAuthors
 {
-    public class FavDetailedAuthor
+    public class FavDetailedAuthor(int favAuthorId, int userId, Authors.Authors author)
     {
-        public int FavAuthorId { get; set; }
-        public int UserId { get; set; }
-        public Authors.Authors Author { get; set; }
-
-        public FavDetailedAuthor(int favAuthorId, int userId, Authors.Authors author)
-        {
-            FavAuthorId = favAuthorId;
-            UserId = userId;
-            Author = author;
-        }   
+        public int FavAuthorId { get; set; } = favAuthorId;
+        public int UserId { get; set; } = userId;
+        public Authors.Authors Author { get; set; } = author;
     }
 }

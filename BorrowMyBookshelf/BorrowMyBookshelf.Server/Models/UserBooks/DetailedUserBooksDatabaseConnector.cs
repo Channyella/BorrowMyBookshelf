@@ -35,7 +35,7 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
         protected override string GroupBy => "GROUP BY user_books.user_book_id, most_recent_book_request.book_request_id";
         protected override string Id => "user_books.user_book_id";
         protected override List<string> NullableColumns => [];
-        private BookRequests.BookRequests.StatusEnum ParseStatusEnum(string status)
+        private static BookRequests.BookRequests.StatusEnum ParseStatusEnum(string status)
         {
             if (status == "pending")
             {
@@ -80,7 +80,7 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
                 reader.GetInt32("book_request_id"),
                 reader.GetInt32("user_book_id"),
                 reader.GetDateTime("request_date"),
-                ParseStatusEnum(reader.GetString("book_request_status")),
+                global::BorrowMyBookshelf.Server.Models.UserBooks.DetailedUserBooksDatabaseConnector.ParseStatusEnum(reader.GetString("book_request_status")),
                 SafeGetDateTime("due_date", reader),
                 SafeGetDateTime("return_date", reader),
                 new Users.Users(reader.GetInt32("borrower_user_id"),
@@ -111,7 +111,7 @@ namespace BorrowMyBookshelf.Server.Models.UserBooks
             );
 
         }
-        private UserBooks.BookFormatEnum ParseBookEnum(string bookFormat)
+        private static UserBooks.BookFormatEnum ParseBookEnum(string bookFormat)
         {
             if (bookFormat == "paperback")
             {

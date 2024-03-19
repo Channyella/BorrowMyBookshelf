@@ -2,25 +2,14 @@
 
 namespace BorrowMyBookshelf.Server.Models.BookRequests
 {
-    public class SimpleBookRequests
+    public class SimpleBookRequests(int bookRequestId, int userBookId, DateTime requestDate, StatusEnum bookRequestStatus, DateTime? dueDate, DateTime? returnDate, int borrowerUserId)
     {
-        public int BookRequestId { get; set; }
-        public int UserBookId { get; set; }
-        public DateTime RequestDate { get; set; }
-        public StatusEnum BookRequestStatus { get; set; }
-        public DateTime? DueDate { get; set; }
-        public DateTime? ReturnDate { get; set; }
-        public int BorrowerUserId { get; set; }
-        public SimpleBookRequests(int bookRequestId, int userBookId, DateTime requestDate, StatusEnum bookRequestStatus, DateTime? dueDate, DateTime? returnDate, int borrowerUserId)
-        {
-            BookRequestId = bookRequestId;
-            UserBookId = userBookId;
-            RequestDate = requestDate;
-            BookRequestStatus = bookRequestStatus;
-            DueDate = dueDate;
-            ReturnDate = returnDate;
-            BorrowerUserId = borrowerUserId;
-        }
-
+        public int BookRequestId { get; set; } = bookRequestId;
+        public int UserBookId { get; set; } = userBookId;
+        public DateTime RequestDate { get; set; } = requestDate;
+        public StatusEnum BookRequestStatus { get; set; } = bookRequestStatus;
+        public DateTime? DueDate { get; set; } = dueDate;
+        public DateTime? ReturnDate { get; set; } = returnDate;
+        public int BorrowerUserId { get; set; } = borrowerUserId;
     }
 }

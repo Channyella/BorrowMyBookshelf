@@ -1,4 +1,4 @@
-import { Book } from "./Book";
+import { SimpleBook } from "./SimpleBook";
 import { User } from "./User";
 
 
@@ -10,7 +10,7 @@ export enum ReviewBookFormat {
 export class Review {
     public reviewId: number;
     public user: User;
-    public book: Book;
+    public book: SimpleBook;
     public bookFormat: ReviewBookFormat;
     public summary: string;
     public rating: number;
@@ -22,7 +22,7 @@ export class Review {
     constructor(review: Review) {
         this.reviewId = review.reviewId;
         this.user = new User(review.user);
-        this.book = new Book(review.book);
+        this.book = new SimpleBook(review.book);
         this.bookFormat = review.bookFormat;
         this.summary = review.summary;
         this.rating = review.rating;

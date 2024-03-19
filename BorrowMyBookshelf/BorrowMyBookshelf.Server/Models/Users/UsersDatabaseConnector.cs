@@ -51,7 +51,7 @@ namespace BorrowMyBookshelf.Server.Models.Users
                     ("create_date", updateUsers.CreateDate),
                     ("updated_date", updateUsers.UpdatedDate)
                 ];
-            List<string> columnsToNullify = updateUsers.ColumnsToNullify.Split(',').ToList();
+            List<string> columnsToNullify = [.. updateUsers.ColumnsToNullify.Split(',')];
             Update(columnsWithValues, id, columnsToNullify);
         }
 

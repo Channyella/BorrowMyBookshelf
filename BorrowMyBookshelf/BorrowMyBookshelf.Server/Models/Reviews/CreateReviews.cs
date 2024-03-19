@@ -6,7 +6,7 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
     {
         public int UserId { get; set; }
         public int BookId { get; set; }
-        public BookFormatEnum? BookFormat { get; set; }
+        public ReviewBookFormatEnum? BookFormat { get; set; }
         public string? Summary { get; set; }
         public int Rating { get; set; }
         public DateTime? StartDate { get; set; }

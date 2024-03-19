@@ -4,10 +4,13 @@ import { getAuthorFullName } from '../models/Author';
 import { Book } from '../models/Book';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Review } from '../models/Review';
 
 export default function ViewBook() {
     const bookId = useParams<{ bookId: string }>().bookId ?? "";
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [book, setBook] = useState<Book | null>(null);
+    const [reviews, setReviews] = useState<Review[] | null>(null);
     const [title, setTitle] = useState<string>('');
     const [author, setAuthor] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -37,6 +40,19 @@ export default function ViewBook() {
         }
     }
 
+    const fetchReviews = async (bookId: string) => {
+        try {
+            const response = await axios.get<Review[]>(`/api/reviews/book-id/${bookId}`,
+                {
+                    withCredentials: true,
+                    headers: GetAuthHeader(),
+                });
+            setReviews(response.data.map(review => new Review(review)));
+        } catch (error) {
+            console.error('Error fetching reviews data:', error);
+        }
+    }
+
     async function goBack() {
         navigate(-1);
     }
@@ -44,6 +60,7 @@ export default function ViewBook() {
     useEffect(() => {
         if (bookId) {
             fetchBook(bookId);
+            fetchReviews(bookId);
         }
     }, [bookId]);
 
@@ -88,6 +105,15 @@ export default function ViewBook() {
                  <div className="description-bg">{description}</div>
                 </div></div>)}
                 </div>
+                {!!reviews?.length &&
+                    (<div>
+                        <h3 className="text-align-left">Reviews:</h3>
+                    {reviews?.map(review =>
+                        <div key={review.reviewId} className="form-group d-flex align-items-center justify-content-center">
+                                <textarea id="user-notes" rows={5} value={ review.summary|| ''} className="user-notes" readOnly={true} />
+                            </div>
+                        )}
+                    </div>)}
             </main>
         </div>
     );

@@ -11,7 +11,9 @@ namespace BorrowMyBookshelf.Server.Controllers
     [ApiController]
     public class ReviewsController : ControllerBase
     {
-        private readonly ReviewsDatabaseConnector dbConnector = new ReviewsDatabaseConnector();
+        private readonly ReviewsDatabaseConnector dbConnector = new();
+        private readonly DetailedReviewsDatabaseConnector reviewsDbConnector = new();
+        
         // GET: api/<ReviewsController>
         [HttpGet]
         public IEnumerable<Reviews> Get()
@@ -24,6 +26,13 @@ namespace BorrowMyBookshelf.Server.Controllers
         public Reviews? Get(int id)
         {
             return dbConnector.GetById(id);
+        }
+
+        // GET api/<ReviewsController>/book-id/2
+        [HttpGet("book-id/{id}")]
+        public IEnumerable<DetailedReviews> GetReviewsByBookId(int id)
+        {
+            return reviewsDbConnector.GetDetailedReviewsByBookId(id);
         }
 
         // POST api/<ReviewsController>
