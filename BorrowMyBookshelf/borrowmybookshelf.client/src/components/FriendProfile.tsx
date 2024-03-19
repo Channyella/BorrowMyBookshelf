@@ -29,7 +29,7 @@ export default function FriendProfile() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            setFavAuthors(response.data);
+            setFavAuthors(response.data.map(favAuthor => new FavAuthor(favAuthor)));
         } catch (error) {
             console.error('Error fetching favorite authors data:', error);
         }
@@ -49,7 +49,7 @@ export default function FriendProfile() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            setFavBooks(response.data);
+            setFavBooks(response.data.map(favBook => new FavBook(favBook)));
         } catch (error) {
             console.error('Error fetching favorite books data:', error);
         }
@@ -69,7 +69,7 @@ export default function FriendProfile() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            setFavGenres(response.data);
+            setFavGenres(response.data.map(favGenre => new FavGenre(favGenre)));
         } catch (error) {
             console.error('Error fetching favorite genres data:', error);
         }

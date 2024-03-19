@@ -160,7 +160,7 @@ export default function Profile() {
         </div>
     );
     async function populateUserData(userId: number) {
-        const response: AxiosResponse<User> = await axios.get(`api/users/${userId}`, {
+        const response: AxiosResponse<User> = await axios.get(`/api/users/${userId}`, {
             withCredentials: true,
             headers: GetAuthHeader(),
         });
