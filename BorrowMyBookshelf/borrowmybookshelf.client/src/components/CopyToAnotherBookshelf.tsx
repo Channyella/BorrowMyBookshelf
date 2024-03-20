@@ -4,7 +4,7 @@ import axios from 'axios';
 import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Bookshelf } from '../models/Bookshelf';
-import { UserBook } from '../models/UserBook';
+import { UserBook, makeUserBook } from '../models/UserBook';
 import { getAuthorFullName } from '../models/Author';
 import { AddBookToBookshelf } from '../helpers/BookHelper';
 
@@ -27,7 +27,7 @@ export default function CopyToAnotherBookshelf() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            const userBook = new UserBook(response.data);
+            const userBook = makeUserBook(response.data);
             setTitle(userBook.book.title);
             setUserBook(userBook);
             setName(getAuthorFullName(userBook.book.author));

@@ -3,7 +3,7 @@ import './style.css';
 import axios, { AxiosResponse } from 'axios';
 import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import { User } from '../models/User';
-import { UserBook } from '../models/UserBook';
+import { UserBook, makeUserBook } from '../models/UserBook';
 import BookDropDownMenu from './BookDropDownMenu';
 import { Link } from 'react-router-dom';
 
@@ -116,7 +116,7 @@ export default function Borrowed({ isBorrowing }: BorrowedProps) {
             headers: GetAuthHeader(),
         });
         const filterFunction = (userBook: UserBook) => !!userBook.bookRequest; 
-        const userBooks = response.data.filter(filterFunction).map(userBook => new UserBook(userBook));
+        const userBooks = response.data.filter(filterFunction).map(userBook => makeUserBook(userBook));
         setUserBooks(userBooks);
         return userBooks;
     }

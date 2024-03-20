@@ -106,14 +106,12 @@ function Login() {
                                     placeholder="Enter Password"
                                     className='form-control' />
                             </div>
-                            <div className='mb-2'>
-                                <input type="checkbox" className="custom-control custom-checkbox" id='check' />
-                                <label htmlFor="check" className="custom-input-label ms-2">Remember Me</label>
-                            </div>
                             <div className='d-grid'>
                                 <button className='btn btn-primary'>Sign In</button>
-                            </div>
-                            <p className="text-end mt-2">
+                                </div>
+                           
+                                <p className="text-end mt-2">
+                                Don&apos;t have an account?
                                 <Link to="/signUp" className="ms-2 linkColor">Sign Up</Link>
                             </p>
                         </form>

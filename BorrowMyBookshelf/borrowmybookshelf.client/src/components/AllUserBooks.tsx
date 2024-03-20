@@ -2,7 +2,7 @@ import './style.css';
 import React, { useContext, useEffect, useState, } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { GetAuthHeader, GetCurrentUser, UserInfo } from '../helpers/AuthHelper';
-import { UserBook, getBorrowableStatus } from '../models/UserBook';
+import { UserBook, getBorrowableStatus, makeUserBook } from '../models/UserBook';
 import { Genre } from '../models/Genre';
 import { Link, useParams } from 'react-router-dom';
 import BookDropDownMenu from './BookDropDownMenu';
@@ -138,8 +138,7 @@ export default function Home() {
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Page Count</th>
-                    <th>Audio Length</th>
+                    <th>Length</th>
                     <th>Genres</th>
                     <th>Borrowable</th>
                     <th>Book Format</th>
@@ -150,8 +149,7 @@ export default function Home() {
                     <tr key={userBook.userBookId}>
                         <td>{userBook.book.title}</td>
                         <td>{getAuthorFullName(userBook.book.author)}</td>
-                        <td>{userBook.book.pageCount}</td>
-                        <td>{userBook.book.audioLength}</td>
+                        <td>{userBook.getLength()}</td>
                         <td>{maybeShortenGenresListDisplay(userBook.book.genres)}</td>
                         <td>{getBorrowableStatus(userBook)}</td>
                         <td>{getBookFormatString(userBook.bookFormat)}</td>
@@ -223,6 +221,6 @@ export default function Home() {
             withCredentials: true,
             headers: GetAuthHeader(),
         });
-        setUserBooks(response.data);
+        setUserBooks(response.data.map(userBook => makeUserBook(userBook)));
     }
 }

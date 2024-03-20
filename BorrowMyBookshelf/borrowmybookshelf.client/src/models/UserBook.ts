@@ -7,7 +7,7 @@ export enum BookFormat {
     eBook = 3,
     AudioBook = 4,
 }
-export class UserBook {
+export abstract class UserBook {
     public userBookId: number;
     public book: Book; // Book has itself, Author, and Genre[] 
     public borrowable: boolean;
@@ -24,6 +24,8 @@ export class UserBook {
         this.userId = userBook.userId;
     }
 
+    public abstract getLength(): string;
+
     public getBorrowableStatus() {
         if (!this.borrowable) {
             return BorrowableStatus.NotBorrowable;
@@ -34,6 +36,37 @@ export class UserBook {
             case BookRequestStatus.Borrowed: return BorrowableStatus.Borrowed;
             default: return BorrowableStatus.Available;
         }
+    }
+}
+
+export class AudioUserBook extends UserBook {
+    constructor(userBook: UserBook) {
+        super(userBook);
+    }
+    public override getLength(): string {
+        if (!this.book.audioLength) return "";
+        const hours = Math.floor(this.book.audioLength / 60);
+        const minutes = this.book.audioLength % 60;
+        return `${hours}h ${minutes}m`;
+    }
+}
+
+export class PagedUserBook extends UserBook {
+    constructor(userBook: UserBook) {
+        super(userBook);
+    }
+    public override getLength(): string {
+        if (!this.book.pageCount) return "";
+        return `${this.book.pageCount} pages`;
+    }
+}
+
+export const makeUserBook = (userBook: UserBook): UserBook => {
+    switch (userBook.bookFormat) {
+        case BookFormat.AudioBook: return new AudioUserBook(userBook);
+        case BookFormat.eBook:
+        case BookFormat.Hardcover:
+        case BookFormat.Paperback: return new PagedUserBook(userBook);
     }
 }
 

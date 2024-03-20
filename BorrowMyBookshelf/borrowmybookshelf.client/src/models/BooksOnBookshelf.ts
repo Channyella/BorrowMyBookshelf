@@ -1,4 +1,4 @@
-import { UserBook } from "./UserBook";
+import { UserBook, makeUserBook } from "./UserBook";
 
 export class BooksOnBookshelf {
     public bookshelfBookId: number;
@@ -8,6 +8,6 @@ export class BooksOnBookshelf {
     constructor(booksOnBookshelf: BooksOnBookshelf) {
         this.bookshelfBookId = booksOnBookshelf.bookshelfBookId;
         this.bookshelfId = booksOnBookshelf.bookshelfId;
-        this.userBook = new UserBook(booksOnBookshelf.userBook);
+        this.userBook = makeUserBook(booksOnBookshelf.userBook);
     }
 }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
-import { UserBook } from '../models/UserBook';
+import { UserBook, makeUserBook } from '../models/UserBook';
 
 interface UserBooksContextType {
     userBooks: UserBook[],
@@ -31,7 +31,7 @@ export const UserBooksProvider: React.FC<UserBooksProviderProps> = ({ children }
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            setUserBooks(response.data);
+            setUserBooks(response.data.map(userBook => makeUserBook(userBook)));
         } catch (error) {
             console.error('Error fetching user book data:', error);
         }

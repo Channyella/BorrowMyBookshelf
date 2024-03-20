@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './style.css';
 import axios from 'axios';
 import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
-import { BookFormat, UserBook } from '../models/UserBook';
+import { BookFormat, UserBook, makeUserBook } from '../models/UserBook';
 import { UpdateBookOnBookshelf } from '../helpers/UpdateBookHelper';
 import OKModal from './OKModal';
 
@@ -86,7 +86,7 @@ export default function UpdateBook() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            const userBook = new UserBook(response.data);
+            const userBook = makeUserBook(response.data);
             setUserBook(userBook);
             setTitle(userBook.book.title);
             setFirstName(userBook.book.author.firstName);

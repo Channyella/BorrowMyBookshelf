@@ -179,8 +179,7 @@ export default function BookshelfBooks() {
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Page Count</th>
-                    <th>Audio Length</th>
+                    <th> Length</th>
                     <th>Genres</th>
                     <th>Borrowable</th>
                     <th>Book Format</th>
@@ -191,8 +190,7 @@ export default function BookshelfBooks() {
                     <tr key={booksOnBookshelf.bookshelfBookId}>
                         <td>{booksOnBookshelf.userBook.book.title}</td>
                         <td>{getAuthorFullName(booksOnBookshelf.userBook.book.author)}</td>
-                        <td>{booksOnBookshelf.userBook.book.pageCount}</td>
-                        <td>{booksOnBookshelf.userBook.book.audioLength}</td>
+                        <td>{booksOnBookshelf.userBook.getLength()}</td>
                         <td>{maybeShortenGenresListDisplay(booksOnBookshelf.userBook.book.genres)}</td>
                         <td>{getBorrowableStatus(booksOnBookshelf.userBook)}</td>
                         <td>{getBookFormatString(booksOnBookshelf.userBook.bookFormat)}</td>
@@ -291,6 +289,6 @@ export default function BookshelfBooks() {
             withCredentials: true,
             headers: GetAuthHeader(),
         });
-        setBooksOnBookshelf(response.data);
+        setBooksOnBookshelf(response.data.map(bookshelfBook => new BooksOnBookshelf(bookshelfBook)));
     }
 }

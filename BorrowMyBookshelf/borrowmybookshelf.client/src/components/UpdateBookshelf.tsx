@@ -79,7 +79,7 @@ export default function AddBookshelf() {
                                     </div>
                             </form>
                             <div className='d-grid'>
-                                <button className='btn btn-primary' onClick={updateBookshelf}>Create Bookshelf</button>
+                                <button className='btn btn-primary' onClick={updateBookshelf}>Update Bookshelf</button>
                                 </div>
                             </div>
                         </div>
