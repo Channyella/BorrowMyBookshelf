@@ -85,11 +85,22 @@ export default function CopyToUserBookshelf() {
         await AddBookToBookshelf({ bookId: parseInt(bookId), bookshelfId: parseInt(selectedBookshelf), bookFormat: format, borrowable, title, userId, genreTypes: [] })
         navigate(`/bookshelf-books/${selectedBookshelf}`);
     }
-
+    async function goBack() {
+        navigate(-1);
+    }
 
     return (
-        <div className="create-book outlet-content template d-flex justify-content-center align-items-center yellow-bg">
-            <div className='form-container-forms p-5 rounded bg-white'>
+        <div className="create-book outlet-content template yellow-bg ">
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-12">
+                        <button onClick={goBack} className="btn btn-success mt-3 ms-3"> <img src="/back_arrow.png" alt="Go Back" /> </button>
+                    </div>
+                </div>
+                <div className="row d-flex justify-content-center align-items-center">
+                    <div className="col-lg-12 ">
+                        <div className="d-flex justify-content-center align-items-center">
+                            <div className='form-container-forms p-5 rounded bg-white'>
                 <form id="new-book">
                     <h3 className="text-center">Add to Your Bookshelf:</h3>
                     <label htmlFor="bookshelves">Select Bookshelf:</label>
@@ -163,6 +174,10 @@ export default function CopyToUserBookshelf() {
                 </form>
                 <div className='d-grid'>
                     <button onClick={ copyBookToBookshelf } className='btn btn-primary' >Add Book To Bookshelf</button>
+                </div>
+            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

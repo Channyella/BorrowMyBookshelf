@@ -25,6 +25,7 @@ interface BookDropDownMenuProps {
 
 const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId, bookshelfBookId, hideDeleteOption, showUserBooksDeleteOption, refreshShelf, hideEditOption, onlyBookId, hideAddToBookshelf, userBook, showDropDown }) => {
     const [showModal, setShowModal] = useState(false);
+    const [showUserBookModal, setUserBookModal] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
     const isCurrentUser = !!userBook && userBook.userId === GetCurrentUser()?.userId;
@@ -65,9 +66,38 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
         setShowModal(true);
     };
 
+    // Navigate to edit book
+    const updateUserBook = async () => {
+        if (userBookId) {
+            showDropDown(-1);
+            navigate(`/update-book/${userBookId}`);
+        }
+    };
+
+    // User Book functions concering deletion of userBooks and modals
     const handleAlertClose = () => {
         setShowAlert(false);
         showDropDown(-1);
+    };
+
+    const confirmUserBookDelete = () => {
+        setUserBookModal(true);
+    };
+
+    const handleUserBookCancel = () => {
+        setUserBookModal(false);
+        showDropDown(-1);
+    };
+
+ const handleConfirmUserBook = async () => {
+        setUserBookModal(false);
+        if (userBookId) {
+            const isDeleted = await deleteUserBook(userBookId);
+            if (isDeleted) {
+                await refreshShelf();
+                showDropDown(-1);
+            }
+        }
     };
 
     // Delete book from userBooks (not on user anymore)
@@ -81,28 +111,9 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
             showDropDown(-1);
             return true;
         } catch (error) {
-            console.error('Error deleting book from bookshelf:', error);
+            console.error('Error deleting book from user books:', error);
             setShowAlert(true);
             return false;
-        }
-    };
-
-
-    const updateUserBook = async () => {
-        if (userBookId) {
-            showDropDown(-1);
-            navigate(`/update-book/${userBookId}`);
-        }
-    };
-
-    const handleConfirmUserBook = async () => {
-        setShowModal(false);
-        if (userBookId) {
-            const isDeleted = await deleteUserBook(userBookId);
-            if (isDeleted) {
-                await refreshShelf();
-            }
-            showDropDown(-1);
         }
     };
 
@@ -131,6 +142,8 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                     (<div>
                         <button onClick={updateUserBook} className="btn btn-warning">Edit Book</button>
                     </div>)}
+
+                {/* Function for removing book from bookshelf.*/}
                 {bookshelfBookId && !hideDeleteOption &&
                     (<div>
                     <button onClick={confirmDelete} className="btn btn-warning" >Remove Book From Bookshelf</button>
@@ -141,6 +154,8 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                                 onCancel={handleCancel}/>
                     )}
                     </div>)}
+
+                {/* Function for requesting to borrow a book if borrowable */}
                 {!isCurrentUser && userBook && userBook.bookRequest?.borrowerUser.userId != GetCurrentUser()?.userId && userBook.borrowable &&
                     (<ModalButton buttonText="Request Book"
                         modalType={ModalType.ConfirmModal}
@@ -154,6 +169,8 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                         showDropDown(-1);
                     } }
                     ></ModalButton>)}
+
+                {/* Function for approving or denying book request */} 
                 {isCurrentUser && userBook && userBook.userId === GetCurrentUser()?.userId && userBook.bookRequest?.bookRequestStatus === BookRequestStatus.Pending &&
                     (<ModalButton buttonText="Handle Request"
                     modalType={ModalType.ConfirmModal}
@@ -174,6 +191,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                         confirmText="Accept"
                     ></ModalButton>)}
 
+                {/* Function to mark book as officially borrowed */} 
                 {isCurrentUser && userBook && userBook.userId === GetCurrentUser()?.userId && userBook.bookRequest?.bookRequestStatus === BookRequestStatus.Accepted &&
                     (<ModalButton buttonText="Lend Book"
                         modalType={ModalType.ConfirmModal}
@@ -187,6 +205,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                         }}
                     ></ModalButton>)}
 
+                {/* Function to delete book request if returned */} 
                 {isCurrentUser && userBook && userBook.userId === GetCurrentUser()?.userId && userBook.bookRequest?.bookRequestStatus === BookRequestStatus.Borrowed &&
                     (<ModalButton buttonText="Mark as Returned"
                         modalType={ModalType.ConfirmModal}
@@ -197,26 +216,26 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                             showDropDown(-1);
                         }}
                     ></ModalButton>)}
+
+                {/* Function to delete book from All User Books */} 
                 {showUserBooksDeleteOption && userBookId &&
                     (<div>
-                        <button onClick={confirmDelete} className="btn btn-warning" >Delete Book</button>
-                        {showModal && (
+                        <button onClick={confirmUserBookDelete} className="btn btn-warning" >Delete Book</button>
+                        {showUserBookModal && (
                             <ConfirmModal
                                 message="Are you sure you want to delete this book?"
                                 onConfirm={handleConfirmUserBook}
-                                onCancel={handleCancel}/>
+                                onCancel={handleUserBookCancel}/>
                     )}
-                    </div>)
-                }
+                    </div>)}
             </div>
-            {
-                showAlert && (
+
+            {showAlert && (
                     <BookDeleteCustomAlert
-                        message="Please delete this book on bookshelves before removing it from all books."
+                        message="Please delete this book from all of your bookshelves and make sure it isn't connected to a book borrow request before removing it from all books."
                         onClose={handleAlertClose}
                     />
-                )
-            }
+                )}
         </div>
     )
 }

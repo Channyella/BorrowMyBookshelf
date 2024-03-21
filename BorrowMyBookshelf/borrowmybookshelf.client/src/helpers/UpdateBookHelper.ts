@@ -52,8 +52,8 @@ export const deleteBookGenre = async (bookId: number, genreId: number) => {
 }
 
 export const updateBookGenres = async (bookId: number, originalGenres: Genre[], updatedGenres: string[]) => {
-    const genresToAdd = updatedGenres.filter((genreName: string) => !originalGenres.some((genre: Genre) => genre.genreType === genreName));
-    const genresToDelete = originalGenres.filter((genre: Genre) => !updatedGenres.some(genreName => genre.genreType === genreName));
+    const genresToAdd = updatedGenres.filter(x => !!x).filter((genreName: string) => !originalGenres.some((genre: Genre) => genre.genreType === genreName));
+    const genresToDelete = originalGenres.filter(x => !!x).filter((genre: Genre) => !updatedGenres.some(genreName => genre.genreType === genreName));
     return Promise.all([...genresToAdd.map(genreName => createGenre(genreName).then(genreId => createBookGenre(bookId, genreId))), ...genresToDelete.map(genre => deleteBookGenre(bookId, genre.genreId))]);
 };
 

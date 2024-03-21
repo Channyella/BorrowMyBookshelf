@@ -172,6 +172,10 @@ label.notes {
     display: none;
 }
 
+.text-centered {
+    text-align: center;
+}
+
 div.drop-down-btn-container {
     border-radius: 5px;
     position: absolute;
@@ -476,9 +480,11 @@ p.format-margin {
 
 .radio-button-container {
     display: flex;
-    gap:2px;
+    gap: 2px;
     margin: 20px 0px 20px 0px;
     align-items: center;
+    flex:auto;
+    overflow: auto;
 }
 
 label.audio-title {

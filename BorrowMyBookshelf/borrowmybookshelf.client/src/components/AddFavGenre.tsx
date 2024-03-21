@@ -32,6 +32,15 @@ export default function AddFavGenre() {
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedGenre(event.target.value);
     }
+    async function goBack() {
+        navigate(-1);
+    }
+
+    const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        handleChange(event);
+        event.target.size = 1;
+        event.target.blur();
+    }
 
     // Function that happens when adding favorite genre.
     const addFavGenre = async () => {
@@ -41,18 +50,34 @@ export default function AddFavGenre() {
         } catch (error) {
             console.log('Error adding favorite genre:', error);
         }
-        navigate(`/profile/edit/${userId}`);
+        navigate(`/profile/edit/${userId}`, {replace: true});
     };
 
     return (
-        <div className="create-book outlet-content template d-flex justify-content-center align-items-center yellow-bg">
-            <div className='form-container-forms p-5 rounded bg-white '>
+        <div className="create-book outlet-content template yellow-bg ">
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-12">
+                        <button onClick={goBack} className="btn btn-success mt-3 ms-3"> <img src="/back_arrow.png" alt="Go Back" /> </button>
+                    </div>
+                </div>
+                <div className="row d-flex justify-content-center align-items-center">
+                    <div className="col-lg-12 ">
+                        <div className="d-flex justify-content-center align-items-center">            <div className='form-container-forms p-5 rounded bg-white '>
                 <h2 className="text-center fav-title">Add a Favorite Genre:</h2>
                 <label className="fav-labels text-center" htmlFor="book">Select a Genre:</label>
                 <div className="d-flex align-items-center justify-content-center">
-                    <select id="book" className="form-select w-50" value={selectedGenre} onChange={handleChange}>
+                    <select id="book"
+                        className="form-select w-50"
+                        value={selectedGenre}
+                        onChange={handleSelectChange}
+                        onFocus={(event: React.FocusEvent<HTMLSelectElement>) => { event.target.size = 5; }}
+                        onBlur={(event: React.FocusEvent<HTMLSelectElement>) => { event.target.size = 1; }}
+                    >
                         <option value="">Select</option>
-                        {genres?.map(genre => (
+                        {genres
+                            ?.sort((genre: Genre, genre2: Genre) => genre.genreType.localeCompare(genre2.genreType))
+                            .map(genre => (
                             <option key={genre.genreId} value={genre.genreId}> {genre.genreType} </option>
                         ))}
                     </select>
@@ -61,6 +86,10 @@ export default function AddFavGenre() {
                     <button className='btn btn-primary w-40 fav-buttons' onClick={addFavGenre}>Add Genre to Favorites</button>
                 </div>
                 <p className="text-center">Don&apos;t see your favorite genre? <br /> Make sure you have a book that contains this genre on a bookshelf first.</p>
+            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )

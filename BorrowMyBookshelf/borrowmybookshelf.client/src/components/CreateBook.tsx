@@ -70,7 +70,7 @@ export default function CreateBook() {
 
     const handleGenreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const commaSeparatedList = event.target.value;
-        const genreList = commaSeparatedList.split(',').map(genre => genre.trim());
+        const genreList = commaSeparatedList.split(',').map(genre => genre.trim()).filter(x => !!x);
         setGenreList(genreList);
     };
 

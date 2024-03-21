@@ -56,7 +56,7 @@ function Login() {
                 if (errorResponse.response?.status === 400) {
                     setErrorMessage("Missing Username or Password")
                 } else if (errorResponse.response?.status === 401) {
-                    setErrorMessage("Unauthorized")
+                    setErrorMessage("Incorrect email or password.")
                 } else {
                     setErrorMessage('Login Failed.')
                 }
@@ -81,7 +81,7 @@ function Login() {
                 <div className="login template d-flex justify-content-center align-items-center 100-w vh-100 pink-bg">
                     <div className='form_container p-5 rounded bg-white'>
                         <form onSubmit={handleSubmit}>
-                            <p ref={errRef} className={errorMessage ? "errMsg" : "offscreen"} aria-live="assertive">{errorMessage}</p>
+                                <p ref={errRef} className={errorMessage ? "errMsg text-centered " : "offscreen"} aria-live="assertive">{errorMessage}</p>
                             <h3 className="text-center">Log In</h3>
                             <div className='mb-2'>
                                 <label htmlFor="email">Email</label>

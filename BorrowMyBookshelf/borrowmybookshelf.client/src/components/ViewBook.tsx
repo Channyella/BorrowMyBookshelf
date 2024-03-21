@@ -99,7 +99,7 @@ export default function ViewBook() {
                         (<div className= "view-book-container">
                             <h4>Page Count: </h4><p>{pageCount} pages</p>
                             </div>)}
-                    {genreList && (
+                    {genreList.length > 0 && (
                         <div className="view-book-container">
                                     <h4>Genres:</h4>
                                     <p>{genreList.join(", ")}</p>
