@@ -4,14 +4,16 @@ import { Book } from '../models/Book';
 import './style.css';
 import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
-import { Post } from '../helpers/NetworkHelper';
+import { Put } from '../helpers/NetworkHelper';
 import { ReviewBookFormat } from '../models/Review';
 import StarsDropDownInput from './StarsDropDownInput';
 import OKModal from './OKModal';
+import { SimpleReview } from '../models/SimpleReview';
 
 
 export default function EditReview() {
-    const bookId = useParams<{ bookId: string }>().bookId ?? "";
+    const { bookId, reviewId } = useParams<{ bookId: string, reviewId: string }>();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [book, setBook] = useState<Book | null>(null);
     const [title, setTitle] = useState<string>('');
     const [format, setFormat] = useState<ReviewBookFormat>(ReviewBookFormat.Physical);
@@ -25,6 +27,9 @@ export default function EditReview() {
     const maxLength: number = 5000;
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [finishedDate, setFinishedDate] = useState<Date | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [review, setReview] = useState<SimpleReview | null>(null);
+
 
     const handleStarsChange = (value: number) => {
         setStarsAmount(value);
@@ -33,20 +38,64 @@ export default function EditReview() {
     const handleStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedDate = event.target.value ? new Date(event.target.value) : null;
         setStartDate(selectedDate);
+        if (finishedDate && selectedDate && finishedDate < selectedDate) {
+            setFinishedDate(null);
+        }
     }
 
     const handleFinishedDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedDate = event.target.value ? new Date(event.target.value) : null;
         setFinishedDate(selectedDate);
+        if (startDate && selectedDate && startDate > selectedDate) {
+            setStartDate(null);
+        }
     }
+
+    const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const newText: string = event.target.value;
+        if (newText.length <= maxLength) {
+            setDescription(newText);
+        } else {
+            setShowModal(true);
+            setDescription(newText);
+        }
+    };
+
+    const handleFormatChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormat(event.target.value as unknown as ReviewBookFormat);
+    };
 
     async function goBack() {
         navigate(-1);
     }
 
-    const handleFormatChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFormat(event.target.value as unknown as ReviewBookFormat);
-    };
+    const fetchReview = async (id: string) => {
+        try {
+            const response = await axios.get<SimpleReview>(`/api/reviews/${id}`,
+                {
+                    withCredentials: true,
+                    headers: GetAuthHeader(),
+                });
+            const reviewInfo = new SimpleReview(response.data);
+            setReview(reviewInfo);
+            setStarsAmount(reviewInfo.rating);
+            setFormat(reviewInfo.bookFormat ?? null);
+            setDescription(reviewInfo.summary ?? null);
+            setStartDate(reviewInfo.startDate ?? null);
+            setFinishedDate(reviewInfo.finishedDate ?? null);
+            const formatRadioButtons = Array.from(document.getElementsByName("format") as NodeList) as HTMLInputElement[];
+            const radioButtonToSelect = formatRadioButtons.find(input => parseInt(input.value) === reviewInfo.bookFormat);
+            radioButtonToSelect && (radioButtonToSelect.checked = true);
+        } catch (error) {
+            console.error('Error fetching review data:', error);
+        }
+    }
+
+    useEffect(() => {
+        if (reviewId) {
+            fetchReview(reviewId);
+        }
+    }, [reviewId]);
 
     const fetchBook = async (id: string) => {
         try {
@@ -64,35 +113,32 @@ export default function EditReview() {
         }
     }
 
-    const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const newText: string = event.target.value;
-        if (newText.length <= maxLength) {
-            setDescription(newText);
-        } else {
-            setShowModal(true);
-            setDescription(newText);
-        }
-    };
-
     useEffect(() => {
         if (bookId) {
             fetchBook(bookId);
         }
     }, [bookId]);
 
+
     // Add all the params needed to make review
-    const addUserReview = async () => {
+    const updateUserReview = async () => {
         try {
-            await Post('/api/reviews', {
-                userId: userId, bookId: bookId, rating: starsAmount, startDate: startDate?.toISOString(),
-                finishedDate: finishedDate?.toISOString(), summary: description
+            await Put(`/api/reviews/${reviewId}`, {
+                userId: userId,
+                bookId: bookId,
+                rating: starsAmount,
+                bookFormat: format,
+                startDate: startDate?.toISOString(),
+                finishedDate: finishedDate?.toISOString(),
+                summary: description
             });
             console.log('Successfully added review');
         } catch (error) {
             console.log('Error adding review:', error);
         }
-        navigate(`/view-books/${bookId}`)
+        navigate(`/view-books/${bookId}`, { replace: true });
     };
+
 
     return (
         <div className="create-book outlet-content template yellow-bg ">
@@ -107,7 +153,7 @@ export default function EditReview() {
                         <div className="d-flex justify-content-center align-items-center">
                             <div className='review-container-forms p-5 rounded bg-white'>
                                 <form id="new-book">
-                                    <h3 className="text-center">{`Edit Your Review on ${title}`}</h3>
+                                    <h3 className="text-center">{`Edit Review For ${title}`}</h3>
                                     <div>
                                         <StarsDropDownInput value={starsAmount}
                                             onChange={handleStarsChange} />
@@ -137,12 +183,25 @@ export default function EditReview() {
 
                                     <div className='mb-2'>
                                         <label htmlFor="start-date-input">When did you start this book?</label>
-                                        <input type="date" value={startDate ? startDate.toISOString().split('T')[0] : undefined} className='form-control w-auto' id="start-date-input" name="start-date-input" onChange={handleStartDateChange} />
+                                        <input type="date"
+                                            value={startDate ? startDate.toISOString().split('T')[0] : undefined}
+                                            className='form-control w-auto'
+                                            id="start-date-input"
+                                            name="start-date-input"
+                                            max={finishedDate ? finishedDate.toISOString().split('T')[0] : new Date().toISOString().split('T')[0]}
+                                            onChange={handleStartDateChange} />
                                     </div>
 
                                     <div className='mb-2'>
                                         <label htmlFor="finished-date-input">When did you finish this book?</label>
-                                        <input type="date" value={finishedDate ? finishedDate.toISOString().split('T')[0] : undefined} className='form-control w-auto' id="finished-date-input" name="finished-date-input" onChange={handleFinishedDateChange} />
+                                        <input type="date"
+                                            value={finishedDate ? finishedDate.toISOString().split('T')[0] : undefined}
+                                            className='form-control w-auto'
+                                            id="finished-date-input"
+                                            name="finished-date-input"
+                                            max={new Date().toISOString().split('T')[0]}
+                                            min={startDate ? startDate.toISOString().split('T')[0] : undefined}
+                                            onChange={handleFinishedDateChange} />
                                     </div>
 
                                     <div className='mb-2'>
@@ -161,7 +220,7 @@ export default function EditReview() {
                                     )}
                                 </form>
                                 <div className='d-grid'>
-                                    <button className='btn btn-primary' onClick={addUserReview} disabled={charCount > maxLength} >Add Review</button>
+                                    <button className='btn btn-primary' onClick={updateUserReview} disabled={charCount > maxLength} >Edit Review</button>
                                 </div>
                             </div>
                         </div>
@@ -171,3 +230,4 @@ export default function EditReview() {
         </div>
     )
 }
+

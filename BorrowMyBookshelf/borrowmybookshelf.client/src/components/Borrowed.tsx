@@ -68,7 +68,7 @@ export default function Borrowed({ isBorrowing }: BorrowedProps) {
                         <td> {userBook.bookRequest?.requestDate ? userBook.bookRequest?.requestDate.toLocaleDateString() : 'No request date found.'} </td>
                         <td> {userBook.getBorrowableStatus()} </td>
                         <td>
-                            <button onClick={makeBookDropDownFunction(userBook.userBookId)} className="btn btn-warning"><img src="/vert_dropdown.png" alt="Details"></img></button>
+                            <button onClick={makeBookDropDownFunction(userBook.userBookId)} className="btn btn-warning move-btn-left"><img src="/vert_dropdown.png" alt="Details"></img></button>
                             {openDropDown === userBook.userBookId && (
                                 <BookDropDownMenu bookId={userBook.book.bookId}
                                     userBookId={userBook.userBookId}

@@ -4,6 +4,10 @@
     padding: 15px 0px 15px 0px;
 }
 
+.move-btn-left {
+
+}
+
 div.user-notes-container, .review-notes-container {
     width: 100%;
 }
@@ -150,25 +154,35 @@ label.notes {
 }
 
 .book-dropdown {
+    position: relative;
+    width: 0px;
+    height: 0px;
+}
+
+.book-dropdown button {
+    width: 100%;
+    background-color: #d68153;
+    border-color: #d68153;
+    border-radius: 0px;
+    margin: 0px;
+    padding: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+div.drop-down-btn-container {
+    border-radius: 5px;
     position: absolute;
+    z-index: 1;
+    left: -75px;
+    top: 100%;
     border: 1px solid grey;
     background-color: #d68153;
     border-color: #d68153;
     border-radius: 3px;
     width: 125px;
-}
-
-    .book-dropdown button {
-        width: 100%;
-        background-color: #d68153;
-        border-color: #d68153;
-        border-radius: 0px;
-        margin: 0px;
-        padding: 5px;
-    }
-
-div .drop-down-btn-container {
-    border-radius: 5px;
 }
 
 .table {
@@ -201,12 +215,12 @@ a:hover, Link:hover {
     color: black;
 }
 
-    .sidebar-link:hover {
-        color: #705d86;
-    }
-    .sidebar-link:active {
-        color: #9d86b7;
-    }
+.sidebar-link:hover {
+    color: #705d86;
+}
+.sidebar-link:active {
+    color: #9d86b7;
+}
 
 #firstNameNote {
     background-color: #f5f092;
@@ -377,10 +391,10 @@ button.btn.btn-danger:hover, button.btn.btn-danger:active {
     border-color: #84b09f;
 }
 
-    .btn.btn-primary:hover, button.btn.btn-primary:active {
-        background-color: #778262;
-        border-color: #778262;
-    }
+.btn.btn-primary:hover, button.btn.btn-primary:active {
+    background-color: #778262;
+    border-color: #778262;
+}
 
 .btn.btn-primary:disabled {
     background-color: #84b09f;
@@ -392,7 +406,10 @@ button.btn.btn-danger:hover, button.btn.btn-danger:active {
     border-color: #9d86b7;
 }
 
-button.btn.btn-success:hover, button.btn.btn-success:active {
+button.btn.btn-success:hover,
+button.btn.btn-success:focus,
+button.btn.btn-success:active,
+button.btn.btn-success.active {
     background-color: #705d86;
     border-color: #705d86;
 }

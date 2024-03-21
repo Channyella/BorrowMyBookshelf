@@ -12,8 +12,10 @@ import OKModal from './OKModal';
 
 export default function AddReview() {
     const bookId = useParams<{ bookId: string }>().bookId ?? "";
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [book, setBook] = useState<Book | null>(null);
     const [title, setTitle] = useState<string>('');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [format, setFormat] = useState<ReviewBookFormat>(ReviewBookFormat.Physical);
     const [starsAmount, setStarsAmount] = useState<number>(0);
     const userInfo = GetCurrentUser();
@@ -97,7 +99,7 @@ export default function AddReview() {
         } catch (error) {
             console.log('Error adding review:', error);
         }
-        navigate(`/view-books/${bookId}`)
+        navigate(`/view-books/${bookId}`, { replace: true });
     };
 
     return (

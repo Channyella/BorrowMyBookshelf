@@ -20,7 +20,8 @@ export default function Home() {
     const [filterMethod, setFilterMethod] = useState<FilterFunction>(() => () => true)
     const useBookshelfContext = useContext(BookshelfContext);
     const userId = GetCurrentUser()?.userId;
-
+    const [filterApplied, setFilterApplied] = useState(false);
+    const [sortApplied, setSortApplied] = useState(false);
 
     useEffect(() => {
         populateBookData();
@@ -59,10 +60,12 @@ export default function Home() {
     // Sort Modal Functions
     const handleCancelSort = () => {
         setShowSortModal(false);
+        setSortApplied(false);
     };
 
     const handleConfirmSort = () => {
         setShowSortModal(false);
+        setSortApplied(true);
     };
 
     const onClickSort = () => {
@@ -72,10 +75,12 @@ export default function Home() {
     // Filter Modal Functions
     const handleCancelFilter = () => {
         setShowFilterModal(false);
+        setFilterApplied(false);
     };
 
     const handleConfirmFilter = () => {
         setShowFilterModal(false);
+        setFilterApplied(true);
     };
 
     const onClickFilter = () => {
@@ -102,7 +107,7 @@ export default function Home() {
                         <td>{`${book.pageCount} pages`}</td>
                         <td>{formatAudioLength(book.audioLength)}</td>
                         <td>{book.genres.map(genre => genre.genreType).join(", ")}</td>
-                        <td> <button onClick={makeBookDropDownFunction(book.bookId)} className="btn btn-warning"><img src="/vert_dropdown.png" alt="Details"></img></button> 
+                        <td> <button onClick={makeBookDropDownFunction(book.bookId)} className="btn btn-warning move-btn-left"><img src="/vert_dropdown.png" alt="Details"></img></button> 
                             {openDropDown == book.bookId && (
                                 <BookDropDownMenu bookId={book.bookId}
                                     hideDeleteOption={true}
@@ -129,31 +134,36 @@ export default function Home() {
                             placeholder="Search"
                             onChange={search}
                         />
-                        <button onClick={onClickFilter } className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
-                        {showFilterModal && (
+                        <button onClick={onClickFilter} className={`btn btn-success nav-item ms-3 ${filterApplied ? 'active' : ''}`}>
+                            <img src="/filter.png" alt="Filter" />
+                            {filterApplied && <span className="filter-indicator"> Filter Active</span>}
+                        </button>
                             <FilterModal
-                                message="Select what you'd like to filter:"
-                                onConfirm={handleConfirmFilter}
-                                onCancel={handleCancelFilter}
-                                setFilter={setFilterMethod}
-                                authors={books?.map(book => book.author) ?? []}
-                                genres={books?.flatMap(book => book.genres) ?? []}
-                                hideOnAllBooks={true }
+                            message="Select what you'd like to filter:"
+                            onConfirm={handleConfirmFilter}
+                            onCancel={handleCancelFilter}
+                            setFilter={setFilterMethod}
+                            authors={books?.map(book => book.author) ?? []}
+                            genres={books?.flatMap(book => book.genres) ?? []}
+                            hideOnAllBooks={true}
+                            showModal={showFilterModal }
                             />
-                        )}
-                        <button onClick={onClickSort} className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /></button>
+
+                        <button onClick={onClickSort} className={`btn btn-success nav-item ms-3 ${sortApplied ? 'active' : ''}`}>
+                            <img src="/sort.png" alt="Sort" />
+                            {sortApplied && <span className="sort-indicator"> Sort Active</span>}
+                        </button>
                     </div>
                 </div>
             </nav>
             {contents}
-            {showSortModal && (
                 <SortModal
-                    message="What would you like to sort?"
-                    onConfirm={handleConfirmSort}
-                    onCancel={handleCancelSort}
-                    setSort={setSortMethod}
+                message="What would you like to sort?"
+                onConfirm={handleConfirmSort}
+                onCancel={handleCancelSort}
+                setSort={setSortMethod}
+                showModal={showSortModal}
                 />
-            )}
         </div>
     );
     async function populateBookData() {

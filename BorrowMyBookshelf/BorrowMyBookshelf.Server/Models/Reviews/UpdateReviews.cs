@@ -24,7 +24,7 @@ namespace BorrowMyBookshelf.Server.Models.Reviews
             StartDate = null;
             FinishedDate = null;
             CreateDate = null;
-            UpdatedDate = null;
+            UpdatedDate = DateTime.Now;
             ColumnsToNullify = String.Empty;
         }
     }

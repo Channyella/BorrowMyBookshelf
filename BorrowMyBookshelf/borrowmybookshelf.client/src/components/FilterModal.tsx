@@ -16,6 +16,7 @@ interface FilterModalProps {
     authors: Author[];
     genres: Genre[];
     hideOnAllBooks?: boolean;
+    showModal?: boolean;
 }
 type FilterValue = Author | number | Genre[] | boolean | BookFormat;
 type GetFilter<T extends FilterValue> = (value: T | null, book: Book, userBook?: UserBook) => boolean;
@@ -51,7 +52,7 @@ const getGenresFilter: GetFilter<Genre[]> = (value: Genre[] | null, book: Book) 
 const getBorrowableFilter: GetFilter<boolean> = (value: boolean | null, x: Book, userBook?: UserBook) => value === null || !userBook || userBook.borrowable == value;
 const getFormatFilter: GetFilter<BookFormat> = (value: BookFormat | null, x: Book, userBook?: UserBook) => !value || !userBook || userBook.bookFormat == value;
 
-const FilterModal: React.FC<FilterModalProps> = ({ message, onConfirm, onCancel, setFilter, authors, genres, hideOnAllBooks }) => {
+const FilterModal: React.FC<FilterModalProps> = ({ showModal, message, onConfirm, onCancel, setFilter, authors, genres, hideOnAllBooks }) => {
     const [author, setAuthor] = useState<Author | null>(null);
     const [pageCount, setPageCount] = useState<number | null>(null);
     const [audioLength, setAudioLength] = useState<number | null>(null);
@@ -120,7 +121,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ message, onConfirm, onCancel,
     }
 
     return (
-        <div className='sort-modal'>
+        <div className={showModal ? 'sort-modal' : 'hidden'}>
             <div className="sort-modal-content">
                 <h5>{message}</h5>
 

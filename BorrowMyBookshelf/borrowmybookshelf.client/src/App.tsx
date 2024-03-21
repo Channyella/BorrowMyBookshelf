@@ -70,7 +70,7 @@ function App() {
                         <Route path='profile/add-fav-genres' element={<AddFavGenre />} />
                         <Route path='view-books/:bookId' element={<ViewBook />} />
                         <Route path='view-books/:bookId/create-review' element={<AddReview />} />
-                        <Route path='view-books/:bookId/edit-review' element={<EditReview />} />
+                        <Route path='view-books/:bookId/edit-review/:reviewId' element={<EditReview />} />
                         <Route path='friends' element={<Friends />} />
                         <Route path='friends/all-users' element={<AllUsers />} />
                         <Route path='friends/friend-requests' element={<FriendRequests />} />

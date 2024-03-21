@@ -12,7 +12,7 @@ namespace BorrowMyBookshelf.Server.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        private readonly AuthorsDatabaseConnector dbConnector = new AuthorsDatabaseConnector();
+        private readonly AuthorsDatabaseConnector dbConnector = new();
         // GET: api/<ValuesController>
         [HttpGet]
         public IEnumerable<Authors> Get()

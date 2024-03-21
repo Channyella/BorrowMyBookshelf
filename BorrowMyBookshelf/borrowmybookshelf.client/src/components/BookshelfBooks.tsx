@@ -32,6 +32,8 @@ export default function BookshelfBooks() {
     const [showFilterModal, setShowFilterModal] = useState(false);
     const [filterMethod, setFilterMethod] = useState<FilterFunction>(() => () => true)
     const [showFailedDeleteModal, setShowFailedDeleteModal] = useState(false);
+    const [filterApplied, setFilterApplied] = useState(false);
+    const [sortApplied, setSortApplied] = useState(false);
 
 
     const fetchBookshelf = async (id: string) => {
@@ -95,12 +97,15 @@ export default function BookshelfBooks() {
         setShowModal(true);
     };
 
+    // Sort Modal Functions
     const handleCancelSort = () => {
         setShowSortModal(false);
+        setSortApplied(false);
     };
 
     const handleConfirmSort = () => {
         setShowSortModal(false);
+        setSortApplied(true);
     };
 
     const onClickSort = () => {
@@ -110,10 +115,12 @@ export default function BookshelfBooks() {
     // Filter Modal Functions
     const handleCancelFilter = () => {
         setShowFilterModal(false);
+        setFilterApplied(false);
     };
 
     const handleConfirmFilter = () => {
         setShowFilterModal(false);
+        setFilterApplied(true);
     };
 
     const onClickFilter = () => {
@@ -195,7 +202,7 @@ export default function BookshelfBooks() {
                         <td>{getBorrowableStatus(booksOnBookshelf.userBook)}</td>
                         <td>{getBookFormatString(booksOnBookshelf.userBook.bookFormat)}</td>
                         <td>
-                            <button onClick={makeBookDropDownFunction(booksOnBookshelf.userBook.userBookId)} className="btn btn-warning"><img src="/vert_dropdown.png" alt="Details"></img></button>
+                            <button onClick={makeBookDropDownFunction(booksOnBookshelf.userBook.userBookId)} className="btn btn-warning move-btn-left"><img src="/vert_dropdown.png" alt="Details"></img></button>
                             {openDropDown == booksOnBookshelf.userBook.userBookId && (
                                 <BookDropDownMenu bookId={booksOnBookshelf.userBook.book.bookId}
                                     userBookId={booksOnBookshelf.userBook.userBookId}
@@ -244,29 +251,34 @@ export default function BookshelfBooks() {
                             placeholder="Search"
                             onChange={search}
                             />
-                        <button onClick={onClickFilter} className="btn btn-success nav-item ms-3"> <img src="/filter.png" alt="Filter" /> </button>
-                        {showFilterModal && (
+                        <button onClick={onClickFilter} className={`btn btn-success nav-item ms-3 ${filterApplied ? 'active' : ''}`}>
+                            <img src="/filter.png" alt="Filter" />
+                            {filterApplied && <span className="filter-indicator"> Filter Active</span>}
+                        </button>
                             <FilterModal
-                                message="Select what you'd like to filter:"
-                                onConfirm={handleConfirmFilter}
-                                onCancel={handleCancelFilter}
-                                setFilter={setFilterMethod}
-                                authors={booksOnBookshelf?.map(booksOnBookshelf => booksOnBookshelf.userBook.book.author) ?? []}
-                                genres={booksOnBookshelf?.flatMap(booksOnBookshelf => booksOnBookshelf.userBook.book.genres) ?? []}
+                            message="Select what you'd like to filter:"
+                            onConfirm={handleConfirmFilter}
+                            onCancel={handleCancelFilter}
+                            setFilter={setFilterMethod}
+                            authors={booksOnBookshelf?.map(booksOnBookshelf => booksOnBookshelf.userBook.book.author) ?? []}
+                            genres={booksOnBookshelf?.flatMap(booksOnBookshelf => booksOnBookshelf.userBook.book.genres) ?? []}
+                            showModal={ showFilterModal }
                             />
-                        )}
-                        <button onClick={onClickSort} className="btn btn-success nav-item ms-3"> <img src="/sort.png" alt="Sort" /> </button>
+                        
+                        <button onClick={onClickSort} className={`btn btn-success nav-item ms-3 ${sortApplied ? 'active' : ''}`}>
+                            <img src="/sort.png" alt="Sort" />
+                            {sortApplied && <span className="sort-indicator"> Sort Active</span>}
+                        </button>
                         </div>
                 </div>
             </nav>
-            {showSortModal && (
                 <SortModal
-                    message="What would you like to sort?"
-                    onConfirm={handleConfirmSort}
-                    onCancel={handleCancelSort}
-                    setSort={setSortMethod}
+                message="What would you like to sort?"
+                onConfirm={handleConfirmSort}
+                onCancel={handleCancelSort}
+                setSort={setSortMethod}
+                showModal={showSortModal }
                 />
-            )}
             <main className="bookshelf-main">
                 {contents}
             </main>

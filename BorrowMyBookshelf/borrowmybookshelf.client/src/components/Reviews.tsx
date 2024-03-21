@@ -121,7 +121,7 @@ const Reviews: React.FC<ReviewsProps> = ({ reviews, setReviews }) => {
                             )}
                             {review.user.userId === GetCurrentUser()?.userId && (
                                 <div className="button-container">
-                                    <Link to={`/view-books/${review.book.bookId}/edit-review`}>
+                                    <Link to={`/view-books/${review.book.bookId}/edit-review/${review.reviewId}`}>
                                         <button className="btn btn-primary"><img src="/edit.png" alt="Edit" /></button>
                                     </Link>
                                     <button onClick={() => confirmDelete(review.reviewId)} className="btn btn-primary"><img src="/delete.png" alt="Delete" /></button>

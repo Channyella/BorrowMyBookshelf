@@ -9,6 +9,7 @@ interface SortModalProps {
     onConfirm: () => void;
     onCancel: () => void;
     setSort: (sortFunctionSetter: SortFunctionSetter) => void;
+    showModal?: boolean;
 }
 
 export enum SortOption {
@@ -58,7 +59,7 @@ const getSorter = (sortOption: SortOption, reverse: boolean = false): SortFuncti
     }
 }
 
-const SortModal: React.FC<SortModalProps> = ({ message, onConfirm, onCancel, setSort }) => {
+const SortModal: React.FC<SortModalProps> = ({ message, onConfirm, onCancel, setSort, showModal }) => {
     const [sortOption, setSortOption] = useState<SortOption>(SortOption.Title);
     const handleSortOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSortOption(parseInt(event.target.value) as unknown as SortOption);
@@ -76,7 +77,7 @@ const SortModal: React.FC<SortModalProps> = ({ message, onConfirm, onCancel, set
     }
 
     return (
-        <div className='sort-modal'>
+        <div className={showModal ? 'sort-modal' : 'hidden'}>
             <div className="sort-modal-content">
                 <h5>{message}</h5>
                 <div className="radio-button-container radio-grid">
