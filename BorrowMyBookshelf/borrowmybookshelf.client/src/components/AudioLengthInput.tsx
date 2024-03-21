@@ -8,8 +8,8 @@ interface AudioLengthInputProps {
 }
 
 const AudioLengthInput: React.FC<AudioLengthInputProps> = ({ setAudioLength, startingMinutes }) => {
-    const [hours, setHours] = useState<number>(0);
-    const [minutes, setMinutes] = useState<number>(0);
+    const [hours, setHours] = useState<number | undefined>(0);
+    const [minutes, setMinutes] = useState<number | undefined>(0);
 
     useEffect(() => {
         if (startingMinutes !== undefined) {
@@ -21,16 +21,16 @@ const AudioLengthInput: React.FC<AudioLengthInputProps> = ({ setAudioLength, sta
     }, [startingMinutes]);
 
     const handleHoursChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newHours = parseInt(event.target.value);
+        const newHours = event.target.value ? parseInt(event.target.value) : undefined;
         setHours(newHours);
-        const totalMinutes = newHours * 60 + minutes;
+        const totalMinutes = (newHours ?? 0) * 60 + (minutes ?? 0);
         setAudioLength(totalMinutes);
     };
 
     const handleMinutesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newMinutes = parseInt(event.target.value);
+        const newMinutes = event.target.value ? parseInt(event.target.value) : undefined;
         setMinutes(newMinutes);
-        const totalMinutes = hours * 60 + newMinutes;
+        const totalMinutes = (hours ?? 0) * 60 + (newMinutes ?? 0);
         setAudioLength(totalMinutes);
     };
 

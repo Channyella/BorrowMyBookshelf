@@ -12,8 +12,8 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
             JOIN user_books ON bookshelf_books.user_book_id = user_books.user_book_id
             JOIN books ON user_books.book_id = books.book_id
             JOIN authors ON books.author_id = authors.author_id
-            JOIN book_genres ON books.book_id = book_genres.book_id
-            JOIN genres ON book_genres.genre_id = genres.genre_id
+            LEFT JOIN book_genres ON books.book_id = book_genres.book_id
+            LEFT JOIN genres ON book_genres.genre_id = genres.genre_id
             LEFT JOIN
                 (SELECT *, 
                     users.first_name as user_first_name, users.last_name as user_last_name,
@@ -75,8 +75,8 @@ namespace BorrowMyBookshelf.Server.Models.BookshelfBooks
                 )
                 );
 
-            string[] genreStringList = reader.GetString("book_genres").Split(", ");
-            int[] genreIdList = reader.GetString("book_genre_ids").Split(", ").Select(x => Int32.Parse(x)).ToArray();
+            string[] genreStringList = SafeGetStringWithDefault("book_genres", reader).Split(", ").Where(x => x.Length > 0).ToArray();
+            int[] genreIdList = SafeGetStringWithDefault("book_genre_ids", reader).Split(", ").Where(x => x.Length > 0).Select(x => Int32.Parse(x)).ToArray();
             Genres.Genres[] combinedGenres = genreIdList.Zip(genreStringList, (id, genre) => new Genres.Genres(id, genre)).ToArray();
 
             DetailedBook detailedBook = new(book, author, combinedGenres);

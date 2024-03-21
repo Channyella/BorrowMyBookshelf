@@ -6,7 +6,7 @@ import BookDeleteCustomAlert from './BookDeleteCustomAlert';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserBook } from '../models/UserBook';
 import ModalButton, { ModalType } from './ModalButton';
-import { Post, Put } from '../helpers/NetworkHelper';
+import { Delete, Post, Put } from '../helpers/NetworkHelper';
 import { BookRequestStatus } from '../models/BookRequest';
 
 interface BookDropDownMenuProps {
@@ -166,9 +166,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                         showDropDown(-1);
                     }}
                     onCancel={async () => {
-                        await Put(`/api/bookRequests/${userBook.bookRequest?.bookRequestId}`, {
-                            bookRequestStatus: BookRequestStatus.Denied
-                        });
+                        await Delete(`/api/bookRequests/${userBook.bookRequest?.bookRequestId}`);
                         await refreshShelf();
                         showDropDown(-1);
                     }}
@@ -194,9 +192,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                         modalType={ModalType.ConfirmModal}
                         message={`Have you gotten ${userBook.book.title} back from ${userBook.bookRequest.borrowerUser.firstName} ${userBook.bookRequest.borrowerUser.lastName}?`}
                         onConfirm={async () => {
-                            await Put(`/api/bookRequests/${userBook.bookRequest?.bookRequestId}`, {
-                                bookRequestStatus: BookRequestStatus.Returned
-                            });
+                            await Delete(`/api/bookRequests/${userBook.bookRequest?.bookRequestId}`);
                             await refreshShelf();
                             showDropDown(-1);
                         }}

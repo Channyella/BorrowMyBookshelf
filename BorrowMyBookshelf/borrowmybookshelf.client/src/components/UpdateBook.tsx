@@ -22,6 +22,8 @@ export default function UpdateBook() {
     const [lastName, setLastName] = useState<string>('');
     const [format, setFormat] = useState<BookFormat>(BookFormat.Hardcover);
     const [length, setLength] = useState<number | undefined>();
+    const [startingMinutes, setStartingMinutes] = useState<number | undefined>();
+
     const [borrowable, setBorrowable] = useState<boolean>(false);
     const [pageCount, setPageCount] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -92,6 +94,7 @@ export default function UpdateBook() {
             setFormat(userBook.bookFormat);
             userBook.book.pageCount && setPageCount(userBook.book.pageCount.toString());
             setLength(userBook.book.audioLength);
+            setStartingMinutes(userBook.book.audioLength);
             setBorrowable(userBook.borrowable);
             setDescription(userBook.book.description ?? "");
             const genreList = userBook.book.genres.map(x => x.genreType);
@@ -230,7 +233,7 @@ export default function UpdateBook() {
                                 onChange={handlePageCountChange} />
                         </div>
                             <AudioLengthInput setAudioLength={setLength}
-                                startingMinutes={ length }
+                                startingMinutes={ startingMinutes }
                             />
                     </div>
 
