@@ -49,6 +49,13 @@ export default function Home() {
         })
     }
 
+    const formatAudioLength = (audioLength?: number): string => {
+        if (!audioLength) return "";
+        const hours = Math.floor(audioLength / 60);
+        const minutes = audioLength % 60;
+        return `${hours}h ${minutes}m`;
+    }
+
     // Sort Modal Functions
     const handleCancelSort = () => {
         setShowSortModal(false);
@@ -92,8 +99,8 @@ export default function Home() {
                     <tr key={book.title}>
                         <td>{book.title}</td>
                         <td>{`${book.author.firstName} ${book.author.middleName ?? ""} ${book.author.lastName}`}</td>
-                        <td>{book.pageCount}</td>
-                        <td>{book.audioLength}</td>
+                        <td>{`${book.pageCount} pages`}</td>
+                        <td>{formatAudioLength(book.audioLength)}</td>
                         <td>{book.genres.map(genre => genre.genreType).join(", ")}</td>
                         <td> <button onClick={makeBookDropDownFunction(book.bookId)} className="btn btn-warning"><img src="/vert_dropdown.png" alt="Details"></img></button> 
                             {openDropDown == book.bookId && (

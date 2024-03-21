@@ -3,14 +3,14 @@ import { GetAuthHeader } from '../helpers/AuthHelper';
 import { getAuthorFullName } from '../models/Author';
 import { Book } from '../models/Book';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Review } from '../models/Review';
+import Reviews from './Reviews';
 
 export default function ViewBook() {
     const bookId = useParams<{ bookId: string }>().bookId ?? "";
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [book, setBook] = useState<Book | null>(null);
-    const [reviews, setReviews] = useState<Review[] | null>(null);
     const [title, setTitle] = useState<string>('');
     const [author, setAuthor] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -18,6 +18,20 @@ export default function ViewBook() {
     const [pageCount, setPageCount] = useState<number | undefined>();
     const [genreList, setGenreList] = useState<string[]>([]);
     const navigate = useNavigate();
+    const [reviews, setReviews] = useState<Review[] | null>(null);
+
+    const fetchReviews = async (bookId: string) => {
+        try {
+            const response = await axios.get<Review[]>(`/api/reviews/book-id/${bookId}`,
+                {
+                    withCredentials: true,
+                    headers: GetAuthHeader(),
+                });
+            setReviews(response.data.map(review => new Review(review)));
+        } catch (error) {
+            console.error('Error fetching reviews data:', error);
+        }
+    }
     
     const fetchBook = async (id: string) => {
         try {
@@ -37,19 +51,6 @@ export default function ViewBook() {
             setGenreList(genreList);
         } catch (error) {
             console.error('Error fetching bookshelf data:', error);
-        }
-    }
-
-    const fetchReviews = async (bookId: string) => {
-        try {
-            const response = await axios.get<Review[]>(`/api/reviews/book-id/${bookId}`,
-                {
-                    withCredentials: true,
-                    headers: GetAuthHeader(),
-                });
-            setReviews(response.data.map(review => new Review(review)));
-        } catch (error) {
-            console.error('Error fetching reviews data:', error);
         }
     }
 
@@ -73,10 +74,15 @@ export default function ViewBook() {
                     <div className="nav navbar-nav left-align-btns">
                         <button onClick={goBack} className="btn btn-success nav- ms-3"> <img src="/back_arrow.png" alt="Go Back" /> </button>
                     </div>
+                    <div className="nav navbar-nav right-align-btns">
+                        <Link to={`/view-books/${bookId}/create-review`}>
+                        <button className="btn btn-success nav-item ms-3"> <img src="/reviews.png" alt="Review" /> Review Book</button>
+                        </Link>
+                    </div>
                 </div>
             </nav>
-            <main className="d-flex justify-content-center align-items-center">
-            <div className="container">
+            <main className="view-book-main">
+            <div className="wide-container">
                     <h1 className="text-center book-title">{title}</h1>
                 <h3 className="text-center"> by {author} </h3>
                 {audioLength && pageCount &&
@@ -104,16 +110,11 @@ export default function ViewBook() {
                 <div className="form-group d-flex align-items-center justify-content-center">
                  <div className="description-bg">{description}</div>
                 </div></div>)}
-                </div>
                 {!!reviews?.length &&
-                    (<div>
-                        <h3 className="text-align-left">Reviews:</h3>
-                    {reviews?.map(review =>
-                        <div key={review.reviewId} className="form-group d-flex align-items-center justify-content-center">
-                                <textarea id="user-notes" rows={5} value={ review.summary|| ''} className="user-notes" readOnly={true} />
-                            </div>
-                        )}
-                    </div>)}
+                    (<Reviews reviews={reviews}
+                            setReviews={setReviews }
+                            />)}
+                </div>
             </main>
         </div>
     );

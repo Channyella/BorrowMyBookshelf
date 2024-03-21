@@ -7,6 +7,7 @@ import { Bookshelf } from '../models/Bookshelf';
 import { BookFormat } from '../models/UserBook';
 import { AddBookToBookshelf } from '../helpers/BookHelper';
 import OKModal from './OKModal';
+import AudioLengthInput from './AudioLengthInput';
 
 export default function CreateBook() {
     const bookshelfId = useParams<{ bookshelfId: string }>().bookshelfId ?? "";
@@ -20,7 +21,7 @@ export default function CreateBook() {
     const [middleName, setMiddleName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [format, setFormat] = useState<BookFormat>(BookFormat.Hardcover);
-    const [length, setLength] = useState<string>('');
+    const [length, setLength] = useState<number | undefined>();
     const [borrowable, setBorrowable] = useState<boolean>(false);
     const [pageCount, setPageCount] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -47,10 +48,6 @@ export default function CreateBook() {
 
     const handleFormatChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormat(event.target.value as unknown as BookFormat);
-    };
-
-    const handleLengthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setLength(event.target.value);
     };
 
     const handlePageCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,7 +104,7 @@ export default function CreateBook() {
             title,
             description,
             pageCount: pageCount ? parseInt(pageCount) : undefined,
-            audioLength: length ? parseInt(length) : undefined,
+            audioLength: length,
             borrowable,
             bookFormat: format,
             userId,
@@ -210,17 +207,9 @@ export default function CreateBook() {
                                     placeholder="Enter Page Count"
                                     className='form-control'
                                     name="page_count"
-                                    onChange={handlePageCountChange}                                />
+                                    onChange={handlePageCountChange}/>
                             </div>
-                        <div className='mb-2'>
-                            <label htmlFor="audioLength">Audio Length:</label>
-                                <input type="text"
-                                    value={length}
-                                    placeholder="Enter Audio Length in Minutes"
-                                    className='form-control'
-                                    name="audio_length"
-                                    onChange={handleLengthChange} />
-                        </div>
+                            <AudioLengthInput setAudioLength={ setLength }></AudioLengthInput>
                     </div>
 
                     <div className='mb-2'>

@@ -28,6 +28,8 @@ import ViewBook from './components/ViewBook';
 import AllUsers from './components/AllUsers';
 import FriendRequests from './components/FriendRequests';
 import FriendProfile from './components/FriendProfile';
+import AddReview from './components/AddReview';
+import EditReview from './components/EditReview';
 function App() {
 
     const { auth } = useContext(AuthContext);
@@ -67,6 +69,8 @@ function App() {
                         <Route path='profile/add-fav-books' element={<AddFavBook />} />
                         <Route path='profile/add-fav-genres' element={<AddFavGenre />} />
                         <Route path='view-books/:bookId' element={<ViewBook />} />
+                        <Route path='view-books/:bookId/create-review' element={<AddReview />} />
+                        <Route path='view-books/:bookId/edit-review' element={<EditReview />} />
                         <Route path='friends' element={<Friends />} />
                         <Route path='friends/all-users' element={<AllUsers />} />
                         <Route path='friends/friend-requests' element={<FriendRequests />} />

@@ -6,6 +6,7 @@ import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import { BookFormat, UserBook, makeUserBook } from '../models/UserBook';
 import { UpdateBookOnBookshelf } from '../helpers/UpdateBookHelper';
 import OKModal from './OKModal';
+import AudioLengthInput from './AudioLengthInput';
 
 export default function UpdateBook() {
     const userBookId = useParams<{ userBookId: string }>().userBookId ?? "";
@@ -20,7 +21,7 @@ export default function UpdateBook() {
     const [middleName, setMiddleName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [format, setFormat] = useState<BookFormat>(BookFormat.Hardcover);
-    const [length, setLength] = useState<string>('');
+    const [length, setLength] = useState<number | undefined>();
     const [borrowable, setBorrowable] = useState<boolean>(false);
     const [pageCount, setPageCount] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -48,10 +49,6 @@ export default function UpdateBook() {
 
     const handleFormatChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormat(event.target.value as unknown as BookFormat);
-    };
-
-    const handleLengthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setLength(event.target.value);
     };
 
     const handlePageCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +91,7 @@ export default function UpdateBook() {
             setLastName(userBook.book.author.lastName);
             setFormat(userBook.bookFormat);
             userBook.book.pageCount && setPageCount(userBook.book.pageCount.toString());
-            userBook.book.audioLength && setLength(userBook.book.audioLength.toString());
+            setLength(userBook.book.audioLength);
             setBorrowable(userBook.borrowable);
             setDescription(userBook.book.description ?? "");
             const genreList = userBook.book.genres.map(x => x.genreType);
@@ -128,7 +125,7 @@ export default function UpdateBook() {
             title,
             description,
             pageCount: pageCount ? parseInt(pageCount) : undefined,
-            audioLength: length ? parseInt(length) : undefined,
+            audioLength: length,
             borrowable,
             bookFormat: format,
             userId,
@@ -151,7 +148,7 @@ export default function UpdateBook() {
                         <div className="d-flex justify-content-center align-items-center">
                             <div className='form-container-forms p-5 rounded bg-white'>
                 <form id="new-book">
-                    <h3 className="text-center">Create New Book</h3>
+                                    <h3 className="text-center">Edit { title }</h3>
                     <div className='mb-2'>
                         <label htmlFor="title">Title:</label>
                         <input type="text"
@@ -232,15 +229,9 @@ export default function UpdateBook() {
                                 name="page_count"
                                 onChange={handlePageCountChange} />
                         </div>
-                        <div className='mb-2'>
-                            <label htmlFor="audioLength">Audio Length:</label>
-                            <input type="text"
-                                value={length}
-                                placeholder="Enter Audio Length in Minutes"
-                                className='form-control'
-                                name="audio_length"
-                                onChange={handleLengthChange} />
-                        </div>
+                            <AudioLengthInput setAudioLength={setLength}
+                                startingMinutes={ length }
+                            />
                     </div>
 
                     <div className='mb-2'>
