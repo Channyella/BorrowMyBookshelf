@@ -80,7 +80,7 @@ export default function EditReview() {
             setReview(reviewInfo);
             setStarsAmount(reviewInfo.rating);
             setFormat(reviewInfo.bookFormat ?? null);
-            setDescription(reviewInfo.summary ?? null);
+            setDescription(reviewInfo.summary ?? '');
             setStartDate(reviewInfo.startDate ?? null);
             setFinishedDate(reviewInfo.finishedDate ?? null);
             const formatRadioButtons = Array.from(document.getElementsByName("format") as NodeList) as HTMLInputElement[];

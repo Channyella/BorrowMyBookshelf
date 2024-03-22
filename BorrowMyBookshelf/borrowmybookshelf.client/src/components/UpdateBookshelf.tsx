@@ -8,6 +8,7 @@ import { Bookshelf } from '../models/Bookshelf';
 
 export default function AddBookshelf() {
     const { bookshelfId } = useParams<{ bookshelfId: string }>() ?? "";
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [bookshelf, setBookshelf] = useState<Bookshelf | null>(null);
     const { refreshBookshelf } = useContext(BookshelfContext);
     const [name, setName] = useState<string>('');
