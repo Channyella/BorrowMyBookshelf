@@ -73,7 +73,7 @@ export default function CopyToAnotherBookshelf() {
     // Function for adding book to bookshelf and turning book into userBook
     const copyBookToBookshelf = async () => {
         if (!userBook || !selectedBookshelf) return;
-        await AddBookToBookshelf({userBookId: userBook.userBookId, bookId: userBook.book.bookId, bookshelfId: parseInt(selectedBookshelf), bookFormat: userBook.bookFormat, borrowable: userBook.borrowable, title, userId, genreTypes: [] })
+        await AddBookToBookshelf({ userBookId: userBook.userBookId, bookId: userBook.book.bookId, bookshelfId: parseInt(selectedBookshelf), bookFormat: userBook.bookFormat, borrowable: userBook.borrowable, title, userId, genreTypes: [] })
         navigate(`/bookshelf-books/${selectedBookshelf}`);
     }
     async function goBack() {
@@ -92,43 +92,43 @@ export default function CopyToAnotherBookshelf() {
                     <div className="col-lg-12 ">
                         <div className="d-flex justify-content-center align-items-center">
                             <div className='form-container-forms p-5 rounded bg-white'>
-                <form id="new-book">
-                    <h3 className="text-center">Add to Your Bookshelf:</h3>
-                    <label htmlFor="bookshelves">Select Bookshelf:</label>
-                    <select id="bookshelves" className="form-select w-50" value={selectedBookshelf} onChange={handleBookshelfChange}>
-                        <option value="">Select</option>
-                        {bookshelves?.map(bookshelf => (
-                            <option key={bookshelf.bookshelfId} value={bookshelf.bookshelfId}> {bookshelf.bookshelfName} </option>
-                        ))}
-                    </select>
+                                <form id="new-book">
+                                    <h3 className="text-center">Add to Your Bookshelf:</h3>
+                                    <label htmlFor="bookshelves">Select Bookshelf:</label>
+                                    <select id="bookshelves" className="form-select w-50" value={selectedBookshelf} onChange={handleBookshelfChange}>
+                                        <option value="">Select</option>
+                                        {bookshelves?.map(bookshelf => (
+                                            <option key={bookshelf.bookshelfId} value={bookshelf.bookshelfId}> {bookshelf.bookshelfName} </option>
+                                        ))}
+                                    </select>
 
-                    <div className='mb-2'>
-                        <label htmlFor="title">Title</label>
-                        <input type="text"
-                            value={title}
-                            placeholder="Enter Title"
-                            className='form-control'
-                            name="title"
-                            onChange={handleTitleChange}
-                            readOnly
-                        />
-                    </div>
-                    <div className='mb-2'>
-                        <label htmlFor="firstName">Author&apos;s Name</label>
-                        <input type="text"
-                            value={name}
-                            placeholder="Enter First Name"
-                            className='form-control'
-                            name="first_name"
-                            onChange={handleNameChange}
-                            readOnly
-                        />
-                    </div>
-                </form>
-                <div className='d-grid'>
-                    <button onClick={copyBookToBookshelf} className='btn btn-primary' >Add Book To Bookshelf</button>
-                </div>
-                        </div>
+                                    <div className='mb-2'>
+                                        <label htmlFor="title">Title:</label>
+                                        <input type="text"
+                                            value={title}
+                                            placeholder="Enter Title"
+                                            className='form-control'
+                                            name="title"
+                                            onChange={handleTitleChange}
+                                            readOnly
+                                        />
+                                    </div>
+                                    <div className='mb-2'>
+                                        <label htmlFor="firstName">Author&apos;s Name:</label>
+                                        <input type="text"
+                                            value={name}
+                                            placeholder="Enter First Name"
+                                            className='form-control'
+                                            name="first_name"
+                                            onChange={handleNameChange}
+                                            readOnly
+                                        />
+                                    </div>
+                                </form>
+                                <div className='d-grid'>
+                                    <button onClick={copyBookToBookshelf} disabled={!selectedBookshelf} className='btn btn-primary' >Add Book To Bookshelf</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

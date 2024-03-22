@@ -29,6 +29,12 @@ export default function CreateBook() {
     const maxLength: number = 2500;
     const [genreList, setGenreList] = useState<string[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [isValid, setIsValid] = useState<boolean>(false);
+
+    useEffect(() => {
+        setIsValid(!!title && !!firstName && !!lastName && !!format &&
+            charCount <= maxLength)
+    }, [title, firstName, lastName, format, description])
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
@@ -126,130 +132,140 @@ export default function CreateBook() {
                     <div className="col-lg-12 ">
                         <div className="d-flex justify-content-center align-items-center">
                             <div className='form-container-forms p-5 rounded bg-white'>
-                <form id="new-book">
-                    <h3 className="text-center">Create New Book</h3>
-                    <div className='mb-2'>
-                        <label htmlFor="title">Title:</label>
-                        <input type="text"
-                            value={title}
-                            placeholder="Enter Title"
-                            className='form-control'
-                            name="title"
-                            onChange={handleTitleChange} />
-                    </div>
-                    <div>
-                        <h5 className="text-center">Author&apos;s Name:</h5>
-                    </div>
-                    <div className='mb-2'>
-                        <label htmlFor="firstName">First Name:</label>
-                        <input type="text"
-                            value={firstName}
-                            placeholder="Enter First Name"
-                            className='form-control'
-                            name="first_name"
-                            onChange={handleFirstNameChange}
-                        />
-                    </div>
-                    <div className='mb-2'>
-                        <label htmlFor="authorMiddleName">Middle Name:</label>
-                        <input type="text"
-                            value={middleName}
-                            placeholder="Enter Middle Name"
-                            className='form-control'
-                            name="middle_name"
-                            onChange={handleMiddleNameChange}
-                        />
-                    </div>
-                    <div className='mb-2'>
-                        <label htmlFor="authorLastName">Last Name:</label>
-                        <input type="text"
-                            value={lastName}
-                            placeholder="Enter Last Name"
-                            className='form-control'
-                            name="last_name"
-                            onChange={handleLastNameChange}
-                        />
-                    </div>
+                                <form id="new-book">
+                                    <h3 className="text-center">Create New Book</h3>
+                                    <div className='mb-2'>
+                                        <label htmlFor="title">Title*:</label>
+                                        <input type="text"
+                                            value={title}
+                                            placeholder="Enter Title"
+                                            className='form-control'
+                                            name="title"
+                                            id="title"
+                                            required
+                                            aria-describedby="titleNote"
+                                            onChange={handleTitleChange} />
+                                    </div>
+                                    <div>
+                                        <h5 className="text-center">Author&apos;s Name:</h5>
+                                    </div>
+                                    <div className='mb-2'>
+                                        <label htmlFor="firstName">First Name*:</label>
+                                        <input type="text"
+                                            value={firstName}
+                                            placeholder="Enter First Name"
+                                            className='form-control'
+                                            name="first-name"
+                                            id="first-name"
+                                            required
+                                            onChange={handleFirstNameChange}
+                                        />
+                                    </div>
+                                    <div className='mb-2'>
+                                        <label htmlFor="authorMiddleName">Middle Name:</label>
+                                        <input type="text"
+                                            value={middleName}
+                                            placeholder="Enter Middle Name"
+                                            className='form-control'
+                                            name="middle-name"
+                                            id="middle-name"
+                                            onChange={handleMiddleNameChange}
+                                        />
+                                    </div>
+                                    <div className='mb-2'>
+                                        <label htmlFor="authorLastName">Last Name*:</label>
+                                        <input type="text"
+                                            value={lastName}
+                                            placeholder="Enter Last Name"
+                                            className='form-control'
+                                            name="last_name"
+                                            id="last-name"
+                                            onChange={handleLastNameChange}
+                                        />
+                                    </div>
 
-                    
-                    <div className="radio-button-container">
-                        <p className="format-margin">Format:</p>
-                        <input type="radio"
-                            id="hardcover"
-                            name="format"
-                            value={ BookFormat.Hardcover }
-                            onChange={handleFormatChange} />
-                        <label htmlFor="hardcover">Hardcover</label>
-                        <input type="radio"
-                            id="paperback"
-                            name="format"
-                            value={BookFormat.Paperback}
-                            onChange={handleFormatChange} />
-                        <label htmlFor="paperback">Paperback</label>
-                        <input type="radio"
-                            id="eBook"
-                            name="format"
-                            value={ BookFormat.eBook}
-                            onChange={handleFormatChange} />
-                        <label htmlFor="eBook">eBook</label>
-                        <input type="radio"
-                            id="audioBook"
-                            name="format"
-                            value={BookFormat.AudioBook}
-                            onChange={handleFormatChange} />
-                        <label htmlFor="audioBook">Audio Book</label>
-                    </div>
-                    <div className="">
-                            <div className='mb-2'>
-                                <label htmlFor="pageCount">Page Count:</label>
-                                <input type="number"
-                                    value={pageCount}
-                                    placeholder="Enter Page Count"
-                                    className='form-control'
-                                    name="page_count"
-                                    onChange={handlePageCountChange}/>
-                            </div>
-                            <AudioLengthInput setAudioLength={ setLength }></AudioLengthInput>
-                    </div>
 
-                    <div className='mb-2'>
-                        <label htmlFor="description">Summary:</label>
-                        <textarea 
-                            placeholder="Enter Summary"
-                            className='form-control'
-                            name="description"
-                            value={description}
-                            onChange={handleDescriptionChange} />
-                        <p className="text-end"> Character Count: {charCount}/{maxLength}</p>
+                                    <div className="radio-button-container">
+                                        <p className="format-margin">Format*:</p>
+                                        <input type="radio"
+                                            id="hardcover"
+                                            name="format"
+                                            value={BookFormat.Hardcover}
+                                            onChange={handleFormatChange} />
+                                        <label htmlFor="hardcover">Hardcover</label>
+                                        <input type="radio"
+                                            id="paperback"
+                                            name="format"
+                                            value={BookFormat.Paperback}
+                                            onChange={handleFormatChange} />
+                                        <label htmlFor="paperback">Paperback</label>
+                                        <input type="radio"
+                                            id="eBook"
+                                            name="format"
+                                            value={BookFormat.eBook}
+                                            onChange={handleFormatChange} />
+                                        <label htmlFor="eBook">eBook</label>
+                                        <input type="radio"
+                                            id="audioBook"
+                                            name="format"
+                                            value={BookFormat.AudioBook}
+                                            onChange={handleFormatChange} />
+                                        <label htmlFor="audioBook">Audio Book</label>
+                                    </div>
+                                    <div className="">
+                                        <div className='mb-2'>
+                                            <label htmlFor="pageCount">Page Count:</label>
+                                            <input type="number"
+                                                value={pageCount}
+                                                placeholder="Enter Page Count"
+                                                className='form-control'
+                                                name="page_count"
+                                                min={0}
+                                                onChange={handlePageCountChange} />
+                                        </div>
+                                        <AudioLengthInput setAudioLength={setLength}></AudioLengthInput>
+                                    </div>
+
+                                    <div className='mb-2'>
+                                        <label htmlFor="description">Summary:</label>
+                                        <textarea
+                                            placeholder="Enter Summary"
+                                            className='form-control'
+                                            name="description"
+                                            id="description"
+                                            value={description}
+                                            onChange={handleDescriptionChange} />
+                                        <p className="text-end"> Character Count: {charCount}/{maxLength}</p>
                                     </div>
                                     {showModal && (
                                         <OKModal message="Character count exceeds allowed amount."
                                             onConfirm={() => setShowModal(false)} />
                                     )}
 
-                    <div className='mb-2'>
-                        <label htmlFor="borrowable">Borrowable?:</label>
-                        <select id="borrowable"
-                            className='form-control'
-                            name="borrowable"
-                            value={borrowable ? 'true' : 'false'}
-                            onChange={handleBorrowableChange}>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>   
-                        </select>
-                    </div>
-                    <div className='mb-2'>
-                        <label htmlFor="genre">Genres:</label>
-                        <input type="text"
-                            placeholder="Enter Genres (ex: horror, sci-fi)"
-                            className='form-control'
-                            name="genre"
-                            onChange={handleGenreChange}
-                        />
-                    </div>
-                </form>
-                <div className='d-grid'>
-                                    <button className='btn btn-primary' onClick={createBook} disabled={charCount > maxLength}>Create Book</button>
+                                    <div className='mb-2'>
+                                        <label htmlFor="borrowable">Borrowable?*:</label>
+                                        <select id="borrowable"
+                                            className='form-control'
+                                            name="borrowable"
+                                            value={borrowable ? 'true' : 'false'}
+                                            onChange={handleBorrowableChange}>
+                                            <option value="true">Yes</option>
+                                            <option value="false">No</option>
+                                        </select>
+                                    </div>
+                                    <div className='mb-2'>
+                                        <label htmlFor="genre">Genres:</label>
+                                        <input type="text"
+                                            placeholder="Enter Genres (ex: horror, sci-fi)"
+                                            className='form-control'
+                                            name="genre"
+                                            id="genre"
+                                            onChange={handleGenreChange}
+                                        />
+                                    </div>
+                                </form>
+                                <div className='d-grid'>
+                                    <button className='btn btn-primary' onClick={createBook} disabled={!isValid}>Create Book</button>
                                 </div>
                             </div>
                         </div>

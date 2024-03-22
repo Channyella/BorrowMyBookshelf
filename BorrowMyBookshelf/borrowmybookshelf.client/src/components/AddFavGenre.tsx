@@ -50,7 +50,7 @@ export default function AddFavGenre() {
         } catch (error) {
             console.log('Error adding favorite genre:', error);
         }
-        navigate(`/profile/edit/${userId}`, {replace: true});
+        navigate(`/profile/edit/${userId}`, { replace: true });
     };
 
     return (
@@ -64,29 +64,29 @@ export default function AddFavGenre() {
                 <div className="row d-flex justify-content-center align-items-center">
                     <div className="col-lg-12 ">
                         <div className="d-flex justify-content-center align-items-center">            <div className='form-container-forms p-5 rounded bg-white '>
-                <h2 className="text-center fav-title">Add a Favorite Genre:</h2>
-                <label className="fav-labels text-center" htmlFor="book">Select a Genre:</label>
-                <div className="d-flex align-items-center justify-content-center">
-                    <select id="book"
-                        className="form-select w-50"
-                        value={selectedGenre}
-                        onChange={handleSelectChange}
-                        onFocus={(event: React.FocusEvent<HTMLSelectElement>) => { event.target.size = 5; }}
-                        onBlur={(event: React.FocusEvent<HTMLSelectElement>) => { event.target.size = 1; }}
-                    >
-                        <option value="">Select</option>
-                        {genres
-                            ?.sort((genre: Genre, genre2: Genre) => genre.genreType.localeCompare(genre2.genreType))
-                            .map(genre => (
-                            <option key={genre.genreId} value={genre.genreId}> {genre.genreType} </option>
-                        ))}
-                    </select>
-                </div>
-                <div className='d-grid d-flex align-items-center justify-content-center'>
-                    <button className='btn btn-primary w-40 fav-buttons' onClick={addFavGenre}>Add Genre to Favorites</button>
-                </div>
-                <p className="text-center">Don&apos;t see your favorite genre? <br /> Make sure you have a book that contains this genre on a bookshelf first.</p>
-            </div>
+                            <h2 className="text-center fav-title">Add a Favorite Genre:</h2>
+                            <label className="fav-labels text-center" htmlFor="book">Select a Genre:</label>
+                            <div className="d-flex align-items-center justify-content-center">
+                                <select id="book"
+                                    className="form-select w-50"
+                                    value={selectedGenre}
+                                    onChange={handleSelectChange}
+                                    onFocus={(event: React.FocusEvent<HTMLSelectElement>) => { event.target.size = 5; }}
+                                    onBlur={(event: React.FocusEvent<HTMLSelectElement>) => { event.target.size = 1; }}
+                                >
+                                    <option value="">Select</option>
+                                    {genres
+                                        ?.sort((genre: Genre, genre2: Genre) => genre.genreType.localeCompare(genre2.genreType))
+                                        .map(genre => (
+                                            <option key={genre.genreId} value={genre.genreId}> {genre.genreType} </option>
+                                        ))}
+                                </select>
+                            </div>
+                            <div className='d-grid d-flex align-items-center justify-content-center'>
+                                <button className='btn btn-primary w-40 fav-buttons' disabled={!selectedGenre } onClick={addFavGenre}>Add Genre to Favorites</button>
+                            </div>
+                            <p className="text-center">Don&apos;t see your favorite genre? <br /> Make sure you have a book that contains this genre on a bookshelf first.</p>
+                        </div>
                         </div>
                     </div>
                 </div>

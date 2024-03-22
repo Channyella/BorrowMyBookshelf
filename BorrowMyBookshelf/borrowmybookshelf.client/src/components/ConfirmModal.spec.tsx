@@ -10,8 +10,8 @@ it("Makes a confirm modal", () => {
             onConfirm={handleConfirm}
             onCancel={handleCancel}
             confirmText="Yes"
-            cancelText="No"/>
-    )
+            cancelText="No" />
+    );
 
     expect(getByText(/This is a message/i)).toBeTruthy();
     expect(getByText(/no/i)).toBeTruthy();

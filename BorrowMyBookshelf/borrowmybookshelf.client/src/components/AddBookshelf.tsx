@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import './style.css';
 import axios from 'axios';
-import { GetAuthHeader, GetCurrentUser} from '../helpers/AuthHelper';
+import { GetAuthHeader, GetCurrentUser } from '../helpers/AuthHelper';
 import BookshelfContext from '../context/BookshelfContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -51,17 +51,24 @@ export default function AddBookshelf() {
                 <div className="row d-flex justify-content-center align-items-center">
                     <div className="col-lg-12 ">
                         <div className="d-flex justify-content-center align-items-center">
-                         <div className='form-container-forms p-5 rounded bg-white'>
-                            <form id="new-book">
+                            <div className='form-container-forms p-5 rounded bg-white'>
+                                <form id="new-book">
                                     <h3 className="text-center">Create New Bookshelf</h3>
-                                <div className='mb-2'>
+                                    <div className='mb-2'>
                                         <label className="text-align-start" htmlFor="name">Name</label>
-                                    <input type="text" value={name} placeholder="Enter Name" className='form-control' name="name" onChange={handleNameChange} />
-                                </div>
-                                <div className='d-grid'>
-                                    <button className='btn btn-primary' onClick={createBookshelf}>Create Bookshelf</button>
-                                </div>
-                            </form>
+                                        <input type="text"
+                                            value={name}
+                                            placeholder="Enter Name"
+                                            className='form-control'
+                                            name="name"
+                                            id="name"
+                                            required
+                                            onChange={handleNameChange} />
+                                    </div>
+                                    <div className='d-grid'>
+                                        <button className='btn btn-primary' disabled={!name} onClick={createBookshelf}>Create Bookshelf</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

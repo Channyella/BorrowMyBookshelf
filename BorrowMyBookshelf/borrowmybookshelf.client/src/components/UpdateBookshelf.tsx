@@ -22,7 +22,10 @@ export default function AddBookshelf() {
                     withCredentials: true,
                     headers: GetAuthHeader(),
                 });
-            setBookshelf( new Bookshelf(response.data));
+            const bookshelfInfo = new Bookshelf(response.data);
+            setBookshelf(bookshelfInfo);
+            setName(bookshelfInfo.bookshelfName);
+            
         } catch (error) {
             console.error('Error fetching bookshelf data:', error);
         }
@@ -75,11 +78,11 @@ export default function AddBookshelf() {
                                     <h3 className="text-center">Update Bookshelf</h3>
                                     <div className='mb-2'>
                                         <label className="text-align-start" htmlFor="name">Name</label>
-                                        <input type="text" value={name} placeholder={bookshelf?.bookshelfName} className='form-control' name="name" onChange={handleNameChange} />
+                                        <input type="text" value={name} placeholder={name} className='form-control' name="name" onChange={handleNameChange} />
                                     </div>
-                            </form>
-                            <div className='d-grid'>
-                                <button className='btn btn-primary' onClick={updateBookshelf}>Update Bookshelf</button>
+                                </form>
+                                <div className='d-grid'>
+                                    <button className='btn btn-primary' disabled={!name} onClick={updateBookshelf}>Update Bookshelf</button>
                                 </div>
                             </div>
                         </div>

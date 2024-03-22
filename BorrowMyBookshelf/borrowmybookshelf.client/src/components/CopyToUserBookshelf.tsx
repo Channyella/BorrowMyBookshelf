@@ -20,6 +20,11 @@ export default function CopyToUserBookshelf() {
     const [selectedBookshelf, setSelectedBookshelf] = useState('');
     const [borrowable, setBorrowable] = useState<boolean>(false);
     const [format, setFormat] = useState<BookFormat>(BookFormat.Hardcover);
+    const [isValid, setIsValid] = useState<boolean>(false);
+
+    useEffect(() => {
+        setIsValid(!!selectedBookshelf && !!format)
+    }, [selectedBookshelf, format]);
 
     const handleBorrowableChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setBorrowable(event.target.value === 'true');
@@ -101,81 +106,82 @@ export default function CopyToUserBookshelf() {
                     <div className="col-lg-12 ">
                         <div className="d-flex justify-content-center align-items-center">
                             <div className='form-container-forms p-5 rounded bg-white'>
-                <form id="new-book">
-                    <h3 className="text-center">Add to Your Bookshelf:</h3>
-                    <label htmlFor="bookshelves">Select Bookshelf:</label>
-                        <select id="bookshelves" className="form-select w-50" value={selectedBookshelf} onChange={handleBookshelfChange}>
-                            <option value="">Select</option>
-                            {bookshelves?.map(bookshelf => (
-                                <option key={bookshelf.bookshelfId} value={bookshelf.bookshelfId}> {bookshelf.bookshelfName} </option>
-                            ))}
-                    </select>
+                                <form id="new-book">
+                                    <h3 className="text-center">Add to Your Bookshelf:</h3>
+                                    <label htmlFor="bookshelves">Select Bookshelf*:</label>
+                                    <select id="bookshelves" className="form-select w-50" value={selectedBookshelf} onChange={handleBookshelfChange}>
+                                        <option value="">Select</option>
+                                        {bookshelves?.map(bookshelf => (
+                                            <option key={bookshelf.bookshelfId} value={bookshelf.bookshelfId}> {bookshelf.bookshelfName} </option>
+                                        ))}
+                                    </select>
 
-                    <div className='mb-2'>
-                        <label htmlFor="title">Title</label>
-                        <input type="text"
-                            value={title}
-                            placeholder="Enter Title"
-                            className='form-control'
-                            name="title"
-                            onChange={handleTitleChange}
-                            readOnly
-                        />
-                    </div>
-                    <div className='mb-2'>
-                        <label htmlFor="firstName">Author&apos;s Name</label>
-                        <input type="text"
-                            value={name}
-                            placeholder="Enter First Name"
-                            className='form-control'
-                            name="first_name"
-                            onChange={handleNameChange}
-                            readOnly
-                        />
-                    </div>
+                                    <div className='mb-2'>
+                                        <label htmlFor="title">Title:</label>
+                                        <input type="text"
+                                            value={title}
+                                            placeholder="Enter Title"
+                                            className='form-control'
+                                            name="title"
+                                            onChange={handleTitleChange}
+                                            readOnly
+                                        />
+                                    </div>
+                                    <div className='mb-2'>
+                                        <label htmlFor="firstName">Author&apos;s Name:</label>
+                                        <input type="text"
+                                            value={name}
+                                            placeholder="Enter First Name"
+                                            className='form-control'
+                                            name="first_name"
+                                            onChange={handleNameChange}
+                                            readOnly
+                                        />
+                                    </div>
 
-                        <div className="radio-button-container">
-                            <input type="radio"
-                                id="hardcover"
-                                name="format"
-                                value={BookFormat.Hardcover}
-                                onChange={handleFormatChange} />
-                            <label htmlFor="hardcover">Hardcover</label>
-                            <input type="radio"
-                                id="paperback"
-                                name="format"
-                                value={BookFormat.Paperback}
-                                onChange={handleFormatChange} />
-                            <label htmlFor="paperback">Paperback</label>
-                            <input type="radio"
-                                id="eBook"
-                                name="format"
-                                value={BookFormat.eBook}
-                                onChange={handleFormatChange} />
-                            <label htmlFor="eBook">eBook</label>
-                            <input type="radio"
-                                id="audioBook"
-                                name="format"
-                                value={BookFormat.AudioBook}
-                                onChange={handleFormatChange} />
-                            <label htmlFor="audioBook">Audio Book</label>
-                        </div>
-                        <div className='mb-2'>
-                            <label htmlFor="borrowable">Borrowable?</label>
-                            <select id="borrowable"
-                                className='form-control form-select'
-                                name="borrowable"
-                                value={borrowable ? 'true' : 'false'}
-                                onChange={handleBorrowableChange}>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                            </select>
-                        </div>
-                </form>
-                <div className='d-grid'>
-                    <button onClick={ copyBookToBookshelf } className='btn btn-primary' >Add Book To Bookshelf</button>
-                </div>
-            </div>
+                                    <div className="radio-button-container">
+                                        <p className="format-margin">Format*:</p>
+                                        <input type="radio"
+                                            id="hardcover"
+                                            name="format"
+                                            value={BookFormat.Hardcover}
+                                            onChange={handleFormatChange} />
+                                        <label htmlFor="hardcover">Hardcover</label>
+                                        <input type="radio"
+                                            id="paperback"
+                                            name="format"
+                                            value={BookFormat.Paperback}
+                                            onChange={handleFormatChange} />
+                                        <label htmlFor="paperback">Paperback</label>
+                                        <input type="radio"
+                                            id="eBook"
+                                            name="format"
+                                            value={BookFormat.eBook}
+                                            onChange={handleFormatChange} />
+                                        <label htmlFor="eBook">eBook</label>
+                                        <input type="radio"
+                                            id="audioBook"
+                                            name="format"
+                                            value={BookFormat.AudioBook}
+                                            onChange={handleFormatChange} />
+                                        <label htmlFor="audioBook">Audio Book</label>
+                                    </div>
+                                    <div className='mb-2'>
+                                        <label htmlFor="borrowable">Borrowable?*:</label>
+                                        <select id="borrowable"
+                                            className='form-control form-select'
+                                            name="borrowable"
+                                            value={borrowable ? 'true' : 'false'}
+                                            onChange={handleBorrowableChange}>
+                                            <option value="true">Yes</option>
+                                            <option value="false">No</option>
+                                        </select>
+                                    </div>
+                                </form>
+                                <div className='d-grid'>
+                                    <button onClick={copyBookToBookshelf} disabled={!isValid} className='btn btn-primary' >Add Book To Bookshelf</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

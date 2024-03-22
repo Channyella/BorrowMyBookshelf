@@ -33,7 +33,7 @@ export default function AddReview() {
     };
 
     const handleStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedDate = event.target.value ? new Date(event.target.value): null;
+        const selectedDate = event.target.value ? new Date(event.target.value) : null;
         setStartDate(selectedDate);
         if (finishedDate && selectedDate && finishedDate < selectedDate) {
             setFinishedDate(null);
@@ -41,7 +41,7 @@ export default function AddReview() {
     }
 
     const handleFinishedDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedDate = event.target.value ? new Date(event.target.value): null;
+        const selectedDate = event.target.value ? new Date(event.target.value) : null;
         setFinishedDate(selectedDate);
         if (startDate && selectedDate && startDate > selectedDate) {
             setStartDate(null);
@@ -115,10 +115,10 @@ export default function AddReview() {
                         <div className="d-flex justify-content-center align-items-center">
                             <div className='review-container-forms p-5 rounded bg-white'>
                                 <form id="new-book">
-                                    <h3 className="text-center">{`Add Review to ${ title }`}</h3>
+                                    <h3 className="text-center">{`Add Review to ${title}`}</h3>
                                     <div>
                                         <StarsDropDownInput value={starsAmount}
-                                            onChange={handleStarsChange}/>
+                                            onChange={handleStarsChange} />
                                     </div>
 
                                     <div className="radio-button-container">
@@ -182,7 +182,7 @@ export default function AddReview() {
                                     )}
                                 </form>
                                 <div className='d-grid'>
-                                    <button className='btn btn-primary' onClick={addUserReview} disabled={charCount > maxLength} >Add Review</button>
+                                    <button className='btn btn-primary' onClick={addUserReview} disabled={!!starsAmount && charCount > maxLength} >Add Review</button>
                                 </div>
                             </div>
                         </div>
