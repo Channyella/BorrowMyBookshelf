@@ -1,20 +1,20 @@
 {
   "Version": 1,
-  "Hash": "u0Xb4RJmCyIOV4HQND2BYFtXE+AYG0kcAwHDfa7IG8A=",
+  "Hash": "+mnoHmqPUXTrWV040jufJxjKtaisQ9IB3tSHInXAwFY=",
   "Source": "BorrowMyBookshelf.Server",
   "BasePath": "_content/BorrowMyBookshelf.Server",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "C:\\Users\\admin\\Documents\\BorrowMyBookshelf\\BorrowMyBookshelf\\borrowmybookshelf.client\\borrowmybookshelf.client.esproj",
+      "Identity": "/root/srcBorrowMyBookshelf/d424-software-engineering-capstone/BorrowMyBookshelf/borrowmybookshelf.client/borrowmybookshelf.client.esproj",
       "Version": 2,
       "Source": "borrowmybookshelf.client",
       "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishProperties": "",
       "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
       "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildProperties": "",
       "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
     }
   ],

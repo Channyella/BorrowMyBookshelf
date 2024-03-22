@@ -91,7 +91,7 @@
           "Microsoft.AspNetCore.App"
         ]
       },
-      "Microsoft.AspNetCore.SpaProxy/8.0.2": {
+      "Microsoft.AspNetCore.SpaProxy/8.0.3": {
         "type": "package",
         "compile": {
           "lib/net8.0/Microsoft.AspNetCore.SpaProxy.dll": {}
@@ -983,10 +983,10 @@
         "microsoft.aspnetcore.authentication.jwtbearer.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.SpaProxy/8.0.2": {
-      "sha512": "AJO5WO1A7WsyxxjVbcHlvAu3dCJOchP7zgjmcLTJum3wqIgCxVWUL+X+bB24eat91jtPXAJRdH1imwZg/1BeQw==",
+    "Microsoft.AspNetCore.SpaProxy/8.0.3": {
+      "sha512": "LjkiTNvLBJ/zkL/eM3M/luM1SewLJ6LJ/9vgkVHK9Vlh7+6Xzz4NVRO/FfZ237BegFKEdO5zmc+py0QC5H86EA==",
       "type": "package",
-      "path": "microsoft.aspnetcore.spaproxy/8.0.2",
+      "path": "microsoft.aspnetcore.spaproxy/8.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -994,7 +994,7 @@
         "THIRD-PARTY-NOTICES.TXT",
         "build/Microsoft.AspNetCore.SpaProxy.targets",
         "lib/net8.0/Microsoft.AspNetCore.SpaProxy.dll",
-        "microsoft.aspnetcore.spaproxy.8.0.2.nupkg.sha512",
+        "microsoft.aspnetcore.spaproxy.8.0.3.nupkg.sha512",
         "microsoft.aspnetcore.spaproxy.nuspec"
       ]
     },
@@ -2839,35 +2839,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "/root/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\Documents\\BorrowMyBookshelf\\BorrowMyBookshelf\\BorrowMyBookshelf.Server\\BorrowMyBookshelf.Server.csproj",
+      "projectUniqueName": "/root/srcBorrowMyBookshelf/d424-software-engineering-capstone/BorrowMyBookshelf/BorrowMyBookshelf.Server/BorrowMyBookshelf.Server.csproj",
       "projectName": "BorrowMyBookshelf.Server",
-      "projectPath": "C:\\Users\\admin\\Documents\\BorrowMyBookshelf\\BorrowMyBookshelf\\BorrowMyBookshelf.Server\\BorrowMyBookshelf.Server.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\Documents\\BorrowMyBookshelf\\BorrowMyBookshelf\\BorrowMyBookshelf.Server\\obj\\",
+      "projectPath": "/root/srcBorrowMyBookshelf/d424-software-engineering-capstone/BorrowMyBookshelf/BorrowMyBookshelf.Server/BorrowMyBookshelf.Server.csproj",
+      "packagesPath": "/root/.nuget/packages/",
+      "outputPath": "/root/srcBorrowMyBookshelf/d424-software-engineering-capstone/BorrowMyBookshelf/BorrowMyBookshelf.Server/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "/root/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2880,6 +2869,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -2930,7 +2924,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
