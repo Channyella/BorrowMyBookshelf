@@ -104,7 +104,7 @@ export default function Home() {
                     <tr key={book.title}>
                         <td>{book.title}</td>
                         <td>{`${book.author.firstName} ${book.author.middleName ?? ""} ${book.author.lastName}`}</td>
-                        <td>{`${book.pageCount} pages`}</td>
+                        <td>{book.pageCount ? `${book.pageCount} pages` : ''}</td>
                         <td>{formatAudioLength(book.audioLength)}</td>
                         <td>{book.genres.map(genre => genre.genreType).join(", ")}</td>
                         <td> <button onClick={makeBookDropDownFunction(book.bookId)} className="btn btn-warning move-btn-left"><img src="/vert_dropdown.png" alt="Details"></img></button> 
