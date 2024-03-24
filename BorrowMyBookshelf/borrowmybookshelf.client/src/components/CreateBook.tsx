@@ -20,7 +20,7 @@ export default function CreateBook() {
     const [firstName, setFirstName] = useState<string>('');
     const [middleName, setMiddleName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
-    const [format, setFormat] = useState<BookFormat>(BookFormat.Hardcover);
+    const [format, setFormat] = useState<BookFormat | null>(null);
     const [length, setLength] = useState<number | undefined>();
     const [borrowable, setBorrowable] = useState<boolean>(false);
     const [pageCount, setPageCount] = useState<string>('');
@@ -112,7 +112,7 @@ export default function CreateBook() {
             pageCount: pageCount ? parseInt(pageCount) : undefined,
             audioLength: length,
             borrowable,
-            bookFormat: format,
+            bookFormat: format ?? BookFormat.Hardcover,
             userId,
             bookshelfId: parseInt(bookshelfId),
             genreTypes: genreList
@@ -150,7 +150,7 @@ export default function CreateBook() {
                                         <h5 className="text-center">Author&apos;s Name:</h5>
                                     </div>
                                     <div className='mb-2'>
-                                        <label htmlFor="firstName">First Name*:</label>
+                                        <label htmlFor="first-name">First Name*:</label>
                                         <input type="text"
                                             value={firstName}
                                             placeholder="Enter First Name"
@@ -162,7 +162,7 @@ export default function CreateBook() {
                                         />
                                     </div>
                                     <div className='mb-2'>
-                                        <label htmlFor="authorMiddleName">Middle Name:</label>
+                                        <label htmlFor="middle-name">Middle Name:</label>
                                         <input type="text"
                                             value={middleName}
                                             placeholder="Enter Middle Name"
@@ -173,7 +173,7 @@ export default function CreateBook() {
                                         />
                                     </div>
                                     <div className='mb-2'>
-                                        <label htmlFor="authorLastName">Last Name*:</label>
+                                        <label htmlFor="last-name">Last Name*:</label>
                                         <input type="text"
                                             value={lastName}
                                             placeholder="Enter Last Name"
@@ -220,6 +220,7 @@ export default function CreateBook() {
                                                 placeholder="Enter Page Count"
                                                 className='form-control'
                                                 name="page_count"
+                                                id="pageCount"
                                                 min={0}
                                                 onChange={handlePageCountChange} />
                                         </div>
