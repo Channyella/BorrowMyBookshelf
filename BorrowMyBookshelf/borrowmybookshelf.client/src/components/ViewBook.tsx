@@ -32,7 +32,14 @@ export default function ViewBook() {
             console.error('Error fetching reviews data:', error);
         }
     }
-    
+
+    const formatAudioLength = (audioLength?: number): string => {
+        if (!audioLength) return "";
+        const hours = Math.floor(audioLength / 60);
+        const minutes = audioLength % 60;
+        return `${hours}h ${minutes}m`;
+    }
+
     const fetchBook = async (id: string) => {
         try {
             const response = await axios.get<Book>(`/api/books/${id}/detailed`,
@@ -87,7 +94,7 @@ export default function ViewBook() {
                 <h3 className="text-center"> by {author} </h3>
                 {audioLength && pageCount &&
                         (<div className="view-book-container">
-                            <h4>Audio Length: </h4><p>{audioLength} minutes</p>
+                            <h4>Audio Length: </h4><p>{formatAudioLength(audioLength)} minutes</p>
                             <h4>Page Count: </h4><p>{pageCount} pages</p>                  
                         </div>)
                     }
