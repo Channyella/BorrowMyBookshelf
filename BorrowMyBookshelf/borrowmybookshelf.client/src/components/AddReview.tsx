@@ -99,7 +99,7 @@ export default function AddReview() {
         } catch (error) {
             console.log('Error adding review:', error);
         }
-        navigate(`/view-books/${bookId}`, { replace: true });
+        navigate(-1);
     };
 
     return (

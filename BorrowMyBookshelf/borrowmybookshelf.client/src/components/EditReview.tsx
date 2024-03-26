@@ -136,7 +136,7 @@ export default function EditReview() {
         } catch (error) {
             console.log('Error adding review:', error);
         }
-        navigate(`/view-books/${bookId}`, { replace: true });
+        navigate(-1);
     };
 
 
