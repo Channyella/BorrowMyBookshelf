@@ -76,8 +76,9 @@ export default function AddFavBook() {
                                     onBlur={(event: React.FocusEvent<HTMLSelectElement>) => { event.target.size = 1; }}
                                 >
                                     <option value="">Select</option>
-                                    {Array.from(new Set(books))
-                                        .sort((book: Book, book2: Book) => book.title.localeCompare(book2.title))
+                                    {books
+                                        ?.sort((book: Book, book2: Book) => book.title.localeCompare(book2.title))
+                                        .filter((book: Book, index: number) => index === 0 || books[index - 1].bookId != book.bookId )
                                         .map(book => (
                                             <option key={book.bookId} value={book.bookId}> {book.title} </option>
                                         ))}

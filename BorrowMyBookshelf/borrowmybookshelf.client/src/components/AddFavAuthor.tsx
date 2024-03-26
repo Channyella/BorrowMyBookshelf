@@ -76,8 +76,10 @@ export default function AddFavAuthor() {
                                         onBlur={(event: React.FocusEvent<HTMLSelectElement>) => { event.target.size = 1; }}
                                     >
                                         <option value="">Select</option>
-                                        {Array.from(new Set(authors))
-                                            .sort((author: Author, author2: Author) => author.firstName.localeCompare(author2.firstName))
+                                        {
+                                            authors
+                                                ?.sort((author: Author, author2: Author) => author.firstName.localeCompare(author2.firstName))
+                                                .filter((author: Author, index: number) => index === 0 || authors[index - 1].authorId != author.authorId)
                                             .map(author => (
                                                 <option key={author.authorId} value={author.authorId}> {getAuthorFullName(author)} </option>
                                             ))}

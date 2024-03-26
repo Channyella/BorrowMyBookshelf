@@ -48,7 +48,6 @@ const getAudioLength = (book: Book) => book.audioLength;
 const getAuthorLastName = (book: Book) => book.author.lastName.toLowerCase();
 
 
-
 const getSorter = (sortOption: SortOption, reverse: boolean = false): SortFunction => {
     switch (sortOption) {
         case SortOption.Title: return sortBy(getTitle, reverse);
@@ -58,6 +57,7 @@ const getSorter = (sortOption: SortOption, reverse: boolean = false): SortFuncti
         case SortOption.AuthorLastName: return sortBy(getAuthorLastName, reverse)
     }
 }
+
 
 const SortModal: React.FC<SortModalProps> = ({ message, onConfirm, onCancel, setSort, showModal }) => {
     const [sortOption, setSortOption] = useState<SortOption>(SortOption.Title);
@@ -78,7 +78,7 @@ const SortModal: React.FC<SortModalProps> = ({ message, onConfirm, onCancel, set
 
     return (
         <div className={showModal ? 'sort-modal' : 'hidden'}>
-            <div className="sort-modal-content">
+            <div className="sort-modal-content sort-modal">
                 <h5>{message}</h5>
                 <div className="radio-button-container radio-grid">
 

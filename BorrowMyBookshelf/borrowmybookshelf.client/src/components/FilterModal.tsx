@@ -68,6 +68,16 @@ const FilterModal: React.FC<FilterModalProps> = ({ showModal, message, onConfirm
     }
 
     const onClear = () => {
+        document.querySelector('.filter-modal')?.querySelectorAll('select').forEach(select => select.value = '');
+        document.querySelector('.filter-modal')?.querySelectorAll('input').forEach(input => input.value = '');
+        setAuthor(null);
+        setPageCount(null);
+        setAudioLength(null);
+        setGenresList(null);
+        setBorrowable(null);
+        setFormat(null);
+        setPageCountComp(null);
+        setAudioLengthComp(null);
         setFilter(() => () => true);
         onCancel();
     }
@@ -122,7 +132,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ showModal, message, onConfirm
 
     return (
         <div className={showModal ? 'sort-modal' : 'hidden'}>
-            <div className="sort-modal-content">
+            <div className="sort-modal-content filter-modal">
                 <h5>{message}</h5>
 
                 <label className="fav-labels text-center" htmlFor="author">Select an author:</label>

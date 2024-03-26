@@ -63,7 +63,8 @@ export default function AddFavGenre() {
                 </div>
                 <div className="row d-flex justify-content-center align-items-center">
                     <div className="col-lg-12 ">
-                        <div className="d-flex justify-content-center align-items-center">            <div className='form-container-forms p-5 rounded bg-white '>
+                        <div className="d-flex justify-content-center align-items-center">
+                            <div className='form-container-forms p-5 rounded bg-white '>
                             <h2 className="text-center fav-title">Add a Favorite Genre:</h2>
                             <label className="fav-labels text-center" htmlFor="book">Select a Genre:</label>
                             <div className="d-flex align-items-center justify-content-center">
@@ -75,8 +76,9 @@ export default function AddFavGenre() {
                                     onBlur={(event: React.FocusEvent<HTMLSelectElement>) => { event.target.size = 1; }}
                                 >
                                     <option value="">Select</option>
-                                    {Array.from(new Set(genres))
-                                        .sort((genre: Genre, genre2: Genre) => genre.genreType.localeCompare(genre2.genreType))
+                                    {genres
+                                        ?.sort((genre: Genre, genre2: Genre) => genre.genreType.localeCompare(genre2.genreType))
+                                        .filter((genre: Genre, index: number) => index === 0 || genres[index - 1].genreId != genre.genreId)
                                         .map(genre => (
                                             <option key={genre.genreId} value={genre.genreId}> {genre.genreType} </option>
                                         ))}
