@@ -75,8 +75,8 @@ export default function AddFavGenre() {
                                     onBlur={(event: React.FocusEvent<HTMLSelectElement>) => { event.target.size = 1; }}
                                 >
                                     <option value="">Select</option>
-                                    {genres
-                                        ?.sort((genre: Genre, genre2: Genre) => genre.genreType.localeCompare(genre2.genreType))
+                                    {Array.from(new Set(genres))
+                                        .sort((genre: Genre, genre2: Genre) => genre.genreType.localeCompare(genre2.genreType))
                                         .map(genre => (
                                             <option key={genre.genreId} value={genre.genreId}> {genre.genreType} </option>
                                         ))}

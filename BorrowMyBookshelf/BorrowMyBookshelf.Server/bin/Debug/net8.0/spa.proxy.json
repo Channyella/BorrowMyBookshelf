@@ -3,7 +3,7 @@
 "ServerUrl": "https://localhost:5173",
 "RedirectUrl": "",
 "LaunchCommand": "npm run dev",
-"WorkingDirectory": "/root/srcBorrowMyBookshelf/d424-software-engineering-capstone/BorrowMyBookshelf/BorrowMyBookshelf.Server/../borrowmybookshelf.client",
+"WorkingDirectory": "C:\\Users\\admin\\Documents\\BorrowMyBookshelf\\BorrowMyBookshelf\\BorrowMyBookshelf.Server\\..\\borrowmybookshelf.client",
 "MaxTimeoutInSeconds": "120",
 "KeepRunning": "false"
 }

@@ -92,7 +92,7 @@ export default function AddReview() {
     const addUserReview = async () => {
         try {
             await Post('/api/reviews', {
-                userId: userId, bookId: bookId, rating: starsAmount, startDate: startDate?.toISOString(),
+                userId: userId, bookId: bookId, rating: starsAmount, startDate: startDate?.toISOString(), bookFormat: format,
                 finishedDate: finishedDate?.toISOString(), summary: description
             });
             console.log('Successfully added review');

@@ -149,7 +149,7 @@ const BookDropDownMenu: React.FC<BookDropDownMenuProps> = ({ bookId, userBookId,
                     <button onClick={confirmDelete} className="btn btn-warning" >Remove Book From Bookshelf</button>
                         {showModal && (
                             <ConfirmModal
-                                message="Are you sure you want to delete this book?"
+                            message={`Are you sure you want to remove this book from this bookshelf?`}
                                 onConfirm={handleConfirm}
                                 onCancel={handleCancel}/>
                     )}

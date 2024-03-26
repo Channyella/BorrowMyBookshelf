@@ -6,7 +6,7 @@ user_id INT auto_increment PRIMARY KEY,
 first_name VARCHAR(50) NOT NULL,
 last_name VARCHAR(50) NOT NULL,
 email VARCHAR(50) NOT NULL,
-password_hash VARCHAR(60) NOT NULL,
+password_hash VARCHAR(64) NOT NULL,
 notes VARCHAR(500),
 image_file_name CHAR(100) CHARACTER SET UTF8MB4,
 create_date DATETIME NOT NULL, 
@@ -25,6 +25,7 @@ foreign key(requester_user_id) REFERENCES users(user_id),
 foreign key(reciever_user_id) REFERENCES users(user_id)
 );
 
+
 CREATE TABLE authors(
 author_id INT auto_increment PRIMARY KEY,
 first_name VARCHAR(50) NOT NULL,
@@ -39,7 +40,7 @@ author_id INT NOT NULL,
 page_count INT,
 create_date DATETIME NOT NULL,
 image_file_name CHAR(100) CHARACTER SET UTF8MB4,
-description VARCHAR(1000),
+description VARCHAR(2500),
 audio_length INT,
 foreign key(author_id) REFERENCES
 authors(author_id)
@@ -151,13 +152,6 @@ borrower_user_id INT NOT NULL,
 foreign key(user_book_id) REFERENCES user_books(user_book_id),
 foreign key(borrower_user_id) REFERENCES users(user_id)
 );
-
-
-
-
-
-
-
 
 
 
